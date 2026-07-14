@@ -1,0 +1,21 @@
+---
+interface Props {
+  variant?: 'hero' | 'cta' | 'subtle';
+}
+
+const { variant = 'hero' } = Astro.props;
+---
+
+<div
+  class:list={[
+    'gradient-mesh',
+    variant === 'cta' && 'opacity-80',
+    variant === 'subtle' && 'opacity-50',
+  ]}
+  aria-hidden="true"
+>
+  <div class="gradient-mesh__orb gradient-mesh__orb--1"></div>
+  <div class="gradient-mesh__orb gradient-mesh__orb--2"></div>
+  <div class="gradient-mesh__orb gradient-mesh__orb--3"></div>
+  <div class="gradient-mesh__grid"></div>
+</div>

@@ -1,0 +1,33 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Value {
+  title: string;
+  description: string;
+}
+
+interface Props {
+  values: readonly Value[];
+}
+
+const { values } = Astro.props;
+---
+
+<section class="relative py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeader label="Mehrwert" />
+    <div class="grid gap-5 sm:grid-cols-3">
+      {
+        values.map((value, index) => (
+          <div class="card card-interactive relative p-7">
+            <span class="watermark-num absolute -right-2 -top-4" aria-hidden="true">
+              0{index + 1}
+            </span>
+            <h2 class="relative text-base font-semibold text-text">{value.title}</h2>
+            <p class="relative mt-3 text-sm leading-relaxed text-text-muted">{value.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

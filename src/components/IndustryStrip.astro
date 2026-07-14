@@ -1,0 +1,46 @@
+---
+import { industries } from '../content/site';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<section
+  class:list={[
+    'border-b border-border bg-bg-subtle',
+    compact ? 'py-10 sm:py-12' : 'py-14 sm:py-16',
+  ]}
+>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+      <div class="shrink-0">
+        <div class="section-label !mb-2">
+          <span>{industries.eyebrow}</span>
+        </div>
+        {!compact && (
+          <p class="max-w-md text-sm leading-relaxed text-text-muted">{industries.note}</p>
+        )}
+      </div>
+      <div class="flex flex-wrap gap-2 lg:justify-end">
+        {
+          industries.items.map((item) => (
+            <span class="rounded-full border border-accent/20 bg-bg-elevated px-3.5 py-1.5 font-mono text-xs text-accent-deep">
+              {item}
+            </span>
+          ))
+        }
+        <span class="rounded-full border border-dashed border-accent/35 bg-accent-subtle/50 px-3.5 py-1.5 font-mono text-xs font-medium text-accent-deep">
+          + alle Branchen
+        </span>
+      </div>
+    </div>
+    {
+      compact && (
+        <p class="mt-5 max-w-3xl text-sm leading-relaxed text-text-muted">{industries.note}</p>
+      )
+    }
+  </div>
+</section>

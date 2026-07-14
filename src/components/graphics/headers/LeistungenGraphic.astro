@@ -1,0 +1,57 @@
+---
+import PageGraphic from '../PageGraphic.astro';
+---
+
+<PageGraphic caption="services · 4 Bausteine">
+  <svg viewBox="0 0 480 360" class="w-full" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vier aufeinander aufbauende Leistungsbausteine">
+    <defs>
+      <pattern id="lg-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(56,189,248,0.1)" stroke-width="0.5"/>
+      </pattern>
+      <marker id="lg-arrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+        <path d="M0,0 L0,5 L5,2.5 z" fill="rgba(56,189,248,0.6)"/>
+      </marker>
+    </defs>
+    <rect width="480" height="360" fill="url(#lg-grid)"/>
+    <path d="M16 16 H40 M16 16 V40 M464 16 H440 M464 16 V40" stroke="rgba(56,189,248,0.35)" stroke-width="1"/>
+
+    <!-- Stack of 4 service layers -->
+    <rect x="80" y="40" width="320" height="52" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.5)" stroke-width="1.5"/>
+    <text x="100" y="62" fill="#64748b" font-size="9" font-family="IBM Plex Mono, monospace">01</text>
+    <text x="130" y="62" fill="#e2e8f0" font-size="11" font-weight="500" font-family="IBM Plex Mono, monospace">Analyse</text>
+    <text x="130" y="78" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">C4 Context · Dependency Map</text>
+
+    <line x1="240" y1="92" x2="240" y2="108" stroke="rgba(56,189,248,0.5)" stroke-width="1.5" marker-end="url(#lg-arrow)"/>
+
+    <rect x="80" y="108" width="320" height="52" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.5)" stroke-width="1.5"/>
+    <text x="100" y="130" fill="#64748b" font-size="9" font-family="IBM Plex Mono, monospace">02</text>
+    <text x="130" y="130" fill="#e2e8f0" font-size="11" font-weight="500" font-family="IBM Plex Mono, monospace">Dokumentation</text>
+    <text x="130" y="146" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">arc42 · ADRs · Schnittstellen</text>
+
+    <line x1="240" y1="160" x2="240" y2="176" stroke="rgba(56,189,248,0.5)" stroke-width="1.5" marker-end="url(#lg-arrow)"/>
+
+    <rect x="80" y="176" width="320" height="52" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.5)" stroke-width="1.5"/>
+    <text x="100" y="198" fill="#64748b" font-size="9" font-family="IBM Plex Mono, monospace">03</text>
+    <text x="130" y="198" fill="#e2e8f0" font-size="11" font-weight="500" font-family="IBM Plex Mono, monospace">Migrationsplanung</text>
+    <text x="130" y="214" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">Zielarchitektur · Roadmap</text>
+
+    <line x1="240" y1="228" x2="240" y2="244" stroke="rgba(245,158,11,0.55)" stroke-width="1.5" marker-end="url(#lg-arrow)"/>
+
+    <rect x="80" y="244" width="320" height="52" rx="4" fill="rgba(14,165,233,0.12)" stroke="#38bdf8" stroke-width="2"/>
+    <text x="100" y="266" fill="#38bdf8" font-size="9" font-family="IBM Plex Mono, monospace">04</text>
+    <text x="130" y="266" fill="#f1f5f9" font-size="11" font-weight="600" font-family="IBM Plex Mono, monospace">KI-gestützte Migration</text>
+    <text x="130" y="282" fill="#94a3b8" font-size="8" font-family="IBM Plex Mono, monospace">iterativ · WRK-validiert</text>
+
+    <!-- Side deliverable indicators -->
+    <line x1="400" y1="66" x2="440" y2="66" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="3 2"/>
+    <circle cx="448" cy="66" r="4" fill="rgba(56,189,248,0.4)"/>
+    <line x1="400" y1="134" x2="440" y2="134" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="3 2"/>
+    <circle cx="448" cy="134" r="4" fill="rgba(56,189,248,0.4)"/>
+    <line x1="400" y1="202" x2="440" y2="202" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="3 2"/>
+    <circle cx="448" cy="202" r="4" fill="rgba(56,189,248,0.4)"/>
+    <line x1="400" y1="270" x2="440" y2="270" stroke="rgba(245,158,11,0.4)" stroke-width="1" stroke-dasharray="3 2"/>
+    <circle cx="448" cy="270" r="5" fill="rgba(245,158,11,0.5)"/>
+
+    <text x="40" y="340" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">Liefergegenstände →</text>
+  </svg>
+</PageGraphic>

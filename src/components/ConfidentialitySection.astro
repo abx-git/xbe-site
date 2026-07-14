@@ -1,0 +1,44 @@
+---
+import DetailList from './DetailList.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  briefing: string;
+  contractual: { title: string; items: readonly string[] };
+  technical: { title: string; items: readonly string[] };
+  obligations: { title: string; items: readonly string[] };
+  legalNote: string;
+}
+
+const { title, description, briefing, contractual, technical, obligations, legalNote } = Astro.props;
+---
+
+<section class="section-dark relative overflow-hidden py-20 sm:py-28">
+  <div class="pointer-events-none absolute inset-0 opacity-40" aria-hidden="true">
+    <div class="gradient-mesh__grid absolute inset-0"></div>
+  </div>
+  <div class="relative mx-auto max-w-6xl px-4 sm:px-6">
+    <p class="eyebrow text-accent-hover">Sicherheit</p>
+    <h2 class="display-md mt-3 max-w-2xl text-text-on-dark">{title}</h2>
+    <p class="mt-4 max-w-3xl leading-relaxed text-text-muted-on-dark">{description}</p>
+
+    <blockquote class="mt-10 rounded-xl border border-white/10 bg-white/5 px-7 py-6 text-sm leading-relaxed text-text-on-dark backdrop-blur-sm">
+      {briefing}
+    </blockquote>
+
+    <div class="mt-12 grid gap-8 lg:grid-cols-3">
+      <div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+        <DetailList title={contractual.title} items={contractual.items} dark />
+      </div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+        <DetailList title={technical.title} items={technical.items} dark />
+      </div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+        <DetailList title={obligations.title} items={obligations.items} dark />
+      </div>
+    </div>
+
+    <p class="mt-10 max-w-3xl text-sm leading-relaxed text-text-muted-on-dark">{legalNote}</p>
+  </div>
+</section>

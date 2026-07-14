@@ -1,0 +1,69 @@
+---
+import PageGraphic from '../PageGraphic.astro';
+
+interface Props {
+  variant?: 'impressum' | 'datenschutz';
+}
+
+const { variant = 'impressum' } = Astro.props;
+const isPrivacy = variant === 'datenschutz';
+---
+
+<PageGraphic caption={isPrivacy ? 'datenschutz · dsgvo' : 'impressum · angaben'}>
+  <svg viewBox="0 0 480 360" class="w-full" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={isPrivacy ? 'Datenschutz-Dokument mit Schutzsymbol' : 'Impressum-Dokument mit Pflichtangaben'}>
+    <defs>
+      <pattern id="leg-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(56,189,248,0.08)" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="480" height="360" fill="url(#leg-grid)"/>
+
+    {isPrivacy ? (
+      <>
+        <!-- Privacy: shield + data flow -->
+        <path d="M240 60 L300 90 V160 C300 210 270 240 240 260 C210 240 180 210 180 160 V90 Z" fill="rgba(14,165,233,0.08)" stroke="#38bdf8" stroke-width="1.5"/>
+        <rect x="225" y="130" width="30" height="24" rx="3" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+        <circle cx="240" cy="142" r="4" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+        <path d="M228 154 H252" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+
+        <rect x="80" y="200" width="120" height="40" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.4)" stroke-width="1"/>
+        <text x="140" y="218" text-anchor="middle" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">Besucher</text>
+        <text x="140" y="230" text-anchor="middle" fill="#94a3b8" font-size="7" font-family="IBM Plex Mono, monospace">keine Tracking-Cookies</text>
+
+        <rect x="280" y="200" width="120" height="40" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.4)" stroke-width="1"/>
+        <text x="340" y="218" text-anchor="middle" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">Hosting</text>
+        <text x="340" y="230" text-anchor="middle" fill="#94a3b8" font-size="7" font-family="IBM Plex Mono, monospace">Server-Logfiles</text>
+
+        <line x1="200" y1="220" x2="210" y2="200" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="3 2"/>
+        <line x1="280" y1="220" x2="270" y2="200" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="3 2"/>
+
+        <rect x="155" y="280" width="170" height="44" rx="4" fill="rgba(14,165,233,0.06)" stroke="rgba(56,189,248,0.3)" stroke-width="1"/>
+        <text x="240" y="300" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="IBM Plex Mono, monospace">DSGVO · Art. 6 · Art. 15</text>
+        <text x="240" y="314" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">Recht auf Auskunft · Löschung</text>
+      </>
+    ) : (
+      <>
+        <!-- Impressum: document structure -->
+        <rect x="130" y="50" width="220" height="260" rx="4" fill="rgba(255,255,255,0.03)" stroke="rgba(148,163,184,0.4)" stroke-width="1.5"/>
+        <rect x="150" y="70" width="80" height="8" rx="2" fill="rgba(56,189,248,0.4)"/>
+        <rect x="150" y="90" width="180" height="4" rx="1" fill="rgba(255,255,255,0.08)"/>
+        <rect x="150" y="100" width="160" height="4" rx="1" fill="rgba(255,255,255,0.06)"/>
+        <rect x="150" y="110" width="140" height="4" rx="1" fill="rgba(255,255,255,0.06)"/>
+
+        <text x="150" y="140" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">§ Anbieter</text>
+        <rect x="150" y="148" width="180" height="4" rx="1" fill="rgba(255,255,255,0.08)"/>
+        <rect x="150" y="158" width="120" height="4" rx="1" fill="rgba(255,255,255,0.06)"/>
+
+        <text x="150" y="185" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">§ Kontakt</text>
+        <rect x="150" y="193" width="160" height="4" rx="1" fill="rgba(255,255,255,0.08)"/>
+        <rect x="150" y="203" width="100" height="4" rx="1" fill="rgba(255,255,255,0.06)"/>
+
+        <text x="150" y="230" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">§ USt-IdNr.</text>
+        <rect x="150" y="238" width="80" height="4" rx="1" fill="rgba(255,255,255,0.08)"/>
+
+        <text x="150" y="275" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">§ Haftung</text>
+        <rect x="150" y="283" width="170" height="4" rx="1" fill="rgba(255,255,255,0.06)"/>
+      </>
+    )}
+  </svg>
+</PageGraphic>

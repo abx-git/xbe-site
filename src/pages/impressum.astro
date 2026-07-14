@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import LegalContent from '../components/LegalContent.astro';
+import LegalGraphic from '../components/graphics/headers/LegalGraphic.astro';
+import { impressum, pageMeta } from '../content/site';
+---
+
+<Layout title={pageMeta.impressum.title} description={pageMeta.impressum.description} path="/impressum">
+  <PageHeader label="Rechtliches" title={impressum.title} tags={['§ TMG', 'Pflichtangaben']}>
+    <LegalGraphic slot="graphic" variant="impressum" />
+  </PageHeader>
+  <LegalContent sections={impressum.sections} />
+</Layout>

@@ -1,0 +1,46 @@
+---
+import { formatPageNumber } from '../content/site';
+
+interface Teaser {
+  href: string;
+  index: number;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  teasers: readonly Teaser[];
+}
+
+const { teasers } = Astro.props;
+---
+
+<section class="border-t border-border bg-bg-elevated py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="section-label">
+      <span>Weitere Bereiche</span>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-3">
+      {
+        teasers.map((teaser) => (
+          <a
+            href={teaser.href}
+            class="card card-interactive group relative flex flex-col p-7 no-underline"
+          >
+            <span class="eyebrow text-accent-deep/60">{formatPageNumber(teaser.index)}</span>
+            <h2 class="mt-3 text-base font-semibold text-text transition-colors group-hover:text-accent-deep">
+              {teaser.title}
+            </h2>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-text-muted">{teaser.description}</p>
+            <span class="mt-6 inline-flex items-center gap-1.5 font-mono text-xs font-medium text-accent-deep">
+              Mehr erfahren
+              <svg class="transition-transform group-hover:translate-x-1" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

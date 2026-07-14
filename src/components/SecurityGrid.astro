@@ -1,0 +1,28 @@
+---
+interface Item {
+  title: string;
+  description: string;
+}
+
+interface Props {
+  items: readonly Item[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="grid gap-4 sm:grid-cols-2">
+  {
+    items.map((item, index) => (
+      <div class="card card-interactive group relative overflow-hidden p-7">
+        <div
+          class="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full border border-dashed border-accent/15 bg-accent-subtle/30 transition-transform group-hover:scale-110"
+          aria-hidden="true"
+        ></div>
+        <span class="relative font-mono text-xs text-accent-deep/50">0{index + 1}</span>
+        <h2 class="relative mt-2 text-base font-semibold text-text">{item.title}</h2>
+        <p class="relative mt-3 text-sm leading-relaxed text-text-muted">{item.description}</p>
+      </div>
+    ))
+  }
+</div>

@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ProseSection from '../components/ProseSection.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import MethodOverview from '../components/MethodOverview.astro';
+import CaseStudy from '../components/CaseStudy.astro';
+import CTASection from '../components/CTASection.astro';
+import ReferencesGraphic from '../components/graphics/headers/ReferencesGraphic.astro';
+import { references, home, pageMeta } from '../content/site';
+---
+
+<Layout title={pageMeta.references.title} description={pageMeta.references.description} path="/referenzen">
+  <PageHeader
+    label="Referenzen"
+    title={references.title}
+    description={references.description}
+    path="/referenzen"
+    tags={['AGM', 'WRK-002', 'Anonymisiert']}
+  >
+    <ReferencesGraphic slot="graphic" />
+  </PageHeader>
+  <ProseSection title={references.intro.title} paragraphs={references.intro.paragraphs} />
+  <MethodOverview
+    title={references.method.title}
+    subtitle={references.method.subtitle}
+    description={references.method.description}
+    options={references.method.options}
+    procedure={references.method.procedure}
+    outcomes={references.method.outcomes}
+  />
+  <section class="blueprint-grid-light section-split py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <SectionHeader label="Praxis" title="Anonymisierte Projektbeispiele" />
+      <p class="-mt-6 mb-10 max-w-3xl text-text-muted">
+        Optionen, Vorgehen und messbare Ergebnisse — dokumentiert im AGM-Graph.
+      </p>
+      <div class="space-y-10">
+        {references.cases.map((caseStudy) => <CaseStudy caseStudy={caseStudy} />)}
+      </div>
+    </div>
+  </section>
+  <CTASection
+    title="Ähnliche Ausgangslage?"
+    description="Ob Security-Assessment, Architektur-Dokumentation oder Modernisierungsentscheidung — im Erstgespräch klären wir Scope und passende Leistungsbausteine."
+    ctaLabel={home.cta}
+    ctaHref="/kontakt"
+  />
+</Layout>

@@ -1,0 +1,35 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Item {
+  title: string;
+  description: string;
+}
+
+interface Props {
+  title: string;
+  items: readonly Item[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section class="blueprint-grid-light section-split py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeader label="Ausgangslage" title={title} />
+    <div class="grid gap-4 sm:grid-cols-2">
+      {
+        items.map((item, index) => (
+          <div class="card card-interactive relative p-7">
+            <span class="absolute right-5 top-5 font-mono text-xs text-accent/30" aria-hidden="true">
+              S{index + 1}
+            </span>
+            <span class="eyebrow text-accent-deep/50">Szenario 0{index + 1}</span>
+            <h3 class="mt-3 text-base font-semibold text-text">{item.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-muted">{item.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

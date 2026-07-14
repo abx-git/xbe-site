@@ -1,0 +1,29 @@
+---
+interface Props {
+  title: string;
+  paragraphs: readonly string[];
+}
+
+const { title, paragraphs } = Astro.props;
+---
+
+<section class="blueprint-grid-light relative border-b border-border py-20 sm:py-28">
+  <div class="blueprint-accent-bar absolute top-0 left-0 right-0" aria-hidden="true"></div>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+      <div>
+        <div class="section-label !mb-0">
+          <span>Kontext</span>
+        </div>
+        <h2 class="display-md mt-4 text-text">{title}</h2>
+      </div>
+      <div class="relative space-y-5 border-l-2 border-accent/20 pl-8 lg:pl-12">
+        {
+          paragraphs.map((paragraph) => (
+            <p class="leading-relaxed text-text-muted">{paragraph}</p>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

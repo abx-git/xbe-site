@@ -1,0 +1,46 @@
+---
+import { formatNewsDate } from '../content/news';
+
+interface Props {
+  slug: string;
+  date: string;
+  title: string;
+  excerpt: string;
+  tags: readonly string[];
+  featured?: boolean;
+}
+
+const { slug, date, title, excerpt, tags, featured = false } = Astro.props;
+---
+
+<article class:list={['card card-interactive overflow-hidden', featured && 'lg:flex lg:flex-row']}>
+  <div class:list={['border-b border-border px-7 py-5', featured && 'lg:w-2/5 lg:border-b-0 lg:border-r']}>
+    <p class="font-mono text-[0.65rem] text-accent-deep/60">{formatNewsDate(date)}</p>
+    <h2 class="mt-3 text-lg font-semibold text-text">
+      <a href={`/news/${slug}`} class="no-underline transition-colors hover:text-accent-deep">
+        {title}
+      </a>
+    </h2>
+    <div class="mt-4 flex flex-wrap gap-2">
+      {
+        tags.map((tag) => (
+          <span class="rounded-full border border-accent/20 bg-accent-subtle/60 px-2.5 py-0.5 font-mono text-xs text-accent-deep">
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+  <div class:list={['px-7 py-6', featured && 'lg:flex lg:w-3/5 lg:flex-col lg:justify-center']}>
+    <p class="leading-relaxed text-text-muted">{excerpt}</p>
+    <a
+      href={`/news/${slug}`}
+      class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs font-medium text-accent-deep no-underline transition-colors hover:text-accent"
+    >
+      Weiterlesen
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+</article>

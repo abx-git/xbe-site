@@ -1,0 +1,59 @@
+---
+import GradientMesh from './graphics/GradientMesh.astro';
+import BlueprintGraph from './graphics/BlueprintGraph.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  cta?: { label: string; href: string };
+}
+
+const { title, description, cta } = Astro.props;
+
+const words = title.split(' ');
+const highlightStart = Math.max(0, words.length - 3);
+const titleStart = words.slice(0, highlightStart).join(' ');
+const titleHighlight = words.slice(highlightStart).join(' ');
+---
+
+<section class="section-dark relative overflow-hidden">
+  <GradientMesh variant="hero" />
+  <div class="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-20 sm:px-6 sm:py-28 lg:grid-cols-[0.82fr_1.18fr] lg:gap-6 lg:py-32 xl:grid-cols-[0.72fr_1.28fr]">
+    <div class="order-2 lg:order-1">
+      <p class="eyebrow animate-fade-up text-accent-hover">Architecture Graph Method · AGM</p>
+      <h1 class="display-xl animate-fade-up animate-fade-up-delay-1 mt-5 max-w-xl text-text-on-dark">
+        {titleStart}{' '}
+        <span class="text-gradient">{titleHighlight}</span>
+      </h1>
+      <p class="animate-fade-up animate-fade-up-delay-2 mt-7 max-w-lg text-lg leading-relaxed text-text-muted-on-dark">
+        {description}
+      </p>
+      <div class="animate-fade-up animate-fade-up-delay-3 mt-10 flex flex-wrap items-center gap-4">
+        {
+          cta && (
+            <a href={cta.href} class="btn-primary">
+              {cta.label}
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          )
+        }
+        <a href="/referenzen" class="btn-ghost">AGM Referenzen</a>
+      </div>
+      <div class="animate-fade-up animate-fade-up-delay-3 mt-10 flex flex-wrap gap-3">
+        <span class="stat-pill"><strong>blueprint.md</strong> · Graph</span>
+        <span class="stat-pill"><strong>arc42</strong> · C4</span>
+        <span class="stat-pill"><strong>WRK</strong> · Validierung</span>
+      </div>
+    </div>
+    <div class="order-1 animate-fade-up animate-fade-up-delay-2 lg:order-2">
+      <div class="relative mx-auto w-full max-w-xl lg:max-w-none lg:scale-[1.08] lg:origin-center xl:scale-[1.15]">
+        <div class="absolute -inset-8 rounded-3xl bg-accent/20 blur-3xl" aria-hidden="true"></div>
+        <div class="absolute -inset-1 rounded-2xl border border-dashed border-accent/20" aria-hidden="true"></div>
+        <BlueprintGraph size="hero" class="relative" />
+      </div>
+    </div>
+  </div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" aria-hidden="true"></div>
+</section>

@@ -1,0 +1,79 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CTASection from '../../components/CTASection.astro';
+import { getSortedNews, getNewsBySlug, formatNewsDate } from '../../content/news';
+import { home } from '../../content/site';
+
+export function getStaticPaths() {
+  return getSortedNews().map((article) => ({
+    params: { slug: article.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const article = getNewsBySlug(slug!);
+
+if (!article) {
+  return Astro.redirect('/news');
+}
+---
+
+<Layout title={article.title} description={article.excerpt} path={`/news/${article.slug}`}>
+  <article>
+    <header class="section-dark relative overflow-hidden">
+      <div class="pointer-events-none absolute inset-0 opacity-20" aria-hidden="true">
+        <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="article-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(56,189,248,0.08)" stroke-width="0.5"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#article-grid)"/>
+        </svg>
+      </div>
+      <div class="relative mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
+        <a
+          href="/news"
+          class="inline-flex items-center gap-1.5 font-mono text-xs text-accent-hover no-underline transition-colors hover:text-white"
+        >
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M10 4L4 8l6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          News
+        </a>
+        <p class="eyebrow mt-6 text-accent-hover">{formatNewsDate(article.date)}</p>
+        <h1 class="display-md mt-3 text-text-on-dark">{article.title}</h1>
+        <div class="mt-6 flex flex-wrap gap-2">
+          {
+            article.tags.map((tag) => (
+              <span class="stat-pill text-[0.6rem]">
+                <strong>{tag}</strong>
+              </span>
+            ))
+          }
+        </div>
+      </div>
+      <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" aria-hidden="true"></div>
+    </header>
+
+    <div class="blueprint-grid-light py-16 sm:py-20">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6">
+        <p class="text-lg leading-relaxed text-text-muted">{article.excerpt}</p>
+        <div class="prose-spaced mt-10 space-y-6 border-t border-border pt-10">
+          {
+            article.paragraphs.map((paragraph) => (
+              <p class="leading-relaxed text-text-muted">{paragraph}</p>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <CTASection
+    title="Passt das zu Ihrer Situation?"
+    description="Einordnungen aus der Praxis — im Erstgespräch besprechen wir, welche Leistungsbausteine für Ihr System sinnvoll sind."
+    ctaLabel={home.cta}
+    ctaHref="/kontakt"
+  />
+</Layout>

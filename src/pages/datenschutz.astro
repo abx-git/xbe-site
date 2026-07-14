@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import LegalContent from '../components/LegalContent.astro';
+import LegalGraphic from '../components/graphics/headers/LegalGraphic.astro';
+import { datenschutz, pageMeta } from '../content/site';
+---
+
+<Layout title={pageMeta.datenschutz.title} description={pageMeta.datenschutz.description} path="/datenschutz">
+  <PageHeader label="Rechtliches" title={datenschutz.title} tags={['DSGVO', 'Art. 6 · 15']}>
+    <LegalGraphic slot="graphic" variant="datenschutz" />
+  </PageHeader>
+  <LegalContent sections={datenschutz.sections} />
+</Layout>

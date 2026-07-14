@@ -1,0 +1,61 @@
+---
+import GradientMesh from './graphics/GradientMesh.astro';
+import { formatPageNumber, getPageNumber, type NumberedPagePath } from '../content/site';
+
+interface Props {
+  label: string;
+  title: string;
+  description?: string;
+  path?: NumberedPagePath;
+  index?: number;
+  tags?: readonly string[];
+}
+
+const { label, title, description, path, index, tags = [] } = Astro.props;
+const resolvedIndex = index ?? (path ? getPageNumber(path) : undefined);
+---
+
+<div class="section-dark relative overflow-hidden">
+  <GradientMesh variant="subtle" />
+  <div class="pointer-events-none absolute inset-0 opacity-25" aria-hidden="true">
+    <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="header-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+          <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(56,189,248,0.1)" stroke-width="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#header-grid)"/>
+    </svg>
+  </div>
+  <div class="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1fr_auto] lg:gap-12">
+    <div>
+      {resolvedIndex !== undefined && (
+        <span class="font-mono text-6xl font-medium leading-none text-white/8" aria-hidden="true">
+          {formatPageNumber(resolvedIndex)}
+        </span>
+      )}
+      <p class="eyebrow text-accent-hover">{label}</p>
+      <h1 class="display-md mt-3 max-w-2xl text-text-on-dark">{title}</h1>
+      {description && (
+        <p class="mt-5 max-w-xl text-base leading-relaxed text-text-muted-on-dark">{description}</p>
+      )}
+      {
+        tags.length > 0 && (
+          <div class="mt-8 flex flex-wrap gap-2">
+            {
+              tags.map((tag) => (
+                <span class="stat-pill text-[0.6rem]">
+                  <strong>{tag}</strong>
+                </span>
+              ))
+            }
+          </div>
+        )
+      }
+    </div>
+    <div class="hidden w-64 shrink-0 md:block lg:w-72">
+      <slot name="graphic" />
+    </div>
+  </div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" aria-hidden="true"></div>
+</div>

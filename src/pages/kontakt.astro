@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ContactBlock from '../components/ContactBlock.astro';
+import ContactGraphic from '../components/graphics/headers/ContactGraphic.astro';
+import { contact, pageMeta } from '../content/site';
+---
+
+<Layout title={pageMeta.contact.title} description={pageMeta.contact.description} path="/kontakt">
+  <PageHeader
+    label="Kontakt"
+    title={contact.title}
+    description={contact.description}
+    path="/kontakt"
+    tags={['E-Mail', 'LinkedIn', 'Erstgespräch']}
+  >
+    <ContactGraphic slot="graphic" />
+  </PageHeader>
+  <ContactBlock />
+</Layout>

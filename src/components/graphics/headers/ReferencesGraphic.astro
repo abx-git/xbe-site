@@ -1,0 +1,68 @@
+---
+import PageGraphic from '../PageGraphic.astro';
+---
+
+<PageGraphic caption="referenzen · projektgraph">
+  <svg viewBox="0 0 480 360" class="w-full" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Anonymisierte Projektbeispiele als verlinkter Referenzgraph">
+    <defs>
+      <pattern id="rg-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(56,189,248,0.1)" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="480" height="360" fill="url(#rg-grid)"/>
+
+    <rect x="170" y="20" width="140" height="40" rx="4" fill="rgba(14,165,233,0.1)" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="240" y="38" text-anchor="middle" fill="#38bdf8" font-size="8" font-family="IBM Plex Mono, monospace">METHODE</text>
+    <text x="240" y="52" text-anchor="middle" fill="#f1f5f9" font-size="10" font-weight="500" font-family="IBM Plex Mono, monospace">AGM · Blueprint</text>
+
+    <!-- Five case nodes -->
+    <line x1="240" y1="60" x2="55" y2="110" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+    <line x1="240" y1="60" x2="135" y2="110" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+    <line x1="240" y1="60" x2="240" y2="110" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+    <line x1="240" y1="60" x2="345" y2="110" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+    <line x1="240" y1="60" x2="425" y2="110" stroke="rgba(245,158,11,0.4)" stroke-width="1" stroke-dasharray="4 3"/>
+
+    <rect x="8" y="110" width="94" height="52" rx="3" fill="rgba(255,255,255,0.04)" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="55" y="130" text-anchor="middle" fill="#38bdf8" font-size="6" font-family="IBM Plex Mono, monospace">WRK-002</text>
+    <text x="55" y="144" text-anchor="middle" fill="#e2e8f0" font-size="8" font-family="IBM Plex Mono, monospace">Java</text>
+    <text x="55" y="154" text-anchor="middle" fill="#64748b" font-size="6" font-family="IBM Plex Mono, monospace">Commerce</text>
+
+    <rect x="108" y="110" width="94" height="52" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.5)" stroke-width="1.5"/>
+    <text x="155" y="130" text-anchor="middle" fill="#64748b" font-size="6" font-family="IBM Plex Mono, monospace">WRK-003</text>
+    <text x="155" y="144" text-anchor="middle" fill="#e2e8f0" font-size="8" font-family="IBM Plex Mono, monospace">PHP</text>
+    <text x="155" y="154" text-anchor="middle" fill="#64748b" font-size="6" font-family="IBM Plex Mono, monospace">CMS</text>
+
+    <rect x="208" y="110" width="94" height="52" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.5)" stroke-width="1.5"/>
+    <text x="255" y="130" text-anchor="middle" fill="#64748b" font-size="6" font-family="IBM Plex Mono, monospace">WRK-004</text>
+    <text x="255" y="144" text-anchor="middle" fill="#e2e8f0" font-size="8" font-family="IBM Plex Mono, monospace">.NET</text>
+    <text x="255" y="154" text-anchor="middle" fill="#64748b" font-size="6" font-family="IBM Plex Mono, monospace">LOB</text>
+
+    <rect x="308" y="110" width="94" height="52" rx="3" fill="rgba(14,165,233,0.1)" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="355" y="130" text-anchor="middle" fill="#38bdf8" font-size="6" font-family="IBM Plex Mono, monospace">WRK-005</text>
+    <text x="355" y="144" text-anchor="middle" fill="#e2e8f0" font-size="8" font-family="IBM Plex Mono, monospace">GIS</text>
+    <text x="355" y="154" text-anchor="middle" fill="#64748b" font-size="6" font-family="IBM Plex Mono, monospace">h → s</text>
+    <text x="390" y="118" fill="#38bdf8" font-size="7" font-family="IBM Plex Mono, monospace">[x]</text>
+
+    <rect x="408" y="110" width="64" height="52" rx="3" fill="rgba(14,165,233,0.08)" stroke="#38bdf8" stroke-width="1"/>
+    <text x="440" y="130" text-anchor="middle" fill="#38bdf8" font-size="6" font-family="IBM Plex Mono, monospace">WRK-006</text>
+    <text x="440" y="144" text-anchor="middle" fill="#e2e8f0" font-size="8" font-family="IBM Plex Mono, monospace">Community</text>
+    <text x="440" y="154" text-anchor="middle" fill="#64748b" font-size="6" font-family="IBM Plex Mono, monospace">Dienstplan</text>
+
+    <!-- Outcome metrics -->
+    <rect x="40" y="210" width="400" height="120" rx="4" fill="rgba(0,0,0,0.2)" stroke="rgba(148,163,184,0.2)" stroke-width="1"/>
+    <text x="60" y="232" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">ERGEBNISSE · 6 PROJEKTE</text>
+
+    <text x="100" y="268" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="600" font-family="IBM Plex Mono, monospace">6</text>
+    <text x="100" y="283" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">Systeme</text>
+
+    <line x1="165" y1="248" x2="165" y2="300" stroke="rgba(148,163,184,0.15)" stroke-width="1"/>
+    <text x="240" y="268" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="600" font-family="IBM Plex Mono, monospace">GIS</text>
+    <text x="240" y="283" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">h → s</text>
+
+    <line x1="315" y1="248" x2="315" y2="300" stroke="rgba(148,163,184,0.15)" stroke-width="1"/>
+    <text x="380" y="268" text-anchor="middle" fill="#f59e0b" font-size="14" font-weight="600" font-family="IBM Plex Mono, monospace">Community</text>
+    <text x="380" y="283" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">Dienstplan</text>
+
+    <text x="240" y="314" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">anonymisiert · evidenzbasiert</text>
+  </svg>
+</PageGraphic>

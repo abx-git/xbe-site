@@ -1,0 +1,46 @@
+---
+---
+
+<div class="overflow-x-auto card p-4">
+  <svg viewBox="0 0 480 300" class="mx-auto w-full max-w-md" role="img" aria-label="Abhängigkeitsgraph: Modul-Abhängigkeiten">
+    <title>Dependency Graph</title>
+    <rect x="180" y="10" width="120" height="40" rx="4" fill="#ffffff" stroke="#0c4a6e" stroke-width="1.5"/>
+    <text x="240" y="35" text-anchor="middle" fill="#0c4a6e" font-size="10" font-family="ui-monospace, monospace">Core.Domain</text>
+
+    <rect x="30" y="100" width="110" height="36" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="85" y="122" text-anchor="middle" fill="#1e293b" font-size="9" font-family="ui-monospace, monospace">Auth.Service</text>
+
+    <rect x="180" y="100" width="120" height="36" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="240" y="122" text-anchor="middle" fill="#1e293b" font-size="9" font-family="ui-monospace, monospace">Order.Service</text>
+
+    <rect x="340" y="100" width="110" height="36" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="395" y="122" text-anchor="middle" fill="#1e293b" font-size="9" font-family="ui-monospace, monospace">Payment.API</text>
+
+    <rect x="80" y="200" width="110" height="36" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="135" y="222" text-anchor="middle" fill="#1e293b" font-size="9" font-family="ui-monospace, monospace">Legacy.DAL</text>
+
+    <rect x="290" y="200" width="110" height="36" rx="4" fill="#ffffff" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="345" y="222" text-anchor="middle" fill="#1e293b" font-size="9" font-family="ui-monospace, monospace">Report.Engine</text>
+
+    <rect x="180" y="260" width="120" height="36" rx="4" fill="#ffffff" stroke="#047857" stroke-width="1.5"/>
+    <text x="240" y="282" text-anchor="middle" fill="#047857" font-size="9" font-family="ui-monospace, monospace">Shared.Infra</text>
+
+    <line x1="85" y1="100" x2="210" y2="50" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+    <line x1="240" y1="100" x2="240" y2="50" stroke="#0c4a6e" stroke-width="1.5" marker-end="url(#dep-arrow-accent)"/>
+    <line x1="395" y1="100" x2="270" y2="50" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+    <line x1="135" y1="200" x2="200" y2="136" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+    <line x1="345" y1="200" x2="280" y2="136" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+    <line x1="135" y1="236" x2="210" y2="268" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+    <line x1="345" y1="236" x2="270" y2="268" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#dep-arrow)"/>
+
+    <defs>
+      <marker id="dep-arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/>
+      </marker>
+      <marker id="dep-arrow-accent" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#0c4a6e"/>
+      </marker>
+    </defs>
+  </svg>
+  <p class="mt-3 text-center font-mono text-xs text-text-muted">Abhängigkeitsgraph — Modulgrenzen & Kopplungen</p>
+</div>

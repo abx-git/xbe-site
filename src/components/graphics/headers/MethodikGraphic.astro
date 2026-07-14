@@ -1,0 +1,50 @@
+---
+import PageGraphic from '../PageGraphic.astro';
+---
+
+<PageGraphic caption="methodik · sicherheit & standards">
+  <svg viewBox="0 0 480 360" class="w-full" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Methodik mit Sicherheitssäulen und Enterprise-KI-Schutz">
+    <defs>
+      <pattern id="mg-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(56,189,248,0.1)" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="480" height="360" fill="url(#mg-grid)"/>
+    <path d="M16 344 H48 M16 344 V312 M464 344 H432 M464 344 V312" stroke="rgba(56,189,248,0.35)" stroke-width="1"/>
+
+    <!-- Shield center -->
+    <path d="M240 50 L310 80 V150 C310 200 275 230 240 250 C205 230 170 200 170 150 V80 Z" fill="rgba(14,165,233,0.1)" stroke="#38bdf8" stroke-width="2"/>
+    <path d="M240 70 L290 92 V145 C290 182 268 205 240 218 C212 205 190 182 190 145 V92 Z" fill="rgba(14,165,233,0.05)" stroke="rgba(56,189,248,0.4)" stroke-width="1"/>
+    <rect x="220" y="120" width="40" height="30" rx="4" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+    <path d="M228 135 H252 M240 128 V142" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+    <text x="240" y="175" text-anchor="middle" fill="#38bdf8" font-size="8" font-family="IBM Plex Mono, monospace">Enterprise API</text>
+    <text x="240" y="188" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">NDA · AVV · TLS</text>
+
+    <!-- Three pillars -->
+    <rect x="60" y="260" width="90" height="70" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.5)" stroke-width="1.5"/>
+    <text x="105" y="285" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="500" font-family="IBM Plex Mono, monospace">Prozess</text>
+    <text x="105" y="300" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">Validierung</text>
+    <text x="105" y="315" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">WRK-Review</text>
+
+    <rect x="195" y="260" width="90" height="70" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.5)" stroke-width="1.5"/>
+    <text x="240" y="285" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="500" font-family="IBM Plex Mono, monospace">Standards</text>
+    <text x="240" y="300" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">arc42 · C4</text>
+    <text x="240" y="315" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">iSAQB</text>
+
+    <rect x="330" y="260" width="90" height="70" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.5)" stroke-width="1.5"/>
+    <text x="375" y="285" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="500" font-family="IBM Plex Mono, monospace">Vertraulich</text>
+    <text x="375" y="300" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">kein Training</text>
+    <text x="375" y="315" text-anchor="middle" fill="#64748b" font-size="7" font-family="IBM Plex Mono, monospace">On-Prem opt.</text>
+
+    <!-- Connection lines shield to pillars -->
+    <line x1="190" y1="230" x2="105" y2="260" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+    <line x1="240" y1="250" x2="240" y2="260" stroke="rgba(56,189,248,0.4)" stroke-width="1"/>
+    <line x1="290" y1="230" x2="375" y2="260" stroke="rgba(56,189,248,0.3)" stroke-width="1" stroke-dasharray="4 3"/>
+
+    <!-- Framework badges -->
+    <rect x="340" y="50" width="100" height="24" rx="12" fill="rgba(14,165,233,0.1)" stroke="rgba(56,189,248,0.3)" stroke-width="1"/>
+    <text x="390" y="66" text-anchor="middle" fill="#38bdf8" font-size="8" font-family="IBM Plex Mono, monospace">Anthropic DPA</text>
+    <rect x="340" y="82" width="100" height="24" rx="12" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+    <text x="390" y="98" text-anchor="middle" fill="#f59e0b" font-size="8" font-family="IBM Plex Mono, monospace">Zero Retention</text>
+  </svg>
+</PageGraphic>

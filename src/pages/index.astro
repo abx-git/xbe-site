@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import ProseSection from '../components/ProseSection.astro';
+import ContextGrid from '../components/ContextGrid.astro';
+import ValueCards from '../components/ValueCards.astro';
+import NewsPreview from '../components/NewsPreview.astro';
+import IndustryStrip from '../components/IndustryStrip.astro';
+import TeaserGrid from '../components/TeaserGrid.astro';
+import CTASection from '../components/CTASection.astro';
+import { home, pageMeta } from '../content/site';
+---
+
+<Layout title={pageMeta.home.title} description={pageMeta.home.description}>
+  <Hero
+    title={home.title}
+    description={home.description}
+    cta={{ label: home.cta, href: '/kontakt' }}
+  />
+  <IndustryStrip />
+  <ProseSection title={home.intro.title} paragraphs={home.intro.paragraphs} />
+  <ContextGrid title={home.context.title} items={home.context.items} />
+  <ValueCards values={home.values} />
+  <NewsPreview />
+  <TeaserGrid teasers={home.teasers} />
+  <CTASection
+    title="Legacy-Systeme verstehen — und iterativ modernisieren."
+    description="Eine fundierte Architekturanalyse ist die Basis jeder Transformation. Im Erstgespräch klären wir Ausgangssituation, Scope und passende Leistungsbausteine."
+    ctaLabel={home.cta}
+    ctaHref="/kontakt"
+  />
+</Layout>

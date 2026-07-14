@@ -1,0 +1,27 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<svg
+  class:list={['h-full w-full', className]}
+  viewBox="0 0 400 200"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  preserveAspectRatio="xMaxYMid slice"
+  aria-hidden="true"
+>
+  <path d="M280 20 C340 60, 360 100, 320 160" stroke="#c7dce8" stroke-width="2" fill="none" />
+  <path d="M300 10 C380 50, 400 110, 350 180" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-dasharray="6 4" />
+  <path d="M260 40 C300 80, 310 120, 290 170" stroke="#0c4a6e" stroke-width="1.5" fill="none" opacity="0.5" />
+
+  <circle cx="320" cy="160" r="5" fill="#0c4a6e" />
+  <circle cx="350" cy="180" r="4" fill="#94a3b8" />
+  <circle cx="290" cy="170" r="3" fill="#c7dce8" />
+
+  <rect x="320" y="30" width="60" height="60" rx="30" stroke="#c7dce8" stroke-width="1" fill="none" opacity="0.6" />
+  <rect x="340" y="50" width="40" height="40" rx="20" stroke="#0c4a6e" stroke-width="1" fill="none" opacity="0.35" />
+</svg>

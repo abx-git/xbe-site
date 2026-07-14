@@ -1,0 +1,65 @@
+---
+import DetailList from './DetailList.astro';
+
+interface CaseStudy {
+  id: string;
+  title: string;
+  subtitle: string;
+  context: readonly string[];
+  options: readonly string[];
+  procedure: readonly string[];
+  results: readonly string[];
+  highlight?: string;
+  tags: readonly string[];
+}
+
+interface Props {
+  caseStudy: CaseStudy;
+}
+
+const { caseStudy } = Astro.props;
+---
+
+<article class="card card-interactive overflow-hidden" id={caseStudy.id}>
+  <div class="case-study-header border-b border-border px-7 py-5">
+    <p class="font-mono text-[0.65rem] text-accent-deep/60">work/{caseStudy.id}.md</p>
+    <p class="eyebrow mt-2 text-accent-deep">{caseStudy.subtitle}</p>
+    <h2 class="mt-2 text-xl font-semibold text-text">{caseStudy.title}</h2>
+    <div class="mt-4 flex flex-wrap gap-2">
+      {
+        caseStudy.tags.map((tag) => (
+          <span class="rounded-full border border-accent/20 bg-accent-subtle/60 px-2.5 py-0.5 font-mono text-xs text-accent-deep">
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="space-y-8 px-7 py-8">
+    {
+      caseStudy.highlight && (
+        <div class="rounded-lg border border-accent/20 border-l-4 border-l-accent bg-accent-subtle/40 px-5 py-4 text-sm leading-relaxed text-text">
+          <span class="mb-1 block font-mono text-[0.6rem] uppercase tracking-widest text-accent-deep">WRK highlight</span>
+          {caseStudy.highlight}
+        </div>
+      )
+    }
+
+    <div class="max-w-3xl space-y-3">
+      {caseStudy.context.map((paragraph) => <p class="leading-relaxed text-text-muted">{paragraph}</p>)}
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+      <div class="rounded-lg border border-border bg-bg p-5">
+        <DetailList title="Optionen" items={caseStudy.options} />
+      </div>
+      <div class="rounded-lg border border-border bg-bg p-5">
+        <DetailList title="Vorgehen" items={caseStudy.procedure} />
+      </div>
+      <div class="rounded-lg border border-accent/20 bg-accent-subtle/30 p-5">
+        <DetailList title="Ergebnis" items={caseStudy.results} />
+      </div>
+    </div>
+  </div>
+</article>

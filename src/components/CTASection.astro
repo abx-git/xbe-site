@@ -1,0 +1,29 @@
+---
+import GradientMesh from './graphics/GradientMesh.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+const { title, description, ctaLabel, ctaHref } = Astro.props;
+---
+
+<section class="section-dark relative overflow-hidden">
+  <GradientMesh variant="cta" />
+  <div class="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+    <div class="max-w-2xl">
+      <p class="eyebrow text-accent-hover">Nächster Schritt</p>
+      <h2 class="display-md mt-4 text-text-on-dark">{title}</h2>
+      <p class="mt-5 text-base leading-relaxed text-text-muted-on-dark">{description}</p>
+      <a href={ctaHref} class="btn-primary mt-10">
+        {ctaLabel}
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

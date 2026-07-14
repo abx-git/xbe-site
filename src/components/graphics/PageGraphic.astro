@@ -1,0 +1,15 @@
+---
+interface Props {
+  class?: string;
+  caption?: string;
+}
+
+const { class: className = '', caption } = Astro.props;
+---
+
+<div class:list={['page-graphic blueprint-frame relative w-full', className]}>
+  <slot />
+  {caption && (
+    <p class="mt-2 font-mono text-[0.55rem] uppercase tracking-widest text-accent-hover/60">{caption}</p>
+  )}
+</div>

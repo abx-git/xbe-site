@@ -1,0 +1,55 @@
+---
+import DetailList from './DetailList.astro';
+
+interface Link {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  alignment: readonly string[];
+  scope: string;
+  links: readonly Link[];
+}
+
+const { title, description, alignment, scope, links } = Astro.props;
+---
+
+<section class="section-dark relative overflow-hidden py-20 sm:py-28">
+  <div class="pointer-events-none absolute inset-0 opacity-30" aria-hidden="true">
+    <div class="gradient-mesh__grid absolute inset-0"></div>
+  </div>
+  <div class="relative mx-auto max-w-6xl px-4 sm:px-6">
+    <p class="eyebrow text-accent-hover">Branchenkontext</p>
+    <h2 class="display-md mt-3 max-w-2xl text-text-on-dark">{title}</h2>
+    <p class="mt-4 max-w-3xl leading-relaxed text-text-muted-on-dark">{description}</p>
+
+    <div class="mt-10 grid gap-8 lg:grid-cols-2">
+      <div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+        <DetailList title="AGM im gleichen Paradigma" items={alignment} dark />
+      </div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+        <p class="text-sm font-semibold text-text-on-dark">Abgrenzung</p>
+        <p class="mt-3 text-sm leading-relaxed text-text-muted-on-dark">{scope}</p>
+        <ul class="mt-6 space-y-2">
+          {
+            links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="font-mono text-xs text-accent-hover transition-colors hover:text-accent"
+                >
+                  {link.label} ↗
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

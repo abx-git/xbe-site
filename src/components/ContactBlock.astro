@@ -1,0 +1,92 @@
+---
+import EmailAddress from './EmailAddress.astro';
+import EmailLink from './EmailLink.astro';
+import { siteConfig, contact } from '../content/site';
+---
+
+<section class="blueprint-grid-light relative py-20 sm:py-28">
+  <div class="blueprint-accent-bar absolute top-0 left-0 right-0" aria-hidden="true"></div>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="grid gap-10 lg:grid-cols-2">
+      <div>
+        <div class="section-label !mb-4">
+          <span>Kontakt</span>
+        </div>
+        <h2 class="display-md text-text">Direkter Kontakt</h2>
+        <p class="mt-4 leading-relaxed text-text-muted">
+          Für Erstberatungsanfragen erreichen Sie uns per E-Mail oder LinkedIn.
+        </p>
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+          <EmailLink subject="Erstberatung Legacy-Analyse" class="btn-primary">
+            {contact.cta}
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </EmailLink>
+          <a
+            href={siteConfig.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex min-h-11 items-center justify-center rounded-full border border-border-strong bg-bg-elevated px-6 py-3 text-sm font-medium text-text transition-colors hover:border-accent hover:text-accent-deep"
+          >
+            {contact.linkedinLabel}
+          </a>
+        </div>
+        <p class="mt-4 font-mono text-sm text-text-muted">
+          <EmailAddress />
+        </p>
+        <div class="mt-8">
+          <h3 class="text-sm font-semibold text-text">Hilfreiche Angaben für die Erstberatung</h3>
+          <ul class="mt-3 space-y-2">
+            {
+              contact.hints.map((hint) => (
+                <li class="flex gap-3 text-sm leading-relaxed text-text-muted">
+                  <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" aria-hidden="true"></span>
+                  {hint}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="card p-6">
+        <p class="mb-6 text-sm text-text-muted">{contact.formNote}</p>
+        <form class="space-y-4 opacity-50" aria-disabled="true">
+          {
+            contact.formFields.map((field) =>
+              field.type === 'textarea' ? (
+                <div>
+                  <label class="mb-1 block text-xs text-text-muted">{field.label}</label>
+                  <textarea
+                    name={field.name}
+                    rows={4}
+                    disabled
+                    class="w-full rounded border border-border bg-bg px-3 py-2 text-sm text-text-muted"
+                  />
+                </div>
+              ) : (
+                <div>
+                  <label class="mb-1 block text-xs text-text-muted">{field.label}</label>
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    disabled
+                    class="w-full rounded border border-border bg-bg px-3 py-2 text-sm text-text-muted"
+                  />
+                </div>
+              ),
+            )
+          }
+          <button
+            type="button"
+            disabled
+            class="min-h-11 w-full rounded border border-border px-6 py-3 text-sm text-text-muted"
+          >
+            Demnächst verfügbar
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

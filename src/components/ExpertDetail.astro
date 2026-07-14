@@ -1,0 +1,59 @@
+---
+interface Props {
+  title: string;
+  paragraphs: readonly string[];
+  competencies: readonly string[];
+  domains: readonly { title: string; description: string }[];
+}
+
+const { title, paragraphs, competencies, domains } = Astro.props;
+---
+
+<section class="blueprint-grid-light relative border-t border-border py-20 sm:py-28">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="grid gap-12 lg:grid-cols-[1fr_1.4fr]">
+      <div>
+        <div class="section-label !mb-0">
+          <span>Expertise</span>
+        </div>
+        <h2 class="display-md mt-4 text-text">{title}</h2>
+        <div class="mt-6 flex flex-wrap gap-2">
+          <span class="rounded-full border border-accent/25 bg-accent-subtle px-3 py-1 font-mono text-xs text-accent-deep">iSAQB</span>
+          <span class="rounded-full border border-accent/25 bg-accent-subtle px-3 py-1 font-mono text-xs text-accent-deep">arc42</span>
+          <span class="rounded-full border border-accent/25 bg-accent-subtle px-3 py-1 font-mono text-xs text-accent-deep">CSM</span>
+        </div>
+      </div>
+      <div class="relative space-y-5 border-l-2 border-accent/20 pl-8 lg:pl-12">
+        {paragraphs.map((p) => <p class="leading-relaxed text-text-muted">{p}</p>)}
+      </div>
+    </div>
+
+    <div class="mt-16">
+      <p class="eyebrow text-accent-deep">Kompetenzfelder</p>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+        {
+          competencies.map((item, index) => (
+            <li class="flex gap-3 rounded-lg border border-border/60 bg-bg-elevated/80 px-4 py-3 text-sm leading-relaxed text-text-muted">
+              <span class="font-mono text-xs text-accent-deep/50">0{index + 1}</span>
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2">
+      {
+        domains.map((domain, index) => (
+          <div class="card card-interactive relative overflow-hidden p-7">
+            <span class="watermark-num absolute -right-2 -top-2 text-5xl" aria-hidden="true">
+              0{index + 1}
+            </span>
+            <h3 class="relative text-base font-semibold text-text">{domain.title}</h3>
+            <p class="relative mt-2 text-sm leading-relaxed text-text-muted">{domain.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

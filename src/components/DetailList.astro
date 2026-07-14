@@ -1,0 +1,41 @@
+---
+interface Props {
+  title: string;
+  items: readonly string[];
+  dark?: boolean;
+}
+
+const { title, items, dark = false } = Astro.props;
+---
+
+<div>
+  <h3
+    class:list={[
+      'eyebrow',
+      dark ? 'text-accent-hover' : 'text-accent-deep',
+    ]}
+  >
+    {title}
+  </h3>
+  <ul class="mt-4 space-y-2.5">
+    {
+      items.map((item) => (
+        <li
+          class:list={[
+            'flex gap-3 text-sm leading-relaxed',
+            dark ? 'text-text-muted-on-dark' : 'text-text-muted',
+          ]}
+        >
+          <span
+            class:list={[
+              'mt-2 h-1 w-1 shrink-0 rounded-full',
+              dark ? 'bg-accent-hover' : 'bg-accent',
+            ]}
+            aria-hidden="true"
+          ></span>
+          {item}
+        </li>
+      ))
+    }
+  </ul>
+</div>

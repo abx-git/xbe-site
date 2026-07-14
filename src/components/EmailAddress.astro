@@ -1,0 +1,19 @@
+---
+import { emailObfuscated } from '../content/site';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<span
+  class:list={['js-email', className]}
+  data-u={emailObfuscated.user}
+  data-d={emailObfuscated.domain}
+  aria-label="E-Mail-Adresse"
+></span>
+<noscript>
+  <span class={className}>contact [at] x-be [dot] de</span>
+</noscript>

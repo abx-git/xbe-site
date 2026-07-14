@@ -1,0 +1,45 @@
+---
+import DetailList from './DetailList.astro';
+import SectionHeader from './SectionHeader.astro';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  description: string;
+  options: readonly string[];
+  procedure: readonly string[];
+  outcomes: readonly string[];
+}
+
+const { title, subtitle, description, options, procedure, outcomes } = Astro.props;
+---
+
+<section class="section-dark relative overflow-hidden py-20 sm:py-28">
+  <div class="pointer-events-none absolute inset-0 opacity-20" aria-hidden="true">
+    <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="method-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+          <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(56,189,248,0.15)" stroke-width="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#method-grid)"/>
+    </svg>
+  </div>
+  <div class="relative mx-auto max-w-6xl px-4 sm:px-6">
+    <p class="eyebrow text-accent-hover">{subtitle}</p>
+    <h2 class="display-md mt-3 max-w-xl text-text-on-dark">{title}</h2>
+    <p class="mt-5 max-w-2xl leading-relaxed text-text-muted-on-dark">{description}</p>
+
+    <div class="mt-14 grid gap-6 lg:grid-cols-3">
+      <div class="rounded-xl border border-white/10 bg-white/5 p-7 backdrop-blur-sm">
+        <DetailList title="Optionen" items={options} dark />
+      </div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-7 backdrop-blur-sm">
+        <DetailList title="Vorgehen" items={procedure} dark />
+      </div>
+      <div class="rounded-xl border border-white/10 bg-white/5 p-7 backdrop-blur-sm">
+        <DetailList title="Ergebnis" items={outcomes} dark />
+      </div>
+    </div>
+  </div>
+</section>

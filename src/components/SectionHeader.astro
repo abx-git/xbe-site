@@ -1,0 +1,23 @@
+---
+interface Props {
+  label: string;
+  title?: string;
+}
+
+const { label, title } = Astro.props;
+---
+
+<div class="section-header mb-10 flex items-end justify-between gap-6">
+  <div>
+    <div class="section-label !mb-3">
+      <span>{label}</span>
+    </div>
+    {title && <h2 class="display-md text-text">{title}</h2>}
+  </div>
+  <div class="hidden shrink-0 sm:block" aria-hidden="true">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" class="opacity-40">
+      <path d="M8 8 H24 M8 8 V24 M40 8 H24 M40 8 V24 M8 40 H24 M8 40 V24 M40 40 H24 M40 40 V24" stroke="#0ea5e9" stroke-width="1"/>
+      <circle cx="24" cy="24" r="4" fill="#0ea5e9" opacity="0.5"/>
+    </svg>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+---
+import BulletList from './BulletList.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  standards: readonly string[];
+  details?: readonly string[];
+  deliverables?: readonly string[];
+  index?: number;
+  reversed?: boolean;
+}
+
+const { title, description, standards, details, deliverables, index, reversed = false } = Astro.props;
+---
+
+<div class:list={['grid items-start gap-10 lg:grid-cols-2 lg:gap-14', reversed && 'lg:[direction:rtl]']}>
+  <div class="relative lg:[direction:ltr]">
+    {
+      index !== undefined && (
+        <span class="mb-4 block font-mono text-6xl font-medium leading-none text-accent/15" aria-hidden="true">
+          0{index + 1}
+        </span>
+      )
+    }
+    <div class="section-label !mb-3">
+      <span>Leistung</span>
+    </div>
+    <h2 class="text-xl font-semibold text-text">{title}</h2>
+    <p class="mt-4 leading-relaxed text-text-muted">{description}</p>
+    {details && details.length > 0 && <BulletList title="Schwerpunkte" items={details} />}
+    {deliverables && deliverables.length > 0 && (
+      <BulletList title="Liefergegenstände" items={deliverables} />
+    )}
+    <div class="mt-6 flex flex-wrap gap-2">
+      {
+        standards.map((standard) => (
+          <span class="rounded-full border border-accent/25 bg-accent-subtle px-3 py-1 font-mono text-xs font-medium text-accent-deep">
+            {standard}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+  <div class="blueprint-grid-light rounded-xl border border-border p-4 lg:[direction:ltr]">
+    <slot />
+  </div>
+</div>
