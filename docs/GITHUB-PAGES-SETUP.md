@@ -9,6 +9,9 @@ Die Marketing-Site wird aus diesem Repository gebaut und unter **https://www.x-b
 | **Deploy** | GitHub Actions → GitHub Pages |
 | **Custom domain** | `www.x-be.de` (`public/CNAME`) |
 
+> **Wichtig:** In GitHub Pages muss exakt `www.x-be.de` stehen — nicht `x-be.de`.  
+> Sonst schlägt der Deploy mit 404 fehl oder HTTPS passt nicht.
+
 ## 1. Repository anlegen (einmalig)
 
 **Automatisch** (nach `gh auth login`):
@@ -106,7 +109,8 @@ Für `www.x-be.de` ist Same-Repo-Deploy die einfachere und empfohlene Variante.
 
 | Problem | Lösung |
 |---------|--------|
-| Workflow schlägt fehl | Actions-Log prüfen; `npm ci` / `npm run build` lokal testen |
+| Workflow schlägt fehl mit `Creating Pages deployment failed` / 404 | Settings → Pages → Source: **GitHub Actions** speichern; Custom domain: `www.x-be.de`; Workflow erneut starten |
+| Custom domain zeigt `x-be.de` statt `www` | In Pages-Settings auf `www.x-be.de` ändern (muss mit `public/CNAME` übereinstimmen) |
 | 404 nach Deploy | Pages Source = **GitHub Actions** (nicht Branch deploy) |
 | Custom domain „nicht erreichbar“ | DNS CNAME prüfen; 15–60 min warten |
 | Zertifikat-Fehler | Custom domain in Pages-Settings erneut speichern |
