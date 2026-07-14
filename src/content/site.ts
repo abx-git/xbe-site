@@ -813,6 +813,11 @@ export const pageMeta = {
     title: 'Methodik & Sicherheit',
     description: methodology.description,
   },
+  agmPoster: {
+    title: 'AGM — Auf einer Seite',
+    description:
+      'Architecture Graph Method als One-Page-Poster: Golden Path, Tracks, OKF, Prinzipien und Workflows aus blueprint-pattern.',
+  },
   process: {
     title: 'Vorgehensweise',
     description: process.description,

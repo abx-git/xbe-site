@@ -1,0 +1,100 @@
+---
+import '../styles/global.css';
+import { siteConfig } from '../content/site';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+}
+
+const { title, description, path = Astro.url.pathname } = Astro.props;
+const fullTitle = `${title} — ${siteConfig.name}`;
+const canonicalUrl = new URL(path, siteConfig.siteUrl).href;
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalUrl} />
+    <title>{fullTitle}</title>
+  </head>
+  <body class="poster-layout">
+    <div class="poster-layout__toolbar no-print">
+      <a href="/methodik" class="poster-layout__back">← Methodik</a>
+      <div class="poster-layout__actions">
+        <span class="poster-layout__hint">Optimiert für Querformat · A3</span>
+        <button type="button" class="poster-layout__print" onclick="window.print()">Drucken / PDF</button>
+      </div>
+    </div>
+    <slot />
+  </body>
+</html>
+
+<style>
+  .poster-layout {
+    margin: 0;
+    min-height: 100vh;
+    background: #071018;
+    overflow-x: auto;
+  }
+
+  .poster-layout__toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+    background: #0c1a28;
+    border-bottom: 1px solid #1e4a5f;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .poster-layout__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .poster-layout__hint {
+    color: #64748b;
+    font-size: 0.65rem;
+  }
+
+  .poster-layout__back,
+  .poster-layout__print {
+    color: #38bdf8;
+    background: none;
+    border: 1px solid #1e4a5f;
+    border-radius: 4px;
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    text-decoration: none;
+  }
+
+  .poster-layout__print:hover,
+  .poster-layout__back:hover {
+    border-color: #38bdf8;
+  }
+
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    .poster-layout {
+      background: #060e16;
+    }
+    @page {
+      size: A3 landscape;
+      margin: 8mm;
+    }
+  }
+</style>

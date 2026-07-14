@@ -1,0 +1,13 @@
+---
+import PosterLayout from '../../layouts/PosterLayout.astro';
+import AgmPoster from '../../components/poster/AgmPoster.astro';
+import { pageMeta } from '../../content/site';
+---
+
+<PosterLayout
+  title={pageMeta.agmPoster.title}
+  description={pageMeta.agmPoster.description}
+  path="/methodik/agm-poster"
+>
+  <AgmPoster />
+</PosterLayout>

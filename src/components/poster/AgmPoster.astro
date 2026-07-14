@@ -1,0 +1,457 @@
+---
+import { agmPoster } from '../../content/agm-poster';
+
+const p = agmPoster;
+const pyramidSteps = [...p.goldenPath].reverse();
+const pyramidColors = ['#0a3d52', '#0c4a62', '#0f5c75', '#127a94', '#38bdf8'];
+---
+
+<article class="poster">
+  <header class="poster__head">
+    <p class="poster__kicker">blueprint-pattern · OKF v0.1 · MCP</p>
+    <h1 class="poster__title">{p.title}</h1>
+    <p class="poster__deck">{p.subtitle}</p>
+    <p class="poster__thesis">„{p.thesis}"</p>
+  </header>
+
+  <div class="poster__body">
+    <!-- Reihe 1: 1 | 2 | 1 -->
+    <div class="row row--3">
+      <section class="cell">
+        <h2>4 Orchestrator-Dateien</h2>
+        <pre class="tree">{`docs/architecture/
+├─ context/always-on.md
+├─ blueprint.md
+├─ entry-point.md
+└─ index.md + log.md`}</pre>
+        <ul class="list">
+          {p.orchestration.map((o) => (
+            <li><code>{o.file}</code> — {o.role}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="cell cell--accent">
+        <h2>Golden Path</h2>
+        <p class="muted">Ein Onboarding-Pfad — alles andere ist Advanced.</p>
+        <div class="golden">
+          <svg viewBox="0 0 200 260" width="140" height="182" aria-hidden="true">
+            {
+              pyramidSteps.map((item, i) => {
+                const y = 8 + i * 50;
+                const w = 48 + i * 30;
+                const x = 100 - w / 2;
+                return (
+                  <g>
+                    <polygon
+                      points={`${x},${y + 38} ${x + w},${y + 38} ${x + w - 6},${y + 4} ${x + 6},${y + 4}`}
+                      fill={pyramidColors[i]}
+                      stroke="#7dd3fc"
+                      stroke-width="0.6"
+                    />
+                    <text x="100" y={y + 24} text-anchor="middle" fill="#f8fafc" font-size="10" font-weight="600" font-family="IBM Plex Mono, monospace">
+                      {item.step}
+                    </text>
+                  </g>
+                );
+              })
+            }
+          </svg>
+          <ol class="golden__steps">
+            {p.goldenPath.map((item) => (
+              <li>
+                <strong>{item.step}</strong>
+                <span>{item.action}</span>
+                <code>{item.workflow}</code>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <p class="warn">Ein Chat = eine Session = ein Workflow · Verify immer in neuem Chat</p>
+      </section>
+
+      <section class="cell">
+        <h2>5 Tracks</h2>
+        <ul class="list list--tracks">
+          {p.tracks.map((t) => (
+            <li>
+              <strong>{t.name}</strong>
+              <span>{t.purpose}</span>
+              <code>{t.prefix}</code>
+            </li>
+          ))}
+        </ul>
+        <p class="muted">Build → Evolve → Architect / Domain</p>
+      </section>
+    </div>
+
+    <!-- Reihe 2: 1 | 2 -->
+    <div class="row row--2">
+      <section class="cell">
+        <h2>Warum kein Context-Dump?</h2>
+        <div class="cols2">
+          <div>
+            <h3>Traditionell</h3>
+            <ul class="list">{p.compare.traditional.map((x) => <li>{x}</li>)}</ul>
+          </div>
+          <div>
+            <h3>AGM</h3>
+            <ul class="list">{p.compare.agm.map((x) => <li>{x}</li>)}</ul>
+          </div>
+        </div>
+        <p class="center muted">{p.mechanisms.join(' · ')}</p>
+      </section>
+
+      <section class="cell">
+        <h2>7 Prinzipien für Architekten</h2>
+        <div class="principles">
+          {p.principles.map((pr) => (
+            <div class="principles__card">
+              <span class="principles__n">{pr.n}</span>
+              <strong>{pr.title}</strong>
+              <p>{pr.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <!-- Reihe 3: 4 gleich breit -->
+    <div class="row row--4">
+      <section class="cell">
+        <h2>blueprint.md</h2>
+        <ul class="list list--mono">
+          {p.blueprintSections.map((s) => <li>{s.replace('## ', '')}</li>)}
+        </ul>
+      </section>
+      <section class="cell">
+        <h2>Status &amp; Anker</h2>
+        <div class="chips">
+          {p.phaseStates.map((s) => <span><code>{s.state}</code> {s.label}</span>)}
+        </div>
+        <ul class="list list--mono">
+          {p.anchors.map((a) => <li><code>{a.key}</code> — {a.meaning}</li>)}
+        </ul>
+      </section>
+      <section class="cell">
+        <h2>Workflows</h2>
+        <ul class="list list--mono">
+          {p.workflows.map((w) => (
+            <li>{w.when} · <code>{w.id}</code> · {w.fresh}</li>
+          ))}
+        </ul>
+      </section>
+      <section class="cell">
+        <h2>OKF &amp; Templates</h2>
+        <ul class="list">{p.okf.map((x) => <li>{x}</li>)}</ul>
+        <ul class="list list--mono">
+          {p.templates.map((t) => <li>{t}</li>)}
+        </ul>
+      </section>
+    </div>
+
+    <!-- Reihe 4: 3 gleich breit -->
+    <div class="row row--3eq">
+      <section class="cell">
+        <h2>Menschliche Verantwortung</h2>
+        <ol class="list">{p.humanDuties.map((d) => <li>{d}</li>)}</ol>
+      </section>
+      <section class="cell">
+        <h2>Grenzen — ehrlich</h2>
+        <ul class="list">{p.limits.map((l) => <li>{l}</li>)}</ul>
+      </section>
+      <section class="cell cell--quote">
+        <blockquote>{p.tagline}</blockquote>
+        <p>
+          <a href={p.sourceUrl} target="_blank" rel="noopener noreferrer">github.com/abx-git/blueprint-pattern</a>
+        </p>
+        <p class="brand">{p.footer}</p>
+      </section>
+    </div>
+  </div>
+</article>
+
+<style>
+  .poster {
+    --bg: #071018;
+    --panel: #0c1a28;
+    --panel2: #0f2233;
+    --line: #1e4a5f;
+    --accent: #38bdf8;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    background: var(--bg);
+    color: var(--text);
+    padding: 1rem;
+  }
+
+  .poster__head {
+    max-width: 1100px;
+    margin: 0 auto 0.75rem;
+    text-align: center;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: 0.9rem 1rem;
+  }
+
+  .poster__kicker {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  .poster__title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0.3rem 0 0.1rem;
+  }
+
+  .poster__deck {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .poster__thesis {
+    margin: 0.55rem 0 0;
+    font-style: italic;
+    color: var(--accent);
+    font-size: 0.9rem;
+  }
+
+  .poster__body {
+    width: 1100px;
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .row {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .row--3 { grid-template-columns: 1fr 2fr 1fr; }
+  .row--2 { grid-template-columns: 1fr 2fr; }
+  .row--4 { grid-template-columns: repeat(4, 1fr); }
+  .row--3eq { grid-template-columns: repeat(3, 1fr); }
+
+  .cell {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 0.6rem 0.7rem;
+    font-size: 0.68rem;
+    line-height: 1.4;
+    min-width: 0;
+  }
+
+  .cell--accent {
+    background: var(--panel2);
+    border-color: color-mix(in srgb, var(--accent) 28%, var(--line));
+  }
+
+  .cell h2 {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.4rem;
+    padding-bottom: 0.28rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cell h3 {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 0.2rem;
+  }
+
+  .muted {
+    color: var(--muted);
+    font-size: 0.62rem;
+    margin: 0 0 0.35rem;
+  }
+
+  .center { text-align: center; margin-top: 0.35rem; }
+
+  .warn {
+    margin: 0.45rem 0 0;
+    padding-top: 0.35rem;
+    border-top: 1px dashed var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    color: #fbbf24;
+  }
+
+  .tree {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--accent);
+    background: #050d14;
+    border: 1px solid var(--line);
+    padding: 0.35rem;
+    margin: 0 0 0.35rem;
+    white-space: pre;
+    overflow-x: auto;
+  }
+
+  .golden {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+
+  .golden svg {
+    flex-shrink: 0;
+    width: 140px;
+    height: 182px;
+  }
+
+  .golden__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .golden__steps li {
+    margin-bottom: 0.28rem;
+    padding-bottom: 0.28rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
+  }
+
+  .golden__steps li:last-child { border: none; margin: 0; padding: 0; }
+
+  .golden__steps strong {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--accent);
+  }
+
+  .golden__steps span { display: block; font-size: 0.62rem; }
+  .golden__steps code { font-family: var(--font-mono); font-size: 0.55rem; color: var(--muted); }
+
+  .list {
+    margin: 0;
+    padding-left: 0.95rem;
+  }
+
+  .list--mono {
+    list-style: none;
+    padding-left: 0;
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    color: var(--muted);
+  }
+
+  .list--tracks li { margin-bottom: 0.3rem; }
+  .list--tracks strong {
+    display: block;
+    font-family: var(--font-mono);
+    color: var(--accent);
+    font-size: 0.62rem;
+  }
+  .list--tracks span { display: block; }
+  .list--tracks code { font-family: var(--font-mono); font-size: 0.52rem; color: var(--muted); }
+
+  .cols2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+  }
+
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.3rem;
+  }
+
+  .principles__card {
+    background: #050d14;
+    border: 1px solid var(--line);
+    padding: 0.3rem;
+  }
+
+  .principles__n {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .principles__card strong {
+    display: block;
+    font-size: 0.58rem;
+    margin: 0.05rem 0;
+  }
+
+  .principles__card p {
+    margin: 0;
+    font-size: 0.52rem;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .chips span {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    background: #050d14;
+    border: 1px solid var(--line);
+    padding: 0.08rem 0.25rem;
+  }
+
+  .cell--quote blockquote {
+    margin: 0 0 0.35rem;
+    border-left: 2px solid var(--accent);
+    padding-left: 0.5rem;
+    font-size: 0.65rem;
+    line-height: 1.4;
+  }
+
+  .cell a { color: var(--accent); text-decoration: none; }
+  .brand {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.2rem;
+  }
+
+  code { font-family: var(--font-mono); color: var(--accent); }
+
+  @media (max-width: 1120px) {
+    .poster {
+      overflow-x: auto;
+    }
+    .poster__body {
+      min-width: 1100px;
+    }
+  }
+
+  @media print {
+    .poster { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cell { break-inside: avoid; }
+  }
+</style>
