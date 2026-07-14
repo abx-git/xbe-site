@@ -11,13 +11,27 @@ Die Marketing-Site wird aus diesem Repository gebaut und unter **https://www.x-b
 
 ## 1. Repository anlegen (einmalig)
 
-Falls noch nicht vorhanden:
+**Automatisch** (nach `gh auth login`):
 
 ```bash
-# Auf GitHub: neues Repository abx-git/xbe-site (öffentlich oder privat)
-# Dann lokal:
+./scripts/setup-github-repo.sh
+```
+
+Das Skript legt `abx-git/xbe-site` an und pusht `main`.
+
+**Manuell** falls `gh` nicht verfügbar:
+
+```bash
+# Auf GitHub: neues Repository abx-git/xbe-site (öffentlich)
 git remote add origin https://github.com/abx-git/xbe-site.git
 git push -u origin main
+```
+
+**GitHub CLI einloggen** (einmalig, analog zu PAT-Setup bei blueprint-pattern):
+
+```bash
+brew install gh   # falls noch nicht installiert
+gh auth login
 ```
 
 ## 2. GitHub Pages aktivieren
