@@ -5,9 +5,9 @@ export const agmPoster = {
   tagline:
     'Repo-lokaler Markdown-Linkgraph unter docs/architecture/, orchestriert über blueprint.md, gepflegt durch KI-Agenten mit menschlicher Validierung.',
   goldenPath: [
-    { step: 'Install', action: 'Scaffold im App-Repo', workflow: 'bp-install.sh / agm scaffold' },
+    { step: 'Install', action: 'Scaffold im App-Repo', workflow: 'agm-install.sh / agm install' },
     { step: 'Adopt', action: 'Erste evidenzbasierte Sektion', workflow: 'bootstrap-adopt' },
-    { step: 'Continue', action: 'Nächstes Kapitel aus Blueprint', workflow: 'bootstrap-continue' },
+    { step: 'Continue', action: 'Nächstes Kapitel aus blueprint.md', workflow: 'bootstrap-continue' },
     { step: 'Maintain', action: 'Docs mit Code synchronisieren', workflow: 'maintenance-diff-range' },
     { step: 'Review', action: 'Report-only — frischer Chat', workflow: 'review-maintenance' },
   ],
@@ -35,10 +35,10 @@ export const agmPoster = {
     { n: 1, title: 'Deterministische Traversierung', text: 'Explizite Markdown-Links — keine Ähnlichkeitssuche, keine Halluzinations-Chunks' },
     { n: 2, title: 'Dokumentation als Code', text: 'Graph im Repo — PR ändert Docs mit Code, Git-History gilt' },
     { n: 3, title: 'KI-gepflegter Lebenszyklus', text: 'Bootstrap · Refinement · Maintenance · Architecture Work · Review' },
-    { n: 4, title: 'Blueprint-Kontinuität', text: 'blueprint.md = persistenter Architektur-Backlog über Sessions' },
+    { n: 4, title: 'Session-Kontinuität', text: 'blueprint.md = persistenter Architektur-Backlog über Sessions' },
     { n: 5, title: 'Schnittstellenverträge', text: 'exports.md (was die App liefert) · imports.md (Links zu Partnern)' },
-    { n: 6, title: 'Architektur-Guardrails', text: 'Smells, SOLID, Stil — Findings im Blueprint, Entscheidungen als ADR' },
-    { n: 7, title: 'Referenzielle Integrität', text: 'LINK_CHECK vor Output · CI blueprint-pattern-integrity' },
+    { n: 6, title: 'Architektur-Guardrails', text: 'Smells, SOLID, Stil — Findings in blueprint.md, Entscheidungen als ADR' },
+    { n: 7, title: 'Referenzielle Integrität', text: 'LINK_CHECK vor Output · CI agm-integrity' },
   ],
   compare: {
     traditional: [
@@ -88,17 +88,17 @@ export const agmPoster = {
     'Phasen freigeben vor [x]',
     'Verify in frischem Chat — nie im Schreib-Chat',
     'Docs im selben PR wie Architektur-Code',
-    'Ein Schreib-Agent pro Blueprint gleichzeitig',
+    'Ein Schreib-Agent pro Graph gleichzeitig',
     'Keine Secrets in Prompts — Diffs redigieren',
   ],
   limits: [
     'Halluzinationen — Graph reduziert, Mensch validiert',
     'Kein Live-Produktionszustand — statische Docs ≠ Metriken',
     'Org-Ownership nötig — sonst verrottet der Graph',
-    'Parallele Agenten auf einem Blueprint — vermeiden',
+    'Parallele Agenten auf demselben Graph — vermeiden',
   ],
   templates: ['arc42 (Standard, Multi-Modul)', 'lean-service (ein Service)', 'c4-light', 'adr-first'],
   mechanisms: ['Documentation API', 'MCP Transport', 'Session-Disziplin'],
-  footer: 'X-BE · Architecture Graph Method · blueprint-pattern',
-  sourceUrl: 'https://github.com/abx-git/blueprint-pattern',
+  footer: 'X-BE · Architecture Graph Method · AGM',
+  sourceUrl: 'https://github.com/abx-git/agm',
 } as const;

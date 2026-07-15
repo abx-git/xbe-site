@@ -30,7 +30,7 @@ git remote add origin https://github.com/abx-git/xbe-site.git
 git push -u origin main
 ```
 
-**GitHub CLI einloggen** (einmalig, analog zu PAT-Setup bei blueprint-pattern):
+**GitHub CLI einloggen** (einmalig):
 
 ```bash
 brew install gh   # falls noch nicht installiert
@@ -91,13 +91,13 @@ npm run build      # dist/
 npm run preview    # Produktions-Build lokal testen
 ```
 
-## 6. Zugangsdaten (wie blueprint-pattern)
+## 6. Zugangsdaten (wie beim AGM-Repo)
 
 Für **dieses** Projekt reicht der eingebaute `GITHUB_TOKEN` der Actions — **kein separates Deploy-PAT** nötig, weil Build und Pages im gleichen Repository liegen.
 
-Das unterscheidet sich von [blueprint-pattern](https://github.com/abx-git/blueprint-pattern), wo ein PAT (`AGM_GHIO_DEPLOY`) in ein **separates** Pages-Repository (`agm.github.io`) pusht.
+Das unterscheidet sich vom früheren AGM-Pages-Setup ([abx-git/agm](https://github.com/abx-git/agm)), wo ein PAT (`AGM_GHIO_DEPLOY`) in ein **separates** Pages-Repository (`agm.github.io`) pusht.
 
-Falls du später ein separates Pages-Repo nutzen willst, analog zu blueprint-pattern:
+Falls du später ein separates Pages-Repo nutzen willst:
 
 1. PAT mit **Contents: Read and write** + **Pages: Read and write** auf `abx-git/xbe-site`
 2. Repo-Secret `XBE_SITE_DEPLOY` in Actions

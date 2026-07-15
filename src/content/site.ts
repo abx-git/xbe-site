@@ -260,7 +260,7 @@ export const services = {
       id: 'migrationsplanung',
       title: 'Migrationsplanung',
       description:
-        'Erarbeitung belastbarer Migrationspfade und Zielarchitekturen — abgeleitet aus der analysierten Ist-Architektur, den geschäftlichen Prioritäten und den technischen Constraints. Keine generischen Blueprints, sondern kontextspezifische Roadmaps.',
+        'Erarbeitung belastbarer Migrationspfade und Zielarchitekturen — abgeleitet aus der analysierten Ist-Architektur, den geschäftlichen Prioritäten und den technischen Constraints. Keine generischen Schablonen, sondern kontextspezifische Roadmaps.',
       details: [
         'Definition von Bounded Contexts und Migrationsinkrementen (DDD Context Map)',
         'Bewertung von Migrationsmustern: Strangler Fig, Branch by Abstraction, Re-Platforming, Re-Factoring',
@@ -497,7 +497,7 @@ export const references = {
   },
   method: {
     title: 'Architecture Graph Method (AGM)',
-    subtitle: 'Verfahren · Blueprint Pattern',
+    subtitle: 'Verfahren · Architecture Graph',
     description:
       'Repo-lokaler Markdown-Linkgraph unter `docs/architecture/`, orchestriert über `blueprint.md` und gepflegt durch KI-Agenten mit menschlicher Validierung. OKF-konforme Artefakte, deterministische Graph-Traversierung statt RAG — Architekturdokumentation als API für strukturierte KI-Konversation. Anschlussfähig an Googles Knowledge Catalog und Open Knowledge Format.',
     options: [
@@ -816,7 +816,7 @@ export const pageMeta = {
   agmPoster: {
     title: 'AGM — Auf einer Seite',
     description:
-      'Architecture Graph Method als One-Page-Poster: Golden Path, Tracks, OKF, Prinzipien und Workflows aus blueprint-pattern.',
+      'Architecture Graph Method als One-Page-Poster: Golden Path, Tracks, OKF, Prinzipien und Workflows aus dem AGM-Repository.',
   },
   process: {
     title: 'Vorgehensweise',
