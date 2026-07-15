@@ -47,22 +47,46 @@ import { methodology, home, pageMeta } from '../content/site';
     links={methodology.knowledgeCatalog.links}
   />
   <section class="section-dark relative py-16 sm:py-20">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 text-center">
-      <p class="eyebrow text-accent-hover">AGM · Architecture Graph</p>
-      <h2 class="display-md mt-3 text-text-on-dark">Die Methode auf einer Seite</h2>
-      <p class="mx-auto mt-3 max-w-2xl leading-relaxed text-text-muted-on-dark">
-        Golden Path, 5 Tracks, OKF, 7 Prinzipien und Workflows — als druckbares One-Page-Poster
-        im Stil einer kompakten Referenzkarte.
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <p class="eyebrow text-center text-accent-hover">AGM · Architecture Graph</p>
+      <h2 class="display-md mt-3 text-center text-text-on-dark">Werkzeuge zur Methode</h2>
+      <p class="mx-auto mt-3 max-w-2xl text-center leading-relaxed text-text-muted-on-dark">
+        Assistant für den Golden Path (Prompts &amp; MCP) und ein One-Page-Poster als kompakte Referenz.
       </p>
-      <a
-        href="/methodik/agm-poster"
-        class="mt-6 inline-flex items-center gap-2 rounded border border-white/20 bg-white/5 px-5 py-2.5 font-mono text-xs font-medium text-accent-hover no-underline transition-colors hover:border-accent-hover hover:text-accent"
-      >
-        Poster öffnen
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2">
+        <a
+          href="/methodik/agm"
+          class="group rounded-xl border border-white/10 bg-white/5 p-7 no-underline transition-colors hover:border-accent/40 hover:bg-white/8"
+        >
+          <p class="font-mono text-[0.65rem] uppercase tracking-widest text-accent-hover">Interaktiv</p>
+          <h3 class="mt-2 text-lg font-semibold text-text-on-dark">AGM Assistant</h3>
+          <p class="mt-2 text-sm leading-relaxed text-text-muted-on-dark">
+            Install → Adopt → Continue → Evolve → Verify. Session-Prompts kopieren oder MCP in der IDE.
+          </p>
+          <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs text-accent-hover transition-transform group-hover:translate-x-0.5">
+            Assistent öffnen
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+        <a
+          href="/methodik/agm-poster"
+          class="group rounded-xl border border-white/10 bg-white/5 p-7 no-underline transition-colors hover:border-accent/40 hover:bg-white/8"
+        >
+          <p class="font-mono text-[0.65rem] uppercase tracking-widest text-accent-hover">Referenz</p>
+          <h3 class="mt-2 text-lg font-semibold text-text-on-dark">One-Page-Poster</h3>
+          <p class="mt-2 text-sm leading-relaxed text-text-muted-on-dark">
+            Golden Path, Tracks, OKF, Prinzipien und Workflows — druckbar als kompakte Karte.
+          </p>
+          <span class="mt-5 inline-flex items-center gap-1.5 font-mono text-xs text-accent-hover transition-transform group-hover:translate-x-0.5">
+            Poster öffnen
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
     </div>
   </section>
   <CTASection

@@ -1,0 +1,45 @@
+---
+import { siteConfig } from '../content/site';
+
+interface Props {
+  title?: string;
+  heightClass?: string;
+}
+
+const {
+  title = 'AGM Assistant',
+  heightClass = 'h-[min(85vh,920px)]',
+} = Astro.props;
+const url = siteConfig.agmAssistantUrl;
+---
+
+<section class="agm-assistant-embed" aria-label={title}>
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <p class="font-mono text-[0.65rem] uppercase tracking-widest text-accent-deep/70">
+      Eingebettet · Live-Stand
+    </p>
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-1.5 font-mono text-xs font-medium text-accent-deep no-underline transition-colors hover:text-accent"
+    >
+      In neuem Tab öffnen
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M6 3H3v10h10V10M8 3h5v5M13 3L7 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+  <div class:list={['overflow-hidden rounded-lg border border-border bg-bg-elevated shadow-card', heightClass]}>
+    <iframe
+      src={url}
+      title={title}
+      class="h-full w-full border-0"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </div>
+  <p class="mt-3 font-mono text-[0.6rem] text-text-muted">
+    Quelle: {url}
+  </p>
+</section>
