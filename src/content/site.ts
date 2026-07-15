@@ -7,7 +7,6 @@ export const siteConfig = {
   siteUrl: 'https://www.x-be.de',
   hostingProvider: 'Vercel Inc.',
   agmAssistantUrl: 'https://abx-git.github.io/agm.github.io/',
-  agmRepoUrl: 'https://github.com/abx-git/agm',
 } as const;
 
 /** Reversed fragments — assembled client-side via EmailAddress / EmailLink. */
@@ -378,10 +377,6 @@ export const methodology = {
     title: 'AGM Assistant',
     description:
       'Interaktive Oberfläche für den Golden Path: Install, Adopt, Continue, Maintain und Verify. Erzeugt Session-Prompts (Copy-Paste) oder MCP-Aufrufe für die IDE.',
-    paragraphs: [
-      'Die UI liegt außerhalb dieser Marketing-Site und wird aus dem AGM-Repository nach GitHub Pages deployt. Hier eingebettet: derselbe Stand wie unter der öffentlichen Assistant-URL.',
-      'Ein Chat = eine Session = ein Workflow. Verify immer in einem frischen Chat (report-only).',
-    ],
     steps: [
       { n: '1', label: 'Install', hint: 'einmal pro Repo' },
       { n: '2', label: 'Adopt', hint: 'erste Docs' },

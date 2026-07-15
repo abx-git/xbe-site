@@ -3,8 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import AgmAssistantEmbed from '../../components/AgmAssistantEmbed.astro';
 import AgmAssistantGraphic from '../../components/graphics/headers/AgmAssistantGraphic.astro';
-import CTASection from '../../components/CTASection.astro';
-import { methodology, home, pageMeta, siteConfig } from '../../content/site';
+import { methodology, pageMeta } from '../../content/site';
 
 const a = methodology.assistant;
 ---
@@ -19,53 +18,20 @@ const a = methodology.assistant;
     <AgmAssistantGraphic slot="graphic" />
   </PageHeader>
 
-  <section class="border-b border-border py-12 sm:py-16">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6">
-      <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
-        <div class="space-y-4">
-          {a.paragraphs.map((p) => <p class="leading-relaxed text-text-muted">{p}</p>)}
-          <div class="flex flex-wrap gap-3 pt-2">
-            <a
-              href={siteConfig.agmRepoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 font-mono text-xs text-accent-deep no-underline hover:text-accent"
-            >
-              Repository abx-git/agm
-            </a>
-            <a
-              href="/methodik/agm-poster"
-              class="inline-flex items-center gap-1.5 font-mono text-xs text-accent-deep no-underline hover:text-accent"
-            >
-              One-Page-Poster
-            </a>
-          </div>
-        </div>
-        <ol class="grid gap-3 sm:grid-cols-5">
-          {
-            a.steps.map((step) => (
-              <li class="rounded-lg border border-border bg-bg-elevated px-3 py-4 text-center">
-                <span class="font-mono text-lg font-medium text-accent-deep">{step.n}</span>
-                <p class="mt-1 text-sm font-medium text-text">{step.label}</p>
-                <p class="mt-1 font-mono text-[0.6rem] text-text-muted">{step.hint}</p>
-              </li>
-            ))
-          }
-        </ol>
-      </div>
-    </div>
-  </section>
-
   <section class="blueprint-grid-light py-12 sm:py-16">
     <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <ol class="mb-10 grid gap-3 sm:grid-cols-5">
+        {
+          a.steps.map((step) => (
+            <li class="rounded-lg border border-border bg-bg-elevated px-3 py-4 text-center">
+              <span class="font-mono text-lg font-medium text-accent-deep">{step.n}</span>
+              <p class="mt-1 text-sm font-medium text-text">{step.label}</p>
+              <p class="mt-1 font-mono text-[0.6rem] text-text-muted">{step.hint}</p>
+            </li>
+          ))
+        }
+      </ol>
       <AgmAssistantEmbed />
     </div>
   </section>
-
-  <CTASection
-    title="AGM im Projektkontext?"
-    description="Die Assistant-UI erzeugt die Session-Prompts — Scope und Validierung bleiben Teil der Projektarbeit."
-    ctaLabel={home.cta}
-    ctaHref="/kontakt"
-  />
 </Layout>
