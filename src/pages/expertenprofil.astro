@@ -5,13 +5,13 @@ import ExpertDetail from '../components/ExpertDetail.astro';
 import CTASection from '../components/CTASection.astro';
 import ExpertGraphic from '../components/graphics/headers/ExpertGraphic.astro';
 import IndustryStrip from '../components/IndustryStrip.astro';
-import { expert, home, pageMeta } from '../content/site';
+import { expert, home, pageMeta, siteConfig } from '../content/site';
 ---
 
 <Layout title={pageMeta.expert.title} description={pageMeta.expert.description} path="/expertenprofil">
   <PageHeader
     label="Expertenprofil"
-    title={expert.title}
+    title={siteConfig.ownerName}
     description={expert.description}
     path="/expertenprofil"
     tags={['iSAQB CPSA-A', 'CSM', '30+ Jahre']}
@@ -24,7 +24,8 @@ import { expert, home, pageMeta } from '../content/site';
     <div class="mx-auto max-w-6xl px-4 sm:px-6">
       <div class="card card-interactive relative max-w-3xl overflow-hidden p-8">
         <p class="font-mono text-[0.65rem] text-accent-deep/60">context/profile.md</p>
-        <h2 class="mt-3 text-xl font-semibold text-text">{expert.headline}</h2>
+        <p class="mt-3 text-sm font-medium text-text">{siteConfig.ownerName}</p>
+        <h2 class="mt-1 text-xl font-semibold text-text">{expert.headline}</h2>
         {expert.subtitle && (
           <p class="mt-2 text-sm leading-relaxed text-text-muted">{expert.subtitle}</p>
         )}

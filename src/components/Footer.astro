@@ -10,7 +10,8 @@ import { navItems, siteConfig } from '../content/site';
           <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/20 text-xs font-bold text-accent-hover" aria-hidden="true">X</span>
           <div>
             <p class="text-sm font-semibold">{siteConfig.name}</p>
-            <p class="eyebrow mt-0.5 !text-[0.6rem] text-text-muted-on-dark">{siteConfig.tagline}</p>
+            <p class="mt-0.5 text-xs text-text-muted-on-dark">{siteConfig.ownerName}</p>
+            <p class="eyebrow mt-1 !text-[0.6rem] text-text-muted-on-dark">{siteConfig.tagline}</p>
           </div>
         </div>
         <p class="mt-5 max-w-xs text-sm leading-relaxed text-text-muted-on-dark">
@@ -28,7 +29,7 @@ import { navItems, siteConfig } from '../content/site';
       </nav>
     </div>
     <div class="mt-12 flex flex-col gap-3 border-t border-white/10 pt-8 text-xs text-text-muted-on-dark sm:flex-row sm:items-center sm:justify-between">
-      <p>&copy; {new Date().getFullYear()} {siteConfig.name}</p>
+      <p>&copy; {new Date().getFullYear()} {siteConfig.ownerName} · {siteConfig.name}</p>
       <div class="flex gap-6">
         <a href="/impressum" class="transition-colors hover:text-accent-hover">Impressum</a>
         <a href="/datenschutz" class="transition-colors hover:text-accent-hover">Datenschutz</a>

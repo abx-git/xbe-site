@@ -70,7 +70,7 @@ export const home = {
     paragraphs: [
       'Legacy-Systeme sind selten „nur alt". Sie tragen geschäftskritische Prozesse, haben über Jahre Schichten von Erweiterungen akkumuliert und sind häufig nur noch durch implizites Wissen einzelner Entwickler verständlich. Fehlende oder veraltete Dokumentation erschwert jede Modernisierungsentscheidung — von der Technologie-Wahl bis zur Priorisierung von Migrationsinkrementen.',
       'Eine systematische Architekturanalyse macht Strukturen, Abhängigkeiten und Risiken sichtbar. Sie liefert die objektive Grundlage für Roadmaps, Budgetplanung und technische Entscheidungen — unabhängig davon, ob das Ziel ein Cloud-Migration, eine Service-Zerlegung oder ein Technologie-Wechsel ist.',
-      'Durch die Kombination aus automatisierter KI-Analyse und manueller Validierung durch einen iSAQB-zertifizierten Architekten entstehen Ergebnisse, die reproduzierbar, nachvollziehbar und direkt in bestehende Architekturprozesse integrierbar sind.',
+      'Durch die Kombination aus automatisierter KI-Analyse und manueller Validierung durch Andreas Bergmann (iSAQB CPSA-A) entstehen Ergebnisse, die reproduzierbar, nachvollziehbar und direkt in bestehende Architekturprozesse integrierbar sind.',
     ],
   },
   context: {
@@ -150,7 +150,7 @@ export const home = {
 export const expert = {
   title: 'Expertenprofil',
   description:
-    'Enterprise Software Architect mit über 30 Jahren Praxis — Legacy-Analyse, KI-gestützte Modernisierung, Architektur-Governance und Enablement globaler Tech-Teams.',
+    'Andreas Bergmann — Enterprise Software Architect mit über 30 Jahren Praxis: Legacy-Analyse, KI-gestützte Modernisierung, Architektur-Governance und Enablement globaler Tech-Teams.',
   headline: 'Enterprise Software Architect',
   subtitle: 'AI-Agentic Engineering · Architecture Governance · MCP Context Engineering',
   certification: 'iSAQB CPSA-A (Advanced Level) · Certified ScrumMaster (CSM)',
@@ -696,11 +696,11 @@ export const references = {
 export const contact = {
   title: 'Kontakt',
   description:
-    'Vereinbaren Sie eine unverbindliche Erstberatung. Im Erstgespräch klären wir Ausgangssituation, Scope und passende Leistungsbausteine — typischerweise 30 Minuten, per Video oder Telefon.',
+    'Vereinbaren Sie eine unverbindliche Erstberatung mit Andreas Bergmann. Im Erstgespräch klären wir Ausgangssituation, Scope und passende Leistungsbausteine — typischerweise 30 Minuten, per Video oder Telefon.',
   cta: 'E-Mail senden',
   linkedinLabel: 'LinkedIn-Profil',
   formNote:
-    'Ein Kontaktformular wird in Kürze verfügbar sein. Bis dahin erreichen Sie uns per E-Mail.',
+    'Ein Kontaktformular wird in Kürze verfügbar sein. Bis dahin erreichen Sie Andreas Bergmann per E-Mail.',
   formFields: [
     { name: 'name', label: 'Name', type: 'text' },
     { name: 'email', label: 'E-Mail', type: 'email' },
@@ -802,7 +802,7 @@ export const pageMeta = {
     description: home.description,
   },
   expert: {
-    title: 'Expertenprofil',
+    title: 'Andreas Bergmann — Expertenprofil',
     description: expert.description,
   },
   services: {
