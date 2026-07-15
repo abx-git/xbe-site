@@ -417,10 +417,19 @@ body {
 
 /* ── Blueprint enhancements ── */
 .blueprint-frame--hero {
-  padding: 1.25rem;
-  box-shadow:
-    0 0 0 1px rgb(56 189 248 / 0.1),
-    0 24px 64px rgb(14 165 233 / 0.15);
+  padding: 1rem;
+  border-color: rgba(56, 189, 248, 0.2);
+  background: rgba(12, 18, 32, 0.28);
+  box-shadow: 0 0 0 1px rgb(56 189 248 / 0.06);
+}
+
+.hero-graphic .blueprint-svg-pulse {
+  animation: none;
+}
+
+.hero-graphic .blueprint-edges line {
+  animation: none;
+  opacity: 0.7;
 }
 
 @keyframes blueprint-pulse {
