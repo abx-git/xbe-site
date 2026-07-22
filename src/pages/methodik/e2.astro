@@ -1,0 +1,58 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import E2BoardEmbed from '../../components/E2BoardEmbed.astro';
+import E2BoardGraphic from '../../components/graphics/headers/E2BoardGraphic.astro';
+import { methodology, siteConfig, pageMeta } from '../../content/site';
+
+const e = methodology.e2Board;
+---
+
+<Layout title={pageMeta.e2Board.title} description={pageMeta.e2Board.description} path="/methodik/e2">
+  <PageHeader
+    label="Methodik · E2"
+    title={e.title}
+    description={e.description}
+    tags={['Event Storming', '.storm.json', 'KI-Context']}
+  >
+    <E2BoardGraphic slot="graphic" />
+  </PageHeader>
+
+  <section class="blueprint-grid-light py-12 sm:py-16">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <ol class="mb-6 grid gap-3 sm:grid-cols-5">
+        {
+          e.steps.map((step) => (
+            <li class="rounded-lg border border-border bg-bg-elevated px-3 py-4 text-center">
+              <span class="font-mono text-lg font-medium text-accent-deep">{step.n}</span>
+              <p class="mt-1 text-sm font-medium text-text">{step.label}</p>
+              <p class="mt-1 font-mono text-[0.6rem] text-text-muted">{step.hint}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="mb-8 max-w-3xl text-sm leading-relaxed text-text-muted">
+        {e.schemaNote}
+        {' '}
+        <a
+          href={siteConfig.e2SchemaUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-mono text-accent-deep no-underline hover:text-accent"
+        >
+          Schema öffnen
+        </a>
+        {' · '}
+        <a
+          href={siteConfig.e2RepoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-mono text-accent-deep no-underline hover:text-accent"
+        >
+          Repository
+        </a>
+      </p>
+      <E2BoardEmbed />
+    </div>
+  </section>
+</Layout>

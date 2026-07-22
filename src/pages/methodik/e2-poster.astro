@@ -1,0 +1,13 @@
+---
+import PosterLayout from '../../layouts/PosterLayout.astro';
+import E2Poster from '../../components/poster/E2Poster.astro';
+import { pageMeta } from '../../content/site';
+---
+
+<PosterLayout
+  title={pageMeta.e2Poster.title}
+  description={pageMeta.e2Poster.description}
+  path="/methodik/e2-poster"
+>
+  <E2Poster />
+</PosterLayout>

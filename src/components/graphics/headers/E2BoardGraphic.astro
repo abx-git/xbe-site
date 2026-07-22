@@ -1,0 +1,47 @@
+---
+import PageGraphic from '../PageGraphic.astro';
+---
+
+<PageGraphic caption="e2 · domain board">
+  <svg viewBox="0 0 480 360" class="w-full" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="E2 Board — Event Storming und Domänenmodell als JSON">
+    <defs>
+      <pattern id="e2-ui-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(56,189,248,0.1)" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="480" height="360" fill="url(#e2-ui-grid)"/>
+
+    <rect x="40" y="36" width="400" height="44" rx="4" fill="rgba(14,165,233,0.1)" stroke="#38bdf8" stroke-width="1.5"/>
+    <text x="240" y="56" text-anchor="middle" fill="#38bdf8" font-size="9" font-family="IBM Plex Mono, monospace">E2 · COLLABORATIVE DOMAIN MODELING</text>
+    <text x="240" y="70" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="IBM Plex Mono, monospace">ES · DDD · BDD · USM · EM</text>
+
+    <rect x="56" y="110" width="88" height="44" rx="3" fill="rgba(249,115,22,0.25)" stroke="#fb923c" stroke-width="1"/>
+    <text x="100" y="136" text-anchor="middle" fill="#fdba74" font-size="8" font-family="IBM Plex Mono, monospace">Event</text>
+
+    <rect x="160" y="110" width="88" height="44" rx="3" fill="rgba(59,130,246,0.25)" stroke="#60a5fa" stroke-width="1"/>
+    <text x="204" y="136" text-anchor="middle" fill="#93c5fd" font-size="8" font-family="IBM Plex Mono, monospace">Command</text>
+
+    <rect x="264" y="110" width="88" height="44" rx="3" fill="rgba(234,179,8,0.2)" stroke="#fbbf24" stroke-width="1"/>
+    <text x="308" y="136" text-anchor="middle" fill="#fcd34d" font-size="8" font-family="IBM Plex Mono, monospace">Aggregate</text>
+
+    <rect x="368" y="110" width="56" height="44" rx="3" fill="rgba(239,68,68,0.2)" stroke="#f87171" stroke-width="1" transform="rotate(-8 396 132)"/>
+    <text x="396" y="136" text-anchor="middle" fill="#fca5a5" font-size="7" font-family="IBM Plex Mono, monospace">Hotspot</text>
+
+    <line x1="144" y1="132" x2="160" y2="132" stroke="rgba(148,163,184,0.5)" stroke-width="1.5" marker-end="url(#e2-arr)"/>
+    <line x1="248" y1="132" x2="264" y2="132" stroke="rgba(148,163,184,0.5)" stroke-width="1.5" marker-end="url(#e2-arr)"/>
+
+    <rect x="60" y="190" width="360" height="120" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.4)" stroke-width="1"/>
+    <text x="80" y="220" fill="#e2e8f0" font-size="9" font-family="IBM Plex Mono, monospace">board-snapshot-v1</text>
+    <text x="80" y="240" fill="#64748b" font-size="8" font-family="IBM Plex Mono, monospace">elements · relations · eventSchema</text>
+    <rect x="80" y="260" width="150" height="28" rx="4" fill="rgba(14,165,233,0.15)" stroke="#38bdf8" stroke-width="1"/>
+    <text x="155" y="278" text-anchor="middle" fill="#38bdf8" font-size="8" font-family="IBM Plex Mono, monospace">Export .storm.json</text>
+    <rect x="250" y="260" width="150" height="28" rx="4" fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.4)" stroke-width="1"/>
+    <text x="325" y="278" text-anchor="middle" fill="#94a3b8" font-size="8" font-family="IBM Plex Mono, monospace">KI-Context Pack</text>
+
+    <defs>
+      <marker id="e2-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L6,3 z" fill="rgba(148,163,184,0.7)"/>
+      </marker>
+    </defs>
+  </svg>
+</PageGraphic>

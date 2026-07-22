@@ -15,7 +15,7 @@ export const newsSection = {
     title: 'Technische Einordnungen',
     paragraphs: [
       'Gelegentliche Beiträge zu Formaten, Agenten-Workflows und Dokumentationsmodellen, die in Architektur- und Modernisierungsprojekten vorkommen.',
-      'Kein regelmäßiges Publishing. Jeder Text beschreibt eine Technik oder ein Artefaktmodell und — wo sinnvoll — die Entsprechung in der Architecture Graph Method (AGM).',
+      'Kein regelmäßiges Publishing. Jeder Text beschreibt eine Technik oder ein Artefaktmodell und — wo sinnvoll — die Entsprechung in AGM und E2.',
     ],
   },
 } as const;
@@ -25,6 +25,22 @@ export const newsSection = {
  * Datum im Format YYYY-MM-DD
  */
 export const newsArticles: readonly NewsArticle[] = [
+  {
+    slug: 'domain-context-fuer-ki-e2',
+    date: '2026-07-22',
+    title: 'Domain Context für KI — E2 neben dem Architecture Graph',
+    excerpt:
+      'Architekturdokumentation ist die API der KI-Konversation. Das Domänenmodell ist die Fach-API. Warum .storm.json und AGM zusammengehören.',
+    tags: ['E2', 'AGM', 'Domain Modeling', 'Context Engineering'],
+    paragraphs: [
+      'KI-Agenten scheitern in Enterprise-Projekten selten am Modell allein. Häufig fehlt strukturierter Kontext: Was darf fachlich gebaut werden, und wie ist das System architektonisch geschnitten? Chat-Prompts und Whiteboard-Fotos reichen dafür nicht.',
+      'Die Architecture Graph Method (AGM) adressiert die Architekturseite: ein repo-lokaler Markdown-Linkgraph unter docs/architecture/, orchestriert über blueprint.md, deterministisch traversierbar statt RAG. Architekturdokumentation wird zur API der KI-Konversation.',
+      'Collaborative Domain Modeling (E2) adressiert die Fachseite: Event Storming, DDD, BDD/Example Mapping, User Story Mapping und Event Modeling auf einem Board. Das Ergebnis ist kein Screenshot, sondern eine schema-konforme .storm.json (board-snapshot-v1) mit Elementen, Relationen, optionalen Event-Schemas, Glossary und Hotspots.',
+      'Die Rollenverteilung ist bewusst komplementär. E2 ist die menschliche Capture-Schicht im Workshop; AGM die repo-lokale Governance-Schicht. Bounded Contexts und Domain Events aus dem Board fließen in Migrationsplanung und AGM Domain-Track — sie ersetzen ihn nicht.',
+      'Praktischer Demo-Pfad: Workshop → Board modellieren → .storm.json exportieren → in der IDE als zusätzlichen Agenten-Input referenzieren („Implementiere Aggregate X gemäß Board“). Optional danach AGM für Ist/Soll-Architektur und iterative KI-Umsetzung.',
+      'Kaufentscheidung für Beratung: Das Tool allein ist austauschbar. Wert entsteht durch Facilitation, validiertes Schema-Deliverable und die Anbindung an agentische Workflows — einzeln oder gebündelt mit AGM.',
+    ],
+  },
   {
     slug: 'zwei-monate-okf-einordnung-aus-projekten',
     date: '2026-07-08',

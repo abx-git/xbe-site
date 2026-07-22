@@ -1,0 +1,318 @@
+---
+import { e2Poster } from '../../content/e2-poster';
+
+const p = e2Poster;
+const flowColors = ['#0a3d52', '#0c4a62', '#0f5c75', '#127a94', '#38bdf8'];
+---
+
+<article class="poster">
+  <header class="poster__head">
+    <p class="poster__kicker">E2 · board-snapshot-v1 · KI-Context</p>
+    <h1 class="poster__title">{p.title}</h1>
+    <p class="poster__deck">{p.subtitle}</p>
+    <p class="poster__thesis">„{p.thesis}"</p>
+  </header>
+
+  <div class="poster__body">
+    <div class="row row--2">
+      <section class="cell cell--accent">
+        <h2>Demo-Pfad (10 Min)</h2>
+        <p class="muted">Board → JSON → KI-Prompt — der Verkaufsbeweis.</p>
+        <ol class="flow">
+          {
+            p.demoPath.map((item, i) => (
+              <li>
+                <span class="flow__n" style={`background:${flowColors[i]}`}>{i + 1}</span>
+                <div>
+                  <strong>{item.step}</strong>
+                  <span>{item.action}</span>
+                  <code>{item.hint}</code>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section class="cell">
+        <h2>Fünf Methoden · ein Artefakt</h2>
+        <ul class="list list--tracks">
+          {
+            p.methods.map((m) => (
+              <li>
+                <strong>{m.id}</strong>
+                <span>{m.name}</span>
+                <code>{m.purpose}</code>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+
+    <div class="row row--2">
+      <section class="cell">
+        <h2>Warum kein Whiteboard?</h2>
+        <div class="cols2">
+          <div>
+            <h3>Klassisch</h3>
+            <ul class="list">{p.compare.whiteboard.map((x) => <li>{x}</li>)}</ul>
+          </div>
+          <div>
+            <h3>E2</h3>
+            <ul class="list">{p.compare.e2.map((x) => <li>{x}</li>)}</ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="cell">
+        <h2>Schema {p.schema.id}</h2>
+        <ul class="list list--mono">
+          {p.schema.fields.map((f) => <li>{f}</li>)}
+        </ul>
+        <p class="muted"><code>{p.schema.url}</code></p>
+      </section>
+    </div>
+
+    <div class="row row--3eq">
+      {
+        p.offers.map((o) => (
+          <section class="cell">
+            <h2>{o.title}</h2>
+            <p>{o.text}</p>
+          </section>
+        ))
+      }
+    </div>
+
+    <div class="row row--2">
+      <section class="cell">
+        <h2>Prinzipien</h2>
+        <div class="principles">
+          {
+            p.principles.map((pr) => (
+              <div class="principles__card">
+                <span class="principles__n">{pr.n}</span>
+                <strong>{pr.title}</strong>
+                <p>{pr.text}</p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="cell">
+        <h2>Prompt-Demo</h2>
+        <ol class="list">{p.promptDemo.map((d) => <li>{d}</li>)}</ol>
+        <h2 class="mt">Grenzen</h2>
+        <ul class="list">{p.limits.map((l) => <li>{l}</li>)}</ul>
+      </section>
+    </div>
+
+    <div class="row row--1">
+      <section class="cell cell--quote">
+        <blockquote>{p.tagline}</blockquote>
+        <p>
+          <a href={p.liveUrl} target="_blank" rel="noopener noreferrer">Live Board</a>
+          {' · '}
+          <a href={p.sourceUrl} target="_blank" rel="noopener noreferrer">github.com/abx-git/E2</a>
+        </p>
+        <p class="brand">{p.footer}</p>
+      </section>
+    </div>
+  </div>
+</article>
+
+<style>
+  .poster {
+    --bg: #071018;
+    --panel: #0c1a28;
+    --panel2: #0f2233;
+    --line: #1e4a5f;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent2: #7dd3fc;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    padding: 1.25rem 1.5rem 1.5rem;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  .poster__head {
+    text-align: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .poster__kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0;
+  }
+  .poster__title {
+    font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+    font-weight: 650;
+    margin: 0.35rem 0 0.15rem;
+    letter-spacing: -0.02em;
+  }
+  .poster__deck {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .poster__thesis {
+    margin: 0.5rem auto 0;
+    max-width: 42rem;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--accent2);
+  }
+  .poster__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .row {
+    display: grid;
+    gap: 0.65rem;
+  }
+  .row--1 { grid-template-columns: 1fr; }
+  .row--2 { grid-template-columns: 1fr 1fr; }
+  .row--3eq { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 900px) {
+    .row--2, .row--3eq { grid-template-columns: 1fr; }
+  }
+  .cell {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 0.85rem 1rem;
+  }
+  .cell--accent {
+    background: linear-gradient(160deg, #0c2a3d 0%, var(--panel) 55%);
+    border-color: #256680;
+  }
+  .cell--quote {
+    text-align: center;
+    background: var(--panel2);
+  }
+  .cell h2 {
+    font-size: 0.72rem;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.5rem;
+  }
+  .cell h2.mt { margin-top: 0.85rem; }
+  .cell h3 {
+    font-size: 0.75rem;
+    margin: 0 0 0.35rem;
+    color: var(--accent2);
+  }
+  .cell p { margin: 0; font-size: 0.8rem; line-height: 1.45; color: var(--text); }
+  .muted { color: var(--muted) !important; font-size: 0.72rem !important; }
+  .list {
+    margin: 0;
+    padding-left: 1rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+  .list li { margin-bottom: 0.25rem; }
+  .list--mono { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; padding-left: 0.9rem; }
+  .list--tracks { list-style: none; padding: 0; }
+  .list--tracks li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0.15rem 0.5rem;
+    margin-bottom: 0.45rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(30, 74, 95, 0.6);
+  }
+  .list--tracks strong { font-family: 'IBM Plex Mono', monospace; color: var(--accent); font-size: 0.7rem; }
+  .list--tracks span { grid-column: 2; font-size: 0.78rem; }
+  .list--tracks code { grid-column: 2; font-size: 0.62rem; color: var(--muted); }
+  .cols2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .flow {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .flow li {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+  }
+  .flow__n {
+    flex-shrink: 0;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #f8fafc;
+  }
+  .flow strong { display: block; font-size: 0.8rem; }
+  .flow span { display: block; font-size: 0.72rem; color: var(--muted); }
+  .flow code { display: block; font-size: 0.62rem; color: var(--accent2); margin-top: 0.1rem; }
+  .principles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+  }
+  @media (max-width: 600px) {
+    .principles, .cols2 { grid-template-columns: 1fr; }
+  }
+  .principles__card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(30, 74, 95, 0.7);
+    border-radius: 0.35rem;
+    padding: 0.45rem 0.55rem;
+  }
+  .principles__n {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+  }
+  .principles__card strong { display: block; font-size: 0.72rem; margin: 0.1rem 0; }
+  .principles__card p { margin: 0; font-size: 0.68rem; color: var(--muted); line-height: 1.35; }
+  blockquote {
+    margin: 0 0 0.65rem;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--accent2);
+    line-height: 1.45;
+  }
+  .cell a {
+    color: var(--accent);
+    text-decoration: none;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+  }
+  .cell a:hover { text-decoration: underline; }
+  .brand {
+    margin-top: 0.5rem !important;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem !important;
+    color: var(--muted) !important;
+    letter-spacing: 0.06em;
+  }
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+</style>

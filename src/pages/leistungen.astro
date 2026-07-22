@@ -6,6 +6,7 @@ import SectionHeader from '../components/SectionHeader.astro';
 import ServiceBlock from '../components/ServiceBlock.astro';
 import CTASection from '../components/CTASection.astro';
 import LeistungenGraphic from '../components/graphics/headers/LeistungenGraphic.astro';
+import DomainStormDiagram from '../components/diagrams/DomainStormDiagram.astro';
 import C4ContextDiagram from '../components/diagrams/C4ContextDiagram.astro';
 import DependencyGraph from '../components/diagrams/DependencyGraph.astro';
 import MigrationPath from '../components/diagrams/MigrationPath.astro';
@@ -13,6 +14,7 @@ import IterativeMigrationCycle from '../components/diagrams/IterativeMigrationCy
 import { services, home, pageMeta } from '../content/site';
 
 const diagramMap = {
+  'domain-modeling': DomainStormDiagram,
   analyse: C4ContextDiagram,
   dokumentation: DependencyGraph,
   migrationsplanung: MigrationPath,
@@ -26,14 +28,14 @@ const diagramMap = {
     title={services.title}
     description={services.description}
     path="/leistungen"
-    tags={['4 Bausteine', 'arc42', 'C4']}
+    tags={['5 Bausteine', 'E2 · AGM', 'arc42']}
   >
     <LeistungenGraphic slot="graphic" />
   </PageHeader>
   <ProseSection title={services.intro.title} paragraphs={services.intro.paragraphs} />
   <section class="blueprint-grid-light section-split py-20 sm:py-28">
     <div class="mx-auto max-w-6xl space-y-28 px-4 sm:px-6">
-      <SectionHeader label="Bausteine" title="Vier aufeinander aufbauende Leistungen" />
+      <SectionHeader label="Bausteine" title="Fünf modular buchbare Leistungen" />
       {
         services.items.map((item, index) => {
           const Diagram = diagramMap[item.id];
@@ -55,8 +57,8 @@ const diagramMap = {
     </div>
   </section>
   <CTASection
-    title="Von der Analyse bis zur iterativen Umsetzung."
-    description="Leistungsbausteine einzeln oder kombiniert — jeweils mit definierten Liefergegenständen und validierten Ergebnissen."
+    title="Von der Domäne bis zur iterativen Umsetzung."
+    description="Leistungsbausteine einzeln oder kombiniert — jeweils mit definierten Liefergegenständen und validierten Ergebnissen. E2 und AGM lassen sich bündeln."
     ctaLabel={home.cta}
     ctaHref="/kontakt"
   />
