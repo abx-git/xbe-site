@@ -6,7 +6,7 @@ export const agmPoster = {
     'Repo-lokaler Markdown-Linkgraph unter docs/architecture/, orchestriert über blueprint.md, gepflegt durch KI-Agenten mit menschlicher Validierung.',
   goldenPath: [
     { step: 'Install', action: 'Scaffold im App-Repo', workflow: 'agm-install.sh / agm install' },
-    { step: 'Adopt', action: 'Erste evidenzbasierte Sektion', workflow: 'bootstrap-adopt' },
+    { step: 'Adopt', action: 'Erste belegte Sektion', workflow: 'bootstrap-adopt' },
     { step: 'Continue', action: 'Nächstes Kapitel aus blueprint.md', workflow: 'bootstrap-continue' },
     { step: 'Maintain', action: 'Docs mit Code synchronisieren', workflow: 'maintenance-diff-range' },
     { step: 'Review', action: 'Report-only — frischer Chat', workflow: 'review-maintenance' },

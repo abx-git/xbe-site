@@ -24,7 +24,7 @@ const diagramMap = {
 
 <Layout title={pageMeta.services.title} description={pageMeta.services.description} path="/leistungen">
   <PageHeader
-    label="Leistungsprofil"
+    label="Leistungen"
     title={services.title}
     description={services.description}
     path="/leistungen"
@@ -35,7 +35,7 @@ const diagramMap = {
   <ProseSection title={services.intro.title} paragraphs={services.intro.paragraphs} />
   <section class="blueprint-grid-light section-split py-20 sm:py-28">
     <div class="mx-auto max-w-6xl space-y-28 px-4 sm:px-6">
-      <SectionHeader label="Bausteine" title="Fünf modular buchbare Leistungen" />
+      <SectionHeader label="Bausteine" title="Fünf Leistungen — einzeln oder zusammen" />
       {
         services.items.map((item, index) => {
           const Diagram = diagramMap[item.id as keyof typeof diagramMap];
@@ -57,8 +57,8 @@ const diagramMap = {
     </div>
   </section>
   <CTASection
-    title="Von der Ist-Analyse bis zur KI-gestützten Umsetzung."
-    description="Leistungsbausteine einzeln oder kombiniert — jeweils mit definierten Liefergegenständen und validierten Ergebnissen."
+    title="Von der Ist-Analyse bis zur Umsetzung."
+    description="Bausteine einzeln oder kombiniert — jeweils mit klaren Liefergegenständen, die man prüfen kann."
     ctaLabel={home.cta}
     ctaHref="/kontakt"
   />
