@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: 'X-BE',
-  tagline: 'Legacy-Analyse & Modernisierung',
+  tagline: 'KI-gestützte Softwareentwicklung & Legacy-Modernisierung',
   ownerName: 'Andreas Bergmann',
   location: 'Großraum Hamburg',
   linkedin: 'https://www.linkedin.com/in/andreas-bergmann-083b6851/',
@@ -10,6 +10,8 @@ export const siteConfig = {
   e2BoardUrl: 'https://abx-git.github.io/E2/',
   e2SchemaUrl: 'https://abx-git.github.io/E2/schemas/board-snapshot-v1.schema.json',
   e2RepoUrl: 'https://github.com/abx-git/E2',
+  t2BoardUrl: 'https://abx-git.github.io/T2/',
+  waypointsUrl: 'https://www.hac-boberg.de/waypoints/',
 } as const;
 
 /** Reversed fragments — assembled client-side via EmailAddress / EmailLink. */
@@ -67,14 +69,14 @@ export const industries = {
 export const home = {
   title: 'KI-gestützte Analyse und Modernisierung komplexer Legacy-Systeme',
   description:
-    'Architektur-Transparenz, Migrationsplanung und iterative KI-gestützte Umsetzung — automatisiert, validiert und nach Industriestandards dokumentiert.',
+    'Architekturberatung, Migrationsplanung und iterative KI-gestützte Softwareentwicklung — von der belastbaren Ist-Analyse bis zur validierten Umsetzung.',
   cta: 'Erstberatung vereinbaren',
   intro: {
-    title: 'Warum Architektur-Transparenz der erste Schritt ist',
+    title: 'Beratung mit Substanz — und KI, wo sie Tempo bringt',
     paragraphs: [
-      'Legacy-Systeme sind selten „nur alt". Sie tragen geschäftskritische Prozesse, haben über Jahre Schichten von Erweiterungen akkumuliert und sind häufig nur noch durch implizites Wissen einzelner Entwickler verständlich. Fehlende oder veraltete Dokumentation erschwert jede Modernisierungsentscheidung — von der Technologie-Wahl bis zur Priorisierung von Migrationsinkrementen.',
-      'Eine systematische Architekturanalyse macht Strukturen, Abhängigkeiten und Risiken sichtbar. Sie liefert die objektive Grundlage für Roadmaps, Budgetplanung und technische Entscheidungen — unabhängig davon, ob das Ziel ein Cloud-Migration, eine Service-Zerlegung oder ein Technologie-Wechsel ist.',
-      'Durch die Kombination aus automatisierter KI-Analyse und manueller Validierung durch Andreas Bergmann (iSAQB CPSA-A) entstehen Ergebnisse, die reproduzierbar, nachvollziehbar und direkt in bestehende Architekturprozesse integrierbar sind.',
+      'Legacy-Systeme tragen geschäftskritische Prozesse, akkumulierte Erweiterungen und oft nur noch implizites Wissen einzelner Entwickler. Fehlende Dokumentation blockiert Modernisierungsentscheidungen — von der Technologie-Wahl bis zur Priorisierung von Inkrementen.',
+      'Die Leistung beginnt mit klassischer Architekturberatung: systematische Ist-Analyse, Dokumentation nach Industriestandards und belastbare Migrationsplanung. Darauf aufbauend folgt KI-gestützte Softwareentwicklung — modulweise, rollback-fähig und mit manueller Architekten-Validierung.',
+      'Methoden und Werkzeuge (AGM, E2) bleiben im Hintergrund: sie strukturieren Kontext für Agenten und beschleunigen die Arbeit — ersetzen aber weder Beratung noch Qualitätsurteil.',
     ],
   },
   context: {
@@ -104,35 +106,58 @@ export const home = {
   },
   values: [
     {
-      title: 'Zeitersparnis',
+      title: 'Ist-Transparenz',
       description:
-        'Automatisierte Erfassung der Architekturlogik, Abhängigkeitsgraphen und Schnittstellen reduziert manuelle Reverse-Engineering-Aufwände erheblich. Was in klassischen Projekten Wochen dauert, wird in Tagen strukturiert — ohne Qualitätsverlust durch manuelle Validierung.',
+        'Strukturierte Architekturaufnahme: Abhängigkeiten, Schnittstellen und Risiken sichtbar — als Entscheidungsgrundlage für Roadmaps, Budgets und Stakeholder, nicht als Blackbox-Empfehlung.',
     },
     {
-      title: 'Risikominimierung',
+      title: 'Belastbare Roadmap',
       description:
-        'Strukturierte Ist-Aufnahme als Entscheidungsgrundlage: Welche Module sind migrationskritisch? Wo liegen zyklische Abhängigkeiten? Welche Schnittstellen sind undocumented Breaking Points? Fundierte Antworten statt Migration im Blindflug.',
+        'Migrationspfade und Zielarchitektur aus Ist-Analyse, Geschäftsprioritäten und Constraints — inkl. Sequenzierung, Risiken und Rollback-Strategien pro Inkrement.',
     },
     {
-      title: 'Objektive Bewertung',
+      title: 'KI-Inkremente',
       description:
-        'KI-gestützte Analyse liefert reproduzierbare, nachvollziehbare Ergebnisse — dokumentiert nach arc42 und C4, validiert nach iSAQB-Standards. Architekturentscheidungen werden begründbar und für Stakeholder kommunizierbar.',
+        'Umsetzung mit KI-gestützter Code-Transformation, automatisierten Tests und manuellem Architekten-Review — Tempo ohne Blindflug, validiert nach iSAQB-Standards.',
     },
   ],
+  prototyping: {
+    eyebrow: 'Fast Prototyping',
+    title: 'Online-Systeme als Beleg',
+    description:
+      'Moderne Architektur und ausgefeilte CX — schnell prototypisiert. Beispiele aus der Praxis, nicht als Produktkatalog.',
+    items: [
+      {
+        title: 'E2 Board',
+        hint: 'Collaborative Domain Modeling',
+        href: 'https://abx-git.github.io/E2/',
+      },
+      {
+        title: 'T2 Board',
+        hint: 'Hierarchische Tasks & Mindmap',
+        href: 'https://abx-git.github.io/T2/',
+      },
+      {
+        title: 'waypoints',
+        hint: 'Kartenbasierte Selection & Export',
+        href: 'https://www.hac-boberg.de/waypoints/',
+      },
+    ],
+  },
   teasers: [
     {
       href: '/leistungen',
       index: 2,
       title: 'Leistungen',
       description:
-        'Von Domänen-Discovery und Ist-Analyse über Standards-Dokumentation bis zur iterativen KI-gestützten Migration — modular buchbar, einzeln oder mit AGM kombinierbar.',
+        'Architekturberatung, Dokumentation, Migrationsplanung und KI-gestützte Softwareentwicklung — modular buchbar.',
     },
     {
       href: '/methodik',
       index: 3,
       title: 'Methodik & Sicherheit',
       description:
-        'AGM und E2 als komplementäre Kontext-APIs für KI — plus iSAQB, arc42, C4, Enterprise-API und Validierung.',
+        'Hintergrund & Standards: AGM und E2, iSAQB, arc42, C4, Enterprise-KI und Validierung.',
     },
     {
       href: '/vorgehensweise',
@@ -146,7 +171,7 @@ export const home = {
       index: 5,
       title: 'Referenzen',
       description:
-        'Methodik und anonymisierte Projektbeispiele — Optionen, Vorgehen und messbare Ergebnisse aus der Praxis.',
+        'Anonymisierte Projektbeispiele — Optionen, Vorgehen und messbare Ergebnisse aus der Praxis.',
     },
   ],
 } as const;
@@ -154,15 +179,15 @@ export const home = {
 export const expert = {
   title: 'Expertenprofil',
   description:
-    'Andreas Bergmann — Enterprise Software Architect mit über 30 Jahren Praxis: Legacy-Analyse, KI-gestützte Modernisierung, Architektur-Governance und Enablement globaler Tech-Teams.',
+    'Andreas Bergmann — Enterprise Software Architect mit über 30 Jahren Praxis: Architekturberatung, Legacy-Analyse, KI-gestützte Softwareentwicklung und Enablement globaler Tech-Teams.',
   headline: 'Enterprise Software Architect',
-  subtitle: 'AI-Agentic Engineering · Architecture Governance · MCP Context Engineering',
+  subtitle: 'Architekturberatung · AI-Agentic Engineering · Legacy-Modernisierung',
   certification: 'iSAQB CPSA-A (Advanced Level) · Certified ScrumMaster (CSM)',
   languages: ['Deutsch', 'Englisch'],
   points: [
     'Über 30 Jahre Enterprise-Softwarearchitektur — branchenübergreifend, mit tiefer Praxis in Logistik, Versicherung, Medien, GIS und Telekommunikation.',
-    'Aktueller Schwerpunkt: KI-gestützte Code-Analyse und Umsetzung mit der Architecture Graph Method (AGM) — repo-lokaler Dokumentationsgraph, deterministische Traversierung, evidenzbasierte work/-Reports.',
-    'Domänen-Discovery mit E2 (Collaborative Domain Modeling): Event Storming, DDD, BDD, User Story Mapping und Event Modeling — maschinenlesbares .storm.json als Fach-Kontext für Agenten, einzeln oder gebündelt mit AGM.',
+    'Aktueller Schwerpunkt: Architekturberatung und KI-gestützte Softwareentwicklung — von Ist-Analyse und Roadmap bis zur iterativen, validierten Umsetzung.',
+    'Methoden im Hintergrund: Architecture Graph Method (AGM) für repo-lokalen Architekturkontext; E2 für Collaborative Domain Modeling — wo sie Tempo und Struktur bringen.',
     'Solutions Architecture in globalen Umgebungen: Java/Spring Boot, Microservices, REST & SOAP, Domain-Driven Design — inklusive Agile Coaching (Scrum, Kanban) und Team-Enablement.',
     'GIS & Geodaten: Leitung internationaler Entwicklungsteams für Geoinformationssysteme — Satellitendaten-Auswertung, Adress-Konsolidierung und hochverfügbare Online-Geo-Services.',
     'Kommunikation mit technischen und fachlichen Stakeholdern: ADRs, Management-Reports, Requirements Engineering und Product-Owner-Rolle in agilen Projekten.',
@@ -171,10 +196,10 @@ export const expert = {
     title: 'Architekturkompetenz im Kontext',
     paragraphs: [
       'Softwarearchitektur ist mehr als Technologieauswahl. Sie umfasst Strukturprinzipien, Qualitätszieldefinition, Schnittstellen-Governance und die Fähigkeit, komplexe Systeme so zu zerlegen, dass Teams autonom arbeiten können — auch über Standorte und Zeitzonen hinweg.',
-      'In Legacy-Kontexten steht die Architekturarbeit vor der eigentlichen Frage: Was ist der Ist-Zustand, und welche Migrationsoptionen sind technisch und wirtschaftlich vertretbar? Diese Fragen werden auf Basis konkreter Code-Analyse, Abhängigkeitsmodelle und dokumentierter Architekturentscheidungen beantwortet — nicht als abstrakte Empfehlung.',
+      'In Legacy-Kontexten steht die Beratungsarbeit vor der eigentlichen Frage: Was ist der Ist-Zustand, und welche Migrationsoptionen sind technisch und wirtschaftlich vertretbar? Diese Fragen werden auf Basis konkreter Code-Analyse, Abhängigkeitsmodelle und dokumentierter Architekturentscheidungen beantwortet — nicht als abstrakte Empfehlung.',
     ],
     competencies: [
-      'Architektur-Reverse-Engineering und Abhängigkeitsanalyse komplexer Codebasen',
+      'Architekturberatung und Reverse-Engineering komplexer Codebasen',
       'Java-Ökosystem: Spring Boot, Microservices, REST/SOAP, Teststrategien und Kernsystem-Integration',
       'Dokumentation nach arc42 (Kontext, Constraints, Building Blocks, Runtime, Deployment)',
       'C4-Modellierung (Context, Container, Component) für unterschiedliche Stakeholder-Ebenen',
@@ -183,7 +208,7 @@ export const expert = {
       'Domain-Driven Design: Bounded Contexts, Context Maps, Anti-Corruption Layers',
       'Collaborative Domain Modeling (E2): Event Storming, BDD/Example Mapping, USM, Event Modeling → schema-konformes .storm.json',
       'Agile Methoden: Scrum Master, Product Owner, Kanban — Prozessberatung und Team-Enablement',
-      'KI-gestützte Entwicklung: MCP Context Engineering, OKF-Artefakte, agentische Workflows, manuelle Validierung',
+      'KI-gestützte Softwareentwicklung: MCP Context Engineering, agentische Workflows, manuelle Validierung',
       'Architektur-Bewertung nach ATAM-Prinzipien und iSAQB-Qualitätsmodellen',
     ],
     domains: [
@@ -214,42 +239,14 @@ export const expert = {
 export const services = {
   title: 'Leistungsprofil',
   description:
-    'Fünf modular buchbare Leistungsbausteine — von Domänen-Discovery und Ist-Analyse über Standards-Dokumentation und Migrationsplanung bis zur optionalen iterativen Umsetzung. Einzeln oder mit AGM kombinierbar.',
+    'Fünf modular buchbare Leistungsbausteine — von Ist-Analyse und Dokumentation über Migrationsplanung bis zur KI-gestützten Softwareentwicklung. Domänen-Workshops optional. Einzeln oder kombiniert beauftragbar.',
   intro: {
-    title: 'Modularer Leistungsaufbau',
+    title: 'Beratung zuerst — Umsetzung mit KI',
     paragraphs: [
-      'Jeder Baustein liefert eigenständige, verwertbare Ergebnisse. Domänen-Modellierung und Architektur-Analyse schaffen die fachliche und technische Grundlage. Dokumentation, Migrationsplanung und KI-gestützte Umsetzung setzen darauf auf — sind aber auch einzeln oder in Kombination beauftragbar. E2 und AGM lassen sich bündeln: fachliche Wahrheit zuerst, dann Architekturgraph, dann agentische Umsetzung.',
+      'Jeder Baustein liefert eigenständige, verwertbare Ergebnisse. Architektur-Analyse und Dokumentation schaffen die Grundlage. Migrationsplanung und KI-gestützte Softwareentwicklung setzen darauf auf — sind aber auch einzeln buchbar. Domänen-Discovery ergänzt bei unklaren Fachgrenzen. Methoden und Boards (AGM, E2) unterstützen im Hintergrund, ersetzen aber keine Beratungsleistung.',
     ],
   },
   items: [
-    {
-      id: 'domain-modeling',
-      title: 'Domänen-Modellierung (E2)',
-      description:
-        'Moderierte Domain Discovery mit E2 — Collaborative Domain Modeling. Event Storming, DDD, BDD/Example Mapping, User Story Mapping und Event Modeling auf einem Board. Ergebnis ist kein Whiteboard-Foto, sondern ein schema-konformes .storm.json als Fach-API für KI-gestützte Entwicklung — einzeln oder gebündelt mit AGM.',
-      details: [
-        'Facilitierte Workshops: Event Storming, Bounded Contexts, Example Mapping, Story Maps, Event Modeling — nach Bedarf und Reifegrad',
-        'Methoden-Kontinuum ohne Medienbruch: Discovery bis Specs in einem persistenten Board',
-        'Capture von Aggregates, Commands, Domain Events, Policies, Actors, Hotspots und Ubiquitous Language',
-        'Validierung des Exports gegen board-snapshot-v1 (Elemente, Attribute, Relationen, optionale Event-Schemas)',
-        'KI-Context Pack: Anleitung, wie .storm.json in Agent-Sessions (Cursor, Claude, Copilot) als zusätzlicher Input eingehängt wird',
-        'Optional: Enablement — Team nutzt E2 selbst; Facilitation-Coaching, Schema-Review und Brücke in AGM-/MCP-Workflows',
-      ],
-      deliverables: [
-        'Validierte .storm.json (Schema board-snapshot-v1)',
-        'Markdown-Reports, Event-Catalog und Glossary aus dem E2-Export',
-        'Hotspot-Register mit Status und Priorität',
-        'KI-Context Pack: kurze Integration in Agenten-Workflows',
-      ],
-      standards: [
-        'Event Storming',
-        'Domain-Driven Design',
-        'BDD / Example Mapping',
-        'User Story Mapping',
-        'Event Modeling',
-        '.storm.json',
-      ],
-    },
     {
       id: 'analyse',
       title: 'Architektur-Analyse',
@@ -294,7 +291,7 @@ export const services = {
       id: 'migrationsplanung',
       title: 'Migrationsplanung',
       description:
-        'Erarbeitung belastbarer Migrationspfade und Zielarchitekturen — abgeleitet aus der analysierten Ist-Architektur, den geschäftlichen Prioritäten und den technischen Constraints. Keine generischen Schablonen, sondern kontextspezifische Roadmaps. E2-Domain-Artefakte (Context Map, Events) fließen optional direkt ein.',
+        'Erarbeitung belastbarer Migrationspfade und Zielarchitekturen — abgeleitet aus der analysierten Ist-Architektur, den geschäftlichen Prioritäten und den technischen Constraints. Keine generischen Schablonen, sondern kontextspezifische Roadmaps.',
       details: [
         'Definition von Bounded Contexts und Migrationsinkrementen (DDD Context Map)',
         'Bewertung von Migrationsmustern: Strangler Fig, Branch by Abstraction, Re-Platforming, Re-Factoring',
@@ -312,23 +309,49 @@ export const services = {
     },
     {
       id: 'ki-migration',
-      title: 'KI-gestützte Migration',
+      title: 'KI-gestützte Softwareentwicklung',
       description:
-        'Iterative, modulweise Umsetzung der definierten Migrations-Roadmap mit KI-unterstützter Code-Transformation. Jeder Zyklus folgt einem festen Qualitätssicherungsprozess — mit Rollback-Fähigkeit und manueller Architekten-Validierung. Domänen-Guardrails aus E2 (.storm.json) ergänzen den AGM-Architekturkontext.',
+        'Iterative, modulweise Umsetzung — Modernisierung, Migration oder funktionale Erweiterung — mit KI-unterstützter Code-Transformation. Jeder Zyklus folgt einem festen Qualitätssicherungsprozess: automatisierte Tests, Rollback-Fähigkeit und manuelle Architekten-Validierung.',
       details: [
-        'Modulweise Auswahl und Priorisierung gemäß Migrations-Roadmap',
+        'Modulweise Auswahl und Priorisierung gemäß Roadmap oder Backlog',
         'KI-gestützte Code-Transformation unter Einhaltung der Zielarchitektur-Vorgaben',
         'Automatisierte Test-Validierung und Regression-Checks pro Inkrement',
         'Manueller Review durch den Senior Architekten (iSAQB-Standard) vor Merge',
         'Dokumentation der Transformationsentscheidungen als ADRs',
       ],
       deliverables: [
-        'Migrierte und getestete Module pro Iterationszyklus',
+        'Umgesetzte und getestete Module pro Iterationszyklus',
         'Transformations-Log mit Begründungen und Abweichungen',
         'Aktualisierte Architekturdokumentation nach jedem Inkrement',
         'Abschluss-Report mit Metriken (Coverage, Komplexitätsreduktion, Schnittstellen-Status)',
       ],
       standards: ['Iterative Inkremente', 'Automated Testing', 'Continuous Integration', 'ADR'],
+    },
+    {
+      id: 'domain-modeling',
+      title: 'Domänen-Workshops',
+      description:
+        'Optionale Discovery bei unklaren Fachgrenzen: moderierte Domain Modeling-Workshops (Event Storming, DDD, BDD, User Story Mapping, Event Modeling). Ergebnis ist ein strukturiertes Domänenmodell — als Grundlage für Roadmap und KI-gestützte Entwicklung, unterstützt durch E2 im Hintergrund.',
+      details: [
+        'Facilitierte Workshops: Event Storming, Bounded Contexts, Example Mapping, Story Maps, Event Modeling — nach Bedarf und Reifegrad',
+        'Capture von Aggregates, Commands, Domain Events, Policies, Actors, Hotspots und Ubiquitous Language',
+        'Persistenz als schema-konformes .storm.json — kein Whiteboard-Foto',
+        'Brücke in Architekturberatung und Migrationsplanung (Context Map, Events)',
+        'Optional: Enablement — Team nutzt das Board selbst; Facilitation-Coaching',
+      ],
+      deliverables: [
+        'Validiertes Domänenmodell (.storm.json / board-snapshot-v1)',
+        'Markdown-Reports, Event-Catalog und Glossary',
+        'Hotspot-Register mit Status und Priorität',
+        'Kurze Integration in Agenten-Workflows (KI-Context Pack)',
+      ],
+      standards: [
+        'Event Storming',
+        'Domain-Driven Design',
+        'BDD / Example Mapping',
+        'User Story Mapping',
+        'Event Modeling',
+      ],
     },
   ],
 } as const;
@@ -336,19 +359,19 @@ export const services = {
 export const methodology = {
   title: 'Methodik & Sicherheit',
   description:
-    'Zwei komplementäre Verfahren für deterministischen KI-Kontext — AGM für Architektur, E2 für Domäne — verbunden mit etablierten Standards und kontrolliertem Enterprise-KI-Einsatz.',
+    'Werkzeuge und Standards hinter den Leistungen — AGM und E2 für strukturierten KI-Kontext, verbunden mit iSAQB, arc42, C4 und kontrolliertem Enterprise-KI-Einsatz.',
   intro: {
-    title: 'Zwei Kontext-APIs für KI',
+    title: 'Hintergrund der Leistungen',
     paragraphs: [
-      'KI-gestützte Analyse ersetzt keine Architektur- oder Domänenkompetenz — sie beschleunigt und strukturiert sie. Architekturdokumentation ist die API der KI-Konversation (AGM). Das Domänenmodell ist die Fach-API der KI-Konversation (E2). Zusammen liefern sie Domain Context und Architecture Context — statt nur Chat-Prompts.',
-      'Jede Leistung basiert auf anerkannten Methoden des iSAQB, der arc42-Dokumentation und des C4-Modells. Architekturartefakte folgen dem Open Knowledge Format (OKF). Der KI-Einsatz erfolgt über kommerzielle Enterprise-API-Schnittstellen (z. B. Anthropic, AWS Bedrock, Azure OpenAI, Google Vertex AI) — nicht über Consumer-Oberflächen.',
+      'Die Beratungs- und Umsetzungsleistung steht im Vordergrund. Methoden und Boards strukturieren Kontext und beschleunigen KI-gestützte Arbeit — sie ersetzen weder Architekturkompetenz noch Qualitätsurteil.',
+      'Architekturdokumentation kann als traversierbarer Kontext für Agenten dienen (AGM). Domänenmodelle aus Workshops als Fach-Kontext (E2). Jede Leistung basiert auf anerkannten Standards: iSAQB, arc42, C4. Der KI-Einsatz erfolgt über kommerzielle Enterprise-APIs — nicht über Consumer-Oberflächen.',
     ],
   },
   items: [
     {
       title: 'Standards',
       description:
-        'Architecture Graph Method (AGM) und Collaborative Domain Modeling (E2) als operative Verfahren, Open Knowledge Format (OKF) für versionierbare Wissensartefakte, iSAQB-CPSA-A als Bewertungsrahmen, arc42 und C4 für Dokumentation. MCP für agentische Tool-Anbindung. ATAM und ADRs für Trade-offs und Entscheidungen.',
+        'Architecture Graph Method (AGM) und Collaborative Domain Modeling (E2) als unterstützende Verfahren, Open Knowledge Format (OKF) für versionierbare Wissensartefakte, iSAQB-CPSA-A als Bewertungsrahmen, arc42 und C4 für Dokumentation. MCP für agentische Tool-Anbindung. ATAM und ADRs für Trade-offs und Entscheidungen.',
     },
     {
       title: 'Context Engineering',
@@ -391,10 +414,10 @@ export const methodology = {
     'ISO/IEC/IEEE 42010',
   ],
   dualMethods: {
-    eyebrow: 'AGM · E2',
-    title: 'Zwei Verfahren, ein Ziel',
+    eyebrow: 'Im Hintergrund',
+    title: 'Zwei Verfahren, die die Arbeit stützen',
     description:
-      'Deterministischer, versionierbarer Kontext für KI-Agenten — Architekturgraph und Domänenmodell ergänzen sich.',
+      'Deterministischer, versionierbarer Kontext für KI-Agenten — Architekturgraph und Domänenmodell ergänzen die Beratungsleistung, ersetzen sie nicht.',
     pillars: [
       {
         id: 'agm',
@@ -414,7 +437,7 @@ export const methodology = {
       },
     ],
     bridge:
-      'Workshop entscheidet → E2 persistiert → AGM/OKF übernimmt die Architekturspur → Agenten arbeiten grounded. E2 ersetzt keine AGM-Domain-Workflows — es ist die menschliche Capture-Schicht; AGM die repo-lokale Governance.',
+      'Workshop entscheidet → E2 persistiert → AGM/OKF übernimmt die Architekturspur → Agenten arbeiten grounded. Die Verfahren sind Capture- und Governance-Schichten hinter Beratung und Umsetzung.',
   },
   knowledgeCatalog: {
     title: 'Einordnung: Google Knowledge Catalog & OKF',
@@ -439,7 +462,39 @@ export const methodology = {
     eyebrow: 'Werkzeuge zur Methode',
     title: 'AGM und E2 in der Praxis',
     description:
-      'Assistant und Poster für den Architecture Graph; Board und One-Pager für Collaborative Domain Modeling.',
+      'Assistant und Poster für den Architecture Graph; Board und One-Pager für Collaborative Domain Modeling — im Hintergrund der Leistungen.',
+  },
+  prototyping: {
+    eyebrow: 'Fast Prototyping — Belege',
+    title: 'Online-Systeme mit moderner Architektur und CX',
+    description:
+      'Beispiele für hochwertiges, schnelles Prototyping — Nachweis der Entwicklungsfähigkeit, kein Produktkatalog.',
+    items: [
+      {
+        title: 'E2 Board',
+        hint: 'Collaborative Domain Modeling',
+        description:
+          'Browserbasiertes Board für Event Storming, DDD, BDD, USM und Event Modeling — lokale Daten, schema-konformer Export.',
+        href: 'https://abx-git.github.io/E2/',
+        external: true,
+      },
+      {
+        title: 'T2 Board',
+        hint: 'Tasks & Mindmap',
+        description:
+          'Hierarchische Aufgaben als Board/Mindmap — App im Browser, Daten lokal (ähnlich diagrams.net).',
+        href: 'https://abx-git.github.io/T2/',
+        external: true,
+      },
+      {
+        title: 'waypoints',
+        hint: 'Karten-CX · HAC Boberg',
+        description:
+          'Kartenbasierte Selection und CUP-Export für Segelflug-Wegepunkte — moderne Map-CX, Spatial-Backend.',
+        href: 'https://www.hac-boberg.de/waypoints/',
+        external: true,
+      },
+    ],
   },
   assistant: {
     title: 'AGM Assistant',
@@ -510,11 +565,11 @@ export const methodology = {
 export const process = {
   title: 'Vorgehensweise',
   description:
-    'Ein strukturierter Fünf-Phasen-Prozess — von der initialen Bestandsaufnahme bis zur optionalen iterativen Migration. Jede Phase liefert eigenständige, verwertbare Ergebnisse.',
+    'Ein strukturierter Fünf-Phasen-Prozess — von der initialen Bestandsaufnahme bis zur optionalen KI-gestützten Umsetzung. Jede Phase liefert eigenständige, verwertbare Ergebnisse.',
   intro: {
     title: 'Phasenmodell',
     paragraphs: [
-      'Der Prozess ist iterativ innerhalb jeder Phase, aber sequenziell zwischen den Phasen. Domänen-Discovery (E2) und Architektur-Analyse können bei unklaren Fachgrenzen vorgezogen oder parallel laufen. Analyse und Dokumentation können als abgeschlossenes Projekt beauftragt werden; Migrationsplanung und Umsetzung bauen optional darauf auf. Der Umfang jeder Phase wird im initialen Assessment definiert.',
+      'Der Prozess ist iterativ innerhalb jeder Phase, aber sequenziell zwischen den Phasen. Domänen-Workshops und Architektur-Analyse können bei unklaren Fachgrenzen vorgezogen oder parallel laufen. Analyse und Dokumentation können als abgeschlossenes Beratungsprojekt beauftragt werden; Migrationsplanung und KI-gestützte Softwareentwicklung bauen optional darauf auf. Der Umfang jeder Phase wird im initialen Assessment definiert.',
     ],
   },
   steps: [
@@ -568,14 +623,14 @@ export const process = {
     },
     {
       number: '05',
-      title: 'Iterative Migration',
+      title: 'KI-gestützte Umsetzung',
       description:
-        'Modulweise Umsetzung gemäß Roadmap mit KI-gestützter Code-Transformation. Jeder Zyklus: Modulauswahl → Transformation → automatisierter Test → Architekten-Review → Merge. Rollback-fähig pro Inkrement.',
+        'Modulweise Softwareentwicklung gemäß Roadmap mit KI-gestützter Code-Transformation. Jeder Zyklus: Modulauswahl → Transformation → automatisierter Test → Architekten-Review → Merge. Rollback-fähig pro Inkrement.',
       deliverables: [
-        'Migrierte Module pro Iterationszyklus',
+        'Umgesetzte Module pro Iterationszyklus',
         'Transformations- und Review-Protokolle',
         'Fortlaufend aktualisierte Architekturdokumentation',
-        'Abschluss-Report mit Migrationsmetriken',
+        'Abschluss-Report mit Umsetzungsmetriken',
       ],
     },
   ],
@@ -584,19 +639,19 @@ export const process = {
 export const references = {
   title: 'Referenzen',
   description:
-    'AGM und E2 in der Praxis — Architecture Graph, Domänen-Modellierung und anonymisierte Ergebnisse aus konkreten Analyseprojekten.',
+    'Anonymisierte Projektbeispiele aus Architekturberatung, Analyse und KI-gestützter Softwareentwicklung — mit nachvollziehbaren Optionen, Vorgehen und Ergebnissen.',
   intro: {
-    title: 'Vom Verfahren zur belastbaren Entscheidungsgrundlage',
+    title: 'Ergebnisse aus der Praxis',
     paragraphs: [
-      'Die referenzierten Projekte folgen demselben Grundprinzip: Wissen wird strukturiert und evidenzbasiert — Architekturwissen im traversierbaren Dokumentationsgraphen (AGM), Fachwissen optional als schema-konformes Domänenmodell (E2). Jede Aussage ist auf Code, Konfiguration, Workshop-Artefakt oder dokumentierte Evidenz zurückführbar.',
-      'Die Beispiele reichen von Analyse- und Migrationsprojekten bis zu KI-gestützter Umsetzung und funktionaler Erweiterung bestehender Plattformen — jeweils mit Bootstrap, vertiefender Architektur-Arbeit und belastbarer Ergebnisdokumentation. Domänen-Discovery mit E2 ist einzeln oder mit AGM kombinierbar.',
+      'Die referenzierten Projekte zeigen Beratungs- und Umsetzungsleistung: Ist-Transparenz, Security- und Migrationsentscheidungen, KI-gestützte Stack-Migration und funktionale Erweiterungen. Jede Aussage ist auf Code, Konfiguration oder dokumentierte Evidenz zurückführbar.',
+      'Methoden und Boards (AGM, E2) unterstützen im Hintergrund — die Referenzen belichten zuerst Outcomes und Entscheidungsgrundlagen, danach optional das Verfahren.',
     ],
   },
   method: {
     title: 'Architecture Graph Method (AGM)',
-    subtitle: 'Verfahren · Architecture Graph',
+    subtitle: 'Verfahren im Hintergrund · Architecture Graph',
     description:
-      'Repo-lokaler Markdown-Linkgraph unter `docs/architecture/`, orchestriert über `blueprint.md` und gepflegt durch KI-Agenten mit menschlicher Validierung. OKF-konforme Artefakte, deterministische Graph-Traversierung statt RAG — Architekturdokumentation als API für strukturierte KI-Konversation. Anschlussfähig an Googles Knowledge Catalog und Open Knowledge Format.',
+      'Repo-lokaler Markdown-Linkgraph unter `docs/architecture/`, orchestriert über `blueprint.md` und gepflegt durch KI-Agenten mit menschlicher Validierung. OKF-konforme Artefakte, deterministische Graph-Traversierung statt RAG — unterstützend für strukturierte KI-Konversation. Anschlussfähig an Googles Knowledge Catalog und Open Knowledge Format.',
     options: [
       'Dokumentations-Template: arc42 (Standard), lean-service, c4-light, adr-first oder custom',
       'Artefaktformat: Open Knowledge Format (OKF) — Markdown + YAML-Frontmatter, index.md, log.md',
@@ -623,9 +678,9 @@ export const references = {
   },
   methodE2: {
     title: 'E2 — Collaborative Domain Modeling',
-    subtitle: 'Verfahren · Domain Model Snapshot',
+    subtitle: 'Verfahren im Hintergrund · Domain Model Snapshot',
     description:
-      'Browserbasiertes Board für Event Storming, DDD, BDD, User Story Mapping und Event Modeling. Workshop-Ergebnisse werden als schema-konformes `.storm.json` persistiert — Elemente, Attribute, Relationen und optionale Event-Schemas als Fach-API für KI-Agenten. Komplementär zu AGM: menschliche Capture-Schicht, nicht Ersatz der Domain-Workflows im Architekturgraph.',
+      'Browserbasiertes Board für Event Storming, DDD, BDD, User Story Mapping und Event Modeling. Workshop-Ergebnisse werden als schema-konformes `.storm.json` persistiert — Elemente, Attribute, Relationen und optionale Event-Schemas als Fach-Kontext für KI-Agenten. Unterstützend zur Beratung: menschliche Capture-Schicht, nicht Ersatz der Domain-Workflows.',
     options: [
       'Methoden-Mix: Event Storming, DDD, BDD/Example Mapping, USM, Event Modeling — einzeln oder kombiniert',
       'Deliverable-Format: board-snapshot-v1 (.storm.json) inkl. Schema-Verweis',
@@ -832,7 +887,7 @@ export const contact = {
   ],
   hints: [
     'Kurze Beschreibung Ihrer Systemlandschaft (Technologie, Größe, Ausgangssituation)',
-    'Gewünschter Leistungsumfang (Analyse, Dokumentation, Migration)',
+    'Gewünschter Leistungsumfang (Analyse, Dokumentation, Migrationsplanung, KI-gestützte Softwareentwicklung)',
     'Zeitlicher Rahmen und vorhandene Dokumentation',
   ],
 } as const;
@@ -921,7 +976,7 @@ export const datenschutz = {
 
 export const pageMeta = {
   home: {
-    title: 'Legacy-Analyse & Modernisierung',
+    title: 'KI-gestützte Softwareentwicklung & Legacy-Modernisierung',
     description: home.description,
   },
   expert: {
@@ -967,7 +1022,7 @@ export const pageMeta = {
   news: {
     title: 'News & Einblicke',
     description:
-      'Kuratierte Einordnungen zu Softwarearchitektur, KI-gestützter Analyse und Legacy-Modernisierung.',
+      'Kuratierte Einordnungen zu Softwarearchitektur, KI-gestützter Softwareentwicklung und Legacy-Modernisierung.',
   },
   contact: {
     title: 'Kontakt',

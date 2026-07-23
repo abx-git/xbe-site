@@ -1,0 +1,90 @@
+---
+interface Item {
+  title: string;
+  hint: string;
+  href: string;
+  description?: string;
+}
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  description: string;
+  items: readonly Item[];
+  variant?: 'light' | 'dark';
+}
+
+const { eyebrow, title, description, items, variant = 'light' } = Astro.props;
+const isDark = variant === 'dark';
+---
+
+<section class:list={['relative py-16 sm:py-20', isDark ? 'section-dark' : 'blueprint-grid-light border-t border-border']}>
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <p class:list={['eyebrow text-center', isDark ? 'text-accent-hover' : 'text-accent-deep']}>{eyebrow}</p>
+    <h2 class:list={['display-md mt-3 text-center', isDark ? 'text-text-on-dark' : 'text-text']}>{title}</h2>
+    <p
+      class:list={[
+        'mx-auto mt-3 max-w-2xl text-center leading-relaxed',
+        isDark ? 'text-text-muted-on-dark' : 'text-text-muted',
+      ]}
+    >
+      {description}
+    </p>
+    <div class="mt-10 grid gap-4 sm:grid-cols-3">
+      {
+        items.map((item) => (
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class:list={[
+              'group rounded-xl border p-6 no-underline transition-colors',
+              isDark
+                ? 'border-white/10 bg-white/5 hover:border-accent/40 hover:bg-white/8'
+                : 'border-border bg-bg-elevated hover:border-accent/40',
+            ]}
+          >
+            <p
+              class:list={[
+                'font-mono text-[0.65rem] uppercase tracking-widest',
+                isDark ? 'text-accent-hover' : 'text-accent-deep',
+              ]}
+            >
+              {item.hint}
+            </p>
+            <h3 class:list={['mt-2 text-lg font-semibold', isDark ? 'text-text-on-dark' : 'text-text']}>
+              {item.title}
+            </h3>
+            {item.description && (
+              <p
+                class:list={[
+                  'mt-2 text-sm leading-relaxed',
+                  isDark ? 'text-text-muted-on-dark' : 'text-text-muted',
+                ]}
+              >
+                {item.description}
+              </p>
+            )}
+            <span
+              class:list={[
+                'mt-5 inline-flex items-center gap-1.5 font-mono text-xs transition-transform group-hover:translate-x-0.5',
+                isDark ? 'text-accent-hover' : 'text-accent-deep',
+              ]}
+            >
+              Öffnen
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path
+                  d="M6 3h7v7M13 3L6.5 9.5M3 6v7h7"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

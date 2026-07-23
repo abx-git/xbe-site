@@ -16,11 +16,22 @@ import { references, home, pageMeta } from '../content/site';
     title={references.title}
     description={references.description}
     path="/referenzen"
-    tags={['AGM · E2', 'WRK', 'Anonymisiert']}
+    tags={['Beratung', 'KI-Umsetzung', 'Anonymisiert']}
   >
     <ReferencesGraphic slot="graphic" />
   </PageHeader>
   <ProseSection title={references.intro.title} paragraphs={references.intro.paragraphs} />
+  <section class="blueprint-grid-light section-split py-20 sm:py-28">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <SectionHeader label="Praxis" title="Anonymisierte Projektbeispiele" />
+      <p class="-mt-6 mb-10 max-w-3xl text-text-muted">
+        Optionen, Vorgehen und messbare Ergebnisse aus Architekturberatung und KI-gestützter Softwareentwicklung.
+      </p>
+      <div class="space-y-10">
+        {references.cases.map((caseStudy) => <CaseStudy caseStudy={caseStudy} />)}
+      </div>
+    </div>
+  </section>
   <MethodOverview
     title={references.method.title}
     subtitle={references.method.subtitle}
@@ -37,20 +48,9 @@ import { references, home, pageMeta } from '../content/site';
     procedure={references.methodE2.procedure}
     outcomes={references.methodE2.outcomes}
   />
-  <section class="blueprint-grid-light section-split py-20 sm:py-28">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6">
-      <SectionHeader label="Praxis" title="Anonymisierte Projektbeispiele" />
-      <p class="-mt-6 mb-10 max-w-3xl text-text-muted">
-        Optionen, Vorgehen und messbare Ergebnisse — dokumentiert im AGM-Graph; Domänen-Discovery mit E2 optional ergänzend.
-      </p>
-      <div class="space-y-10">
-        {references.cases.map((caseStudy) => <CaseStudy caseStudy={caseStudy} />)}
-      </div>
-    </div>
-  </section>
   <CTASection
     title="Ähnliche Ausgangslage?"
-    description="Ob Domain Discovery, Security-Assessment, Architektur-Dokumentation oder Modernisierungsentscheidung — im Erstgespräch klären wir Scope und passende Leistungsbausteine."
+    description="Ob Architektur-Analyse, Security-Assessment, Migrationsentscheidung oder KI-gestützte Umsetzung — im Erstgespräch klären wir Scope und passende Leistungsbausteine."
     ctaLabel={home.cta}
     ctaHref="/kontakt"
   />

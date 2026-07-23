@@ -9,10 +9,12 @@ import TagCloud from '../components/TagCloud.astro';
 import CTASection from '../components/CTASection.astro';
 import MethodikGraphic from '../components/graphics/headers/MethodikGraphic.astro';
 import KnowledgeCatalogSection from '../components/KnowledgeCatalogSection.astro';
+import PrototypingProofs from '../components/PrototypingProofs.astro';
 import { methodology, home, pageMeta } from '../content/site';
 
 const dual = methodology.dualMethods;
 const tools = methodology.tools;
+const prototyping = methodology.prototyping;
 ---
 
 <Layout title={pageMeta.methodology.title} description={pageMeta.methodology.description} path="/methodik">
@@ -21,7 +23,7 @@ const tools = methodology.tools;
     title={methodology.title}
     description={methodology.description}
     path="/methodik"
-    tags={['AGM · E2', 'OKF · MCP', 'iSAQB']}
+    tags={['Hintergrund', 'Standards', 'Enterprise-KI']}
   >
     <MethodikGraphic slot="graphic" />
   </PageHeader>
@@ -165,9 +167,16 @@ const tools = methodology.tools;
       </div>
     </div>
   </section>
+  <PrototypingProofs
+    eyebrow={prototyping.eyebrow}
+    title={prototyping.title}
+    description={prototyping.description}
+    items={prototyping.items}
+    variant="light"
+  />
   <CTASection
-    title="Methodik schafft Vertrauen in die Ergebnisse."
-    description="Etablierte Architekturstandards, Domänen-Kontext, Enterprise-KI-Infrastruktur und verbindliche Validierung."
+    title="Leistungen im Vordergrund — Methodik schafft Vertrauen."
+    description="Etablierte Architekturstandards, Enterprise-KI-Infrastruktur und verbindliche Validierung hinter der Beratungsleistung."
     ctaLabel={home.cta}
     ctaHref="/kontakt"
   />

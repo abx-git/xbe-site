@@ -6,6 +6,7 @@ import ContextGrid from '../components/ContextGrid.astro';
 import ValueCards from '../components/ValueCards.astro';
 import NewsPreview from '../components/NewsPreview.astro';
 import IndustryStrip from '../components/IndustryStrip.astro';
+import PrototypingProofs from '../components/PrototypingProofs.astro';
 import TeaserGrid from '../components/TeaserGrid.astro';
 import CTASection from '../components/CTASection.astro';
 import { home, pageMeta } from '../content/site';
@@ -21,11 +22,17 @@ import { home, pageMeta } from '../content/site';
   <ProseSection title={home.intro.title} paragraphs={home.intro.paragraphs} />
   <ContextGrid title={home.context.title} items={home.context.items} />
   <ValueCards values={home.values} />
+  <PrototypingProofs
+    eyebrow={home.prototyping.eyebrow}
+    title={home.prototyping.title}
+    description={home.prototyping.description}
+    items={home.prototyping.items}
+  />
   <NewsPreview />
   <TeaserGrid teasers={home.teasers} />
   <CTASection
-    title="Legacy-Systeme verstehen — und iterativ modernisieren."
-    description="Eine fundierte Architekturanalyse ist die Basis jeder Transformation. Im Erstgespräch klären wir Ausgangssituation, Scope und passende Leistungsbausteine."
+    title="Architekturberatung und KI-gestützte Umsetzung."
+    description="Im Erstgespräch klären wir Ausgangssituation, Scope und passende Leistungsbausteine — von der Ist-Analyse bis zur iterativen Softwareentwicklung."
     ctaLabel={home.cta}
     ctaHref="/kontakt"
   />

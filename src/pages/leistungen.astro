@@ -14,11 +14,11 @@ import IterativeMigrationCycle from '../components/diagrams/IterativeMigrationCy
 import { services, home, pageMeta } from '../content/site';
 
 const diagramMap = {
-  'domain-modeling': DomainStormDiagram,
   analyse: C4ContextDiagram,
   dokumentation: DependencyGraph,
   migrationsplanung: MigrationPath,
   'ki-migration': IterativeMigrationCycle,
+  'domain-modeling': DomainStormDiagram,
 } as const;
 ---
 
@@ -28,7 +28,7 @@ const diagramMap = {
     title={services.title}
     description={services.description}
     path="/leistungen"
-    tags={['5 Bausteine', 'E2 · AGM', 'arc42']}
+    tags={['Beratung', 'KI-Entwicklung', '5 Bausteine']}
   >
     <LeistungenGraphic slot="graphic" />
   </PageHeader>
@@ -38,7 +38,7 @@ const diagramMap = {
       <SectionHeader label="Bausteine" title="Fünf modular buchbare Leistungen" />
       {
         services.items.map((item, index) => {
-          const Diagram = diagramMap[item.id];
+          const Diagram = diagramMap[item.id as keyof typeof diagramMap];
           return (
             <ServiceBlock
               title={item.title}
@@ -57,8 +57,8 @@ const diagramMap = {
     </div>
   </section>
   <CTASection
-    title="Von der Domäne bis zur iterativen Umsetzung."
-    description="Leistungsbausteine einzeln oder kombiniert — jeweils mit definierten Liefergegenständen und validierten Ergebnissen. E2 und AGM lassen sich bündeln."
+    title="Von der Ist-Analyse bis zur KI-gestützten Umsetzung."
+    description="Leistungsbausteine einzeln oder kombiniert — jeweils mit definierten Liefergegenständen und validierten Ergebnissen."
     ctaLabel={home.cta}
     ctaHref="/kontakt"
   />
