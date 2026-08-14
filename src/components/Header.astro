@@ -6,61 +6,40 @@ interface Props {
 }
 
 const { currentPath } = Astro.props;
-const isHome = currentPath === '/';
-const mainNavItems = navItems.filter((item) => item.href !== '/kontakt');
-const isContactPage = currentPath === '/kontakt';
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
 ---
 
-<header class:list={['sticky top-0 z-50', isHome ? 'header-bar' : 'header-bar--light']}>
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-    <a href="/" class="group flex items-center gap-3">
+<header class="header-bar--light sticky top-0 z-50">
+  <div class="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6">
+    <a href="/" class="flex items-center gap-3">
       <span
-        class:list={[
-          'flex h-8 w-8 items-center justify-center rounded-lg text-xs font-bold',
-          isHome
-            ? 'bg-accent/20 text-accent-hover'
-            : 'bg-accent-subtle text-accent-deep',
-        ]}
+        class="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-subtle text-xs font-bold text-accent-deep"
         aria-hidden="true"
       >
         X
       </span>
       <span class="flex flex-col leading-tight">
-        <span
-          class:list={[
-            'text-sm font-semibold tracking-wide',
-            isHome ? 'text-text-on-dark' : 'text-text',
-          ]}
-        >
-          {siteConfig.name}
-        </span>
-        <span
-          class:list={[
-            'eyebrow !text-[0.6rem] !tracking-[0.1em]',
-            isHome ? 'text-text-muted-on-dark' : 'text-text-muted',
-          ]}
-        >
-          {siteConfig.tagline}
-        </span>
+        <span class="text-sm font-semibold tracking-wide text-text">{siteConfig.name}</span>
+        <span class="eyebrow !text-[0.6rem] !tracking-[0.1em] text-text-muted">{siteConfig.tagline}</span>
       </span>
     </a>
 
     <nav class="hidden items-center gap-0.5 md:flex" aria-label="Hauptnavigation">
       {
-        mainNavItems.map((item) => (
+        navItems.map((item) => (
           <a
             href={item.href}
             class:list={[
-              'rounded-full px-3.5 py-2 text-sm transition-all duration-200',
-              currentPath === item.href
-                ? isHome
-                  ? 'bg-white/12 font-medium text-white'
-                  : 'bg-ink font-medium text-text-on-dark'
-                : isHome
-                  ? 'text-text-muted-on-dark hover:bg-white/8 hover:text-white'
-                  : 'text-text-muted hover:bg-bg-subtle hover:text-text',
+              'rounded-full px-3 py-2 text-sm transition-colors',
+              isActive(item.href)
+                ? 'bg-ink font-medium text-text-on-dark'
+                : 'text-text-muted hover:bg-bg-subtle hover:text-text',
             ]}
-            aria-current={currentPath === item.href ? 'page' : undefined}
+            aria-current={isActive(item.href) ? 'page' : undefined}
           >
             {item.label}
           </a>
@@ -68,31 +47,9 @@ const isContactPage = currentPath === '/kontakt';
       }
     </nav>
 
-    <a
-      href="/kontakt"
-      class:list={[
-        'hidden rounded-full px-4 py-2 text-sm font-medium transition-all md:inline-flex',
-        isContactPage
-          ? isHome
-            ? 'bg-white/12 text-white'
-            : 'bg-ink text-text-on-dark'
-          : isHome
-            ? 'bg-accent text-white hover:bg-accent-hover'
-            : 'bg-ink text-text-on-dark hover:bg-ink-muted',
-      ]}
-      aria-current={isContactPage ? 'page' : undefined}
-    >
-      Kontakt
-    </a>
-
     <button
       id="menu-toggle"
-      class:list={[
-        'flex h-11 w-11 items-center justify-center rounded-lg border md:hidden',
-        isHome
-          ? 'border-white/15 text-text-on-dark'
-          : 'border-border-strong text-text',
-      ]}
+      class="flex h-11 w-11 items-center justify-center rounded-lg border border-border-strong text-text md:hidden"
       aria-label="Menü öffnen"
       aria-expanded="false"
       aria-controls="mobile-menu"
@@ -106,49 +63,24 @@ const isContactPage = currentPath === '/kontakt';
 
   <nav
     id="mobile-menu"
-    class:list={[
-      'hidden border-t md:hidden',
-      isHome ? 'border-white/10 bg-ink' : 'border-border-strong bg-bg-elevated',
-    ]}
+    class="hidden border-t border-border bg-bg-elevated md:hidden"
     aria-label="Mobile Navigation"
   >
-    <div class="mx-auto flex max-w-6xl flex-col px-4 py-2 sm:px-6">
+    <div class="mx-auto flex max-w-3xl flex-col px-4 py-2 sm:px-6">
       {
-        mainNavItems.map((item) => (
+        navItems.map((item) => (
           <a
             href={item.href}
             class:list={[
               'rounded-lg px-3 py-3 text-sm transition-colors',
-              currentPath === item.href
-                ? isHome
-                  ? 'font-medium text-accent-hover'
-                  : 'font-medium text-accent-deep'
-                : isHome
-                  ? 'text-text-muted-on-dark hover:text-white'
-                  : 'text-text-muted hover:text-text',
+              isActive(item.href) ? 'font-medium text-accent-deep' : 'text-text-muted hover:text-text',
             ]}
-            aria-current={currentPath === item.href ? 'page' : undefined}
+            aria-current={isActive(item.href) ? 'page' : undefined}
           >
             {item.label}
           </a>
         ))
       }
-      <a
-        href="/kontakt"
-        class:list={[
-          'mt-2 rounded-lg px-3 py-3 text-sm font-medium transition-colors',
-          isContactPage
-            ? isHome
-              ? 'text-accent-hover'
-              : 'text-accent-deep'
-            : isHome
-              ? 'text-text-on-dark'
-              : 'text-text',
-        ]}
-        aria-current={isContactPage ? 'page' : undefined}
-      >
-        Kontakt
-      </a>
     </div>
   </nav>
 </header>

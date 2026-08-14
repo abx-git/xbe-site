@@ -1,10 +1,12 @@
-# X-BE — Website
+# X-BE
 
-Deutsche Marketing-Site für KI-gestützte Legacy-Analyse und Modernisierung.
+Öffentliche Arbeitsfläche für Konzepte, Specs und Demos rund um strukturierten Kontext in agentischer Softwarearbeit.
 
 **Stack:** Astro 7 · Tailwind CSS 4 · TypeScript · statischer Export
 
-**Live (nach Deploy):** https://www.x-be.de
+**Live:** https://www.x-be.de
+
+Kein Verkauf, keine buchbaren Angebote — Dokumentation und Demonstration.
 
 ## Entwicklung
 
@@ -12,31 +14,26 @@ Deutsche Marketing-Site für KI-gestützte Legacy-Analyse und Modernisierung.
 npm install
 npm run dev        # http://localhost:4321
 npm run build      # Ausgabe: dist/
-npm run preview    # Build lokal prüfen
+npm run preview
 ```
-
-## Deployment
-
-GitHub Pages über GitHub Actions — siehe [docs/GITHUB-PAGES-SETUP.md](./docs/GITHUB-PAGES-SETUP.md).
-
-Kurzablauf:
-
-1. Push auf `main` in [abx-git/xbe-site](https://github.com/abx-git/xbe-site)
-2. Workflow baut Astro-Site und veröffentlicht auf GitHub Pages
-3. Custom Domain `www.x-be.de` in GitHub Pages + DNS (CNAME → `abx-git.github.io`)
 
 ## Struktur
 
 ```text
 src/
-  content/     # site.ts, news.ts — zentraler deutscher Copy
-  components/  # Layout, Grafiken, Sektionen
-  pages/       # Routen (/leistungen, /methodik, …)
-public/        # favicon, robots.txt, CNAME
+  content/     # site, concepts, compose, examples, notes
+  components/  # Layout-Chrome, Embeds, Legal
+  pages/       # Index, concepts, compose, examples, notes, about
 ```
 
 ## Inhalte pflegen
 
-- Seitentexte: `src/content/site.ts`
-- News: `src/content/news.ts` (neue Artikel oben einfügen)
-- Navigation & Seitennummern: `src/content/site.ts` → `navItems`, `pageNumbers`
+| Was | Wo |
+|---|---|
+| Site-Config, About, Legal | `src/content/site.ts` |
+| Konzepte (E2, AGM, …) | `src/content/concepts.ts` |
+| Optionales Zusammenspiel | `src/content/compose.ts` |
+| Beispiele | `src/content/examples.ts` |
+| Notes | `src/content/notes.ts` |
+
+Neues Konzept: Eintrag in `concepts.ts` — die Route `/concepts/[slug]` entsteht automatisch.

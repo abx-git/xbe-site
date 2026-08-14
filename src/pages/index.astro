@@ -1,39 +1,114 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Hero from '../components/Hero.astro';
-import ProseSection from '../components/ProseSection.astro';
-import ContextGrid from '../components/ContextGrid.astro';
-import ValueCards from '../components/ValueCards.astro';
-import NewsPreview from '../components/NewsPreview.astro';
-import IndustryStrip from '../components/IndustryStrip.astro';
-import PrototypingProofs from '../components/PrototypingProofs.astro';
-import TeaserGrid from '../components/TeaserGrid.astro';
-import CTASection from '../components/CTASection.astro';
-import { home, pageMeta } from '../content/site';
+import StatusBadge from '../components/StatusBadge.astro';
+import { home, pageMeta, siteConfig } from '../content/site';
+import { getSortedConcepts } from '../content/concepts';
+import { compose } from '../content/compose';
+import { getSortedNotes, formatNoteDate } from '../content/notes';
+import { getSortedExamples } from '../content/examples';
+
+const concepts = getSortedConcepts();
+const notes = getSortedNotes().slice(0, 3);
+const examples = getSortedExamples();
 ---
 
-<Layout title={pageMeta.home.title} description={pageMeta.home.description}>
-  <Hero
-    title={home.title}
-    description={home.description}
-    cta={{ label: home.cta, href: '/kontakt' }}
-  />
-  <IndustryStrip />
-  <ProseSection title={home.intro.title} paragraphs={home.intro.paragraphs} />
-  <ContextGrid title={home.context.title} items={home.context.items} />
-  <ValueCards values={home.values} />
-  <PrototypingProofs
-    eyebrow={home.prototyping.eyebrow}
-    title={home.prototyping.title}
-    description={home.prototyping.description}
-    items={home.prototyping.items}
-  />
-  <NewsPreview />
-  <TeaserGrid teasers={home.teasers} />
-  <CTASection
-    title="Sprechen wir über Ihr System."
-    description="Im Erstgespräch klären wir Ausgangslage und Scope — und ob Analyse, Roadmap oder Umsetzung mit KI gerade der richtige nächste Schritt ist."
-    ctaLabel={home.cta}
-    ctaHref="/kontakt"
-  />
+<Layout title={pageMeta.home.title} description={pageMeta.home.description} path="/">
+  <section class="relative overflow-hidden border-b border-border bg-ink text-text-on-dark">
+    <div class="pointer-events-none absolute inset-0 opacity-40" aria-hidden="true">
+      <div class="gradient-mesh__grid absolute inset-0"></div>
+    </div>
+    <div class="relative mx-auto max-w-3xl px-4 py-20 sm:px-6 sm:py-28">
+      <p class="eyebrow animate-fade-up text-accent-hover">{siteConfig.name}</p>
+      <h1 class="display-xl animate-fade-up animate-fade-up-delay-1 mt-5 max-w-2xl text-text-on-dark">
+        {home.title}
+      </h1>
+      <p class="animate-fade-up animate-fade-up-delay-2 mt-6 max-w-xl text-lg leading-relaxed text-text-muted-on-dark">
+        {home.description}
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-16">
+    <div class="space-y-5 text-base leading-relaxed text-text-muted">
+      {home.mission.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-bg-elevated">
+    <div class="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-16">
+      <div class="section-label !mb-6">
+        <span>Konzepte</span>
+      </div>
+      <ul class="divide-y divide-border border-y border-border">
+        {
+          concepts.map((c) => (
+            <li>
+              <a href={`/concepts/${c.slug}`} class="group flex flex-col gap-2 py-6 no-underline sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
+                <div>
+                  <div class="flex flex-wrap items-center gap-3">
+                    <span class="font-mono text-xs text-accent-deep">{c.shortTitle}</span>
+                    <StatusBadge status={c.status} />
+                  </div>
+                  <p class="mt-2 text-lg font-semibold text-text group-hover:text-accent-deep">{c.title}</p>
+                  <p class="mt-2 text-sm leading-relaxed text-text-muted">{c.oneLiner}</p>
+                </div>
+                <span class="shrink-0 font-mono text-xs text-accent-deep">öffnen →</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-6 text-sm text-text-muted">
+        <a href="/concepts" class="text-accent-deep hover:underline">Alle Konzepte</a>
+        {' · '}
+        <a href="/compose" class="text-accent-deep hover:underline">{compose.title}</a>
+        {' (optional)'}
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-16">
+    <div class="grid gap-12 sm:grid-cols-2">
+      <div>
+        <div class="section-label !mb-4">
+          <span>Beispiele</span>
+        </div>
+        <ul class="space-y-4">
+          {
+            examples.map((e) => (
+              <li>
+                <a href={`/examples/${e.slug}`} class="font-medium text-text hover:text-accent-deep">
+                  {e.title}
+                </a>
+                <p class="mt-1 text-sm text-text-muted">{e.summary}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <a href="/examples" class="mt-4 inline-block font-mono text-xs text-accent-deep hover:underline">
+          Beispiele →
+        </a>
+      </div>
+      <div>
+        <div class="section-label !mb-4">
+          <span>Notes</span>
+        </div>
+        <ul class="space-y-4">
+          {
+            notes.map((n) => (
+              <li>
+                <p class="font-mono text-[0.65rem] text-text-muted">{formatNoteDate(n.date)}</p>
+                <a href={`/notes/${n.slug}`} class="font-medium text-text hover:text-accent-deep">
+                  {n.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <a href="/notes" class="mt-4 inline-block font-mono text-xs text-accent-deep hover:underline">
+          Notes →
+        </a>
+      </div>
+    </div>
+  </section>
 </Layout>

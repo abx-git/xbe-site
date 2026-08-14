@@ -1,0 +1,30 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { examplesIndex, getSortedExamples } from '../../content/examples';
+import { pageMeta } from '../../content/site';
+
+const examples = getSortedExamples();
+---
+
+<Layout title={pageMeta.examples.title} description={pageMeta.examples.description} path="/examples">
+  <PageIntro label="Index" title={examplesIndex.title} description={examplesIndex.description} />
+  <section class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+    <ul class="divide-y divide-border border-y border-border">
+      {
+        examples.map((e) => (
+          <li class="py-8">
+            <StatusBadge status={e.status} />
+            <h2 class="mt-3 text-xl font-semibold text-text">
+              <a href={`/examples/${e.slug}`} class="hover:text-accent-deep">
+                {e.title}
+              </a>
+            </h2>
+            <p class="mt-3 text-sm leading-relaxed text-text-muted">{e.summary}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>

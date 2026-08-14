@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { title, description, path = Astro.url.pathname } = Astro.props;
-const fullTitle = title === siteConfig.tagline ? title : `${title} — ${siteConfig.name}`;
+const fullTitle = title.includes(siteConfig.name) ? title : `${title} — ${siteConfig.name}`;
 const canonicalUrl = new URL(path, siteConfig.siteUrl).href;
 ---
 

@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import { conceptsIndex, getSortedConcepts } from '../../content/concepts';
+import { pageMeta } from '../../content/site';
+
+const concepts = getSortedConcepts();
+---
+
+<Layout title={pageMeta.concepts.title} description={pageMeta.concepts.description} path="/concepts">
+  <PageIntro label="Index" title={conceptsIndex.title} description={conceptsIndex.description} />
+  <section class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
+    <ul class="divide-y divide-border border-y border-border">
+      {
+        concepts.map((c) => (
+          <li class="py-8">
+            <div class="flex flex-wrap items-center gap-3">
+              <span class="font-mono text-xs text-accent-deep">{c.shortTitle}</span>
+              <StatusBadge status={c.status} />
+            </div>
+            <h2 class="mt-3 text-xl font-semibold text-text">
+              <a href={`/concepts/${c.slug}`} class="hover:text-accent-deep">
+                {c.title}
+              </a>
+            </h2>
+            <p class="mt-3 text-sm leading-relaxed text-text-muted">{c.oneLiner}</p>
+            <a href={`/concepts/${c.slug}`} class="mt-4 inline-block font-mono text-xs text-accent-deep hover:underline">
+              Concept-Seite →
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>
