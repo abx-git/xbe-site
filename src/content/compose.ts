@@ -1,10 +1,9 @@
 export const compose = {
   title: 'Compose',
-  description:
-    'E2 and AGM work independently. This page is only about how you might combine them — no bundle, no requirement.',
+  description: 'How E2 and AGM might work together — each concept stands on its own; this page is the bridge between them.',
   intro: [
-    'Need domain context only? Use E2. Need architecture context in the repo only? Use AGM. Using both is possible — I’m exploring that — but nothing here assumes you will.',
-    'The sequence below is a roundtrip I’m trying to make reproducible. It’s a sketch of the flow, not a finished product promise.',
+    'Domain context from E2, architecture context from AGM in the repo. I’m exploring what a roundtrip looks like when you use both.',
+    'The sequence below is a sketch I’m trying to make reproducible — files, steps, and artifacts spelled out.',
   ],
   steps: [
     {
@@ -33,7 +32,7 @@ export const compose = {
   open: [
     'On conflict, what wins: board, code, or AGM docs?',
     'Which `.storm.json` fields may agents write — and under what review?',
-    'How do we version bridge rules without breaking existing examples?',
+    'How do we version bridge rules as examples grow?',
   ],
   related: [
     { label: 'Concept: E2', href: '/concepts/e2' },

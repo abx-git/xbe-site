@@ -69,14 +69,6 @@ const related = concept.related
           ))}
         </ul>
       </div>
-      <div>
-        <h2 class="text-sm font-semibold text-text">What it is not</h2>
-        <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-text-muted">
-          {concept.not.map((item) => (
-            <li>{item}</li>
-          ))}
-        </ul>
-      </div>
       {
         related.length > 0 && (
           <div class="border-t border-border pt-8">
@@ -91,7 +83,7 @@ const related = concept.related
               ))}
               <li>
                 <a href="/compose" class="text-sm text-accent-deep hover:underline">
-                  Compose (optional)
+                  Compose
                 </a>
               </li>
             </ul>

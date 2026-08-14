@@ -35,7 +35,7 @@ export const home = {
   mission: [
     'Software development is shifting fast. I use this site to try things in the open: specs agents can read, architecture you can traverse, demos you can click.',
     'The pieces here — E2, AGM, and more as I add them — stand on their own. You can use one without the others. If you want to see how they might work together, that’s under Compose.',
-    'Nothing here is for sale. If something resonates, disagree, or you want to build on it — email, GitHub, or LinkedIn. I’m happy to talk.',
+    'If something here resonates — or you see it differently — I’m glad to exchange ideas. Email, GitHub, or LinkedIn.',
   ],
 } as const;
 
@@ -44,8 +44,8 @@ export const about = {
   description: 'Who runs this site and why it exists.',
   paragraphs: [
     'Andreas Bergmann — enterprise software architect (iSAQB CPSA-A), based near Hamburg.',
-    'I’ve spent decades on legacy systems and architecture. Lately I’m focused on what actually works when agents write code alongside humans: structured context, reviewable artifacts, and workflows that don’t pretend the model is always right.',
-    'This site is my lab notebook in public. No sales pitch, no booking link — just concepts, demos, and notes. Reach out if you want to compare notes or push back on an idea.',
+    'I’ve spent decades on legacy systems and architecture. Lately I’m focused on what works when agents write code alongside humans: structured context, reviewable artifacts, and human review where it matters.',
+    'This site is my lab notebook in public: concepts, demos, and notes. If you want to talk through an idea or push back on something, I’m happy to hear from you.',
   ],
 } as const;
 
@@ -122,11 +122,11 @@ export const pageMeta = {
   },
   concepts: {
     title: 'Concepts',
-    description: 'Things I’m building and trying — each with a problem, an artifact, a demo, and clear limits.',
+    description: 'Things I’m building and trying — problem, approach, artifact, demo.',
   },
   compose: {
     title: 'Compose',
-    description: 'Optional ways to combine concepts — not a bundled product.',
+    description: 'Ways to combine E2 and AGM — each concept works on its own too.',
   },
   examples: {
     title: 'Examples',

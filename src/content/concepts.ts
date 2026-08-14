@@ -19,7 +19,6 @@ export interface Concept {
     detail: string;
   };
   demo: ConceptLink[];
-  not: readonly string[];
   related: readonly string[];
   paragraphs?: readonly string[];
 }
@@ -27,7 +26,7 @@ export interface Concept {
 export const conceptsIndex = {
   title: 'Concepts',
   description:
-    'Each entry is something I’m actively trying. Problem, approach, artifact contract, demo, and what it is not. Combining them is optional — see Compose.',
+    'Each entry is something I’m actively trying: problem, approach, artifact, demo. See Compose for how pieces might fit together.',
 } as const;
 
 export const concepts: readonly Concept[] = [
@@ -39,9 +38,9 @@ export const concepts: readonly Concept[] = [
     oneLiner:
       'Model the domain on a board (Event Storming, DDD, BDD, USM, Event Modeling) and export schema-valid JSON for agents.',
     problem:
-      'Workshop output usually ends up as a whiteboard photo or loose markdown. Agents get prose, not a domain contract they can rely on.',
+      'Workshop output often stays informal — whiteboard photos, loose markdown. Agents need a domain contract they can actually use.',
     approach:
-      'A browser board for domain modeling. The deliverable is not a screenshot but a schema-valid `.storm.json` (board-snapshot-v1): elements, relations, glossary, hotspots, optional event schemas. Data stays local in the browser.',
+      'A browser board for domain modeling. Export a schema-valid `.storm.json` (board-snapshot-v1): elements, relations, glossary, hotspots, optional event schemas. Data stays local in the browser.',
     artifact: {
       name: 'board-snapshot-v1 (.storm.json)',
       detail:
@@ -52,11 +51,6 @@ export const concepts: readonly Concept[] = [
       { label: 'Embedded board', href: '/concepts/e2/board' },
       { label: 'Repository', href: 'https://github.com/abx-git/E2', external: true },
       { label: 'JSON Schema', href: 'https://abx-git.github.io/E2/schemas/board-snapshot-v1.schema.json', external: true },
-    ],
-    not: [
-      'Not a replacement for facilitation or real domain work with the team',
-      'Not full architecture documentation (that’s AGM)',
-      'Not a server for board content — data stays local',
     ],
     related: ['agm'],
     paragraphs: [
@@ -72,9 +66,9 @@ export const concepts: readonly Concept[] = [
     oneLiner:
       'A repo-local Markdown link graph under docs/architecture/ — traversable for agents, maintained with human review.',
     problem:
-      'Architecture knowledge lives in code, wikis, and chat logs. RAG over chunks is weak for reproducible architecture answers: probabilistic, hard to tie back to artifacts.',
+      'Architecture knowledge lives in code, wikis, and chat logs. For answers you need to stand behind, similarity search over chunks is hard to anchor to artifacts.',
     approach:
-      'Documentation as a graph in the repo: Markdown with explicit links, orchestrated via `blueprint.md`, navigation from `entry-point.md`. Agents follow edges instead of similarity search. Humans review outputs (Verify in a fresh chat).',
+      'Documentation as a graph in the repo: Markdown with explicit links, orchestrated via `blueprint.md`, navigation from `entry-point.md`. Agents follow edges. Humans review outputs (Verify in a fresh chat).',
     artifact: {
       name: 'docs/architecture/ (Markdown link graph)',
       detail:
@@ -83,11 +77,6 @@ export const concepts: readonly Concept[] = [
     demo: [
       { label: 'AGM Assistant (live)', href: 'https://abx-git.github.io/agm.github.io/', external: true },
       { label: 'Embedded assistant', href: '/concepts/agm/assistant' },
-    ],
-    not: [
-      'Not a substitute for architectural judgment',
-      'Not a domain workshop board (that’s E2)',
-      'Not a RAG product — graph traversal is the point',
     ],
     related: ['e2'],
     paragraphs: [

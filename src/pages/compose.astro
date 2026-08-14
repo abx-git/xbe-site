@@ -6,7 +6,7 @@ import { pageMeta } from '../content/site';
 ---
 
 <Layout title={pageMeta.compose.title} description={pageMeta.compose.description} path="/compose">
-  <PageIntro label="Optional" title={compose.title} description={compose.description} />
+  <PageIntro title={compose.title} description={compose.description} />
   <article class="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
     <div class="space-y-4 text-base leading-relaxed text-text-muted">
       {compose.intro.map((p) => <p>{p}</p>)}

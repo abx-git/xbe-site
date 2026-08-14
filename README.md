@@ -6,8 +6,6 @@ Public lab for experiments in AI-assisted software development — concepts, spe
 
 **Live:** https://www.x-be.de
 
-Nothing for sale here — just things I’m trying and documenting.
-
 ## Development
 
 ```bash

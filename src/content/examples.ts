@@ -19,14 +19,14 @@ export const examples: readonly Example[] = [
     title: 'Roundtrip E2 → agent → AGM (sketch)',
     status: 'sketch',
     summary:
-      'A numbered path with concrete artifacts. No public sample repo with code and docs yet — the goal is to make this rebuildable.',
+      'A numbered path with concrete artifacts. I’m working toward a public sample repo — for now, the sequence itself.',
     paragraphs: [
-      'This is me spelling out what I mean when I talk about “compose” — which files, which steps — without claiming it’s done.',
+      'What I mean by “compose”: which files, which steps, in what order.',
       'Step A — Domain: model a small bounded context on the E2 board (e.g. order/payment). Export `.storm.json` and validate against board-snapshot-v1.',
       'Step B — Implementation: attach the JSON snapshot in the IDE. Agent implements an aggregate/API per the board. I review the diff and tests.',
       'Step C — Architecture: install/adopt AGM in the repo. Derive context/container (C4) and a short arc42 section from code + board. Verify in a fresh chat (report-only).',
       'Step D — Feedback: drift (hotspots, missing events) back into the board or as a WRK item in the graph. Decide per project which artifact wins on conflict.',
-      'Still missing: a public minimal repo with board snapshot, app stub, and `docs/architecture/` as reference. Until then, this stays a sketch.',
+      'Next up: a public minimal repo with board snapshot, app stub, and `docs/architecture/` as reference. For now, this stays a sketch.',
     ],
     links: [
       { label: 'Compose', href: '/compose' },
