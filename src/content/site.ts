@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: 'X-BE',
-  tagline: 'Konzepte · Specs · Demos',
+  tagline: 'Ideas · experiments · demos',
   ownerName: 'Andreas Bergmann',
-  location: 'Großraum Hamburg',
+  location: 'Hamburg area, Germany',
   linkedin: 'https://www.linkedin.com/in/andreas-bergmann-083b6851/',
   siteUrl: 'https://www.x-be.de',
   hostingProvider: 'Vercel Inc.',
@@ -20,96 +20,96 @@ export const emailObfuscated = {
 } as const;
 
 export const navItems = [
-  { href: '/', label: 'Index' },
-  { href: '/concepts', label: 'Konzepte' },
-  { href: '/compose', label: 'Zusammenspiel' },
-  { href: '/examples', label: 'Beispiele' },
+  { href: '/', label: 'Home' },
+  { href: '/concepts', label: 'Concepts' },
+  { href: '/compose', label: 'Compose' },
+  { href: '/examples', label: 'Examples' },
   { href: '/notes', label: 'Notes' },
-  { href: '/about', label: 'Über' },
+  { href: '/about', label: 'About' },
 ] as const;
 
 export const home = {
-  title: 'Konzepte für strukturierten Kontext in agentischer Softwarearbeit',
+  title: 'Figuring out software development when AI does the heavy lifting',
   description:
-    'X-BE dokumentiert und demonstriert unabhängige Konzepte — Specs, Artefakte, Demos. Kein Produktverkauf, keine buchbaren Angebote.',
+    'I experiment here with ideas and concepts — trying what changes when development gets massive AI support, and building practices that might help the next generation of developers.',
   mission: [
-    'Hier liegen Konzepte, die ich ausbaue und öffentlich halte: jeweils für sich verständlich, mit Artefaktvertrag und Grenzen.',
-    'Die Bausteine (z. B. E2, AGM) sind unabhängig. Ob und wie man sie kombiniert, steht unter Zusammenspiel — als Option, nicht als Pflicht.',
-    'Neue Ideen kommen als weitere Concept-Seiten und Notes dazu. Kritik und Patches sind willkommen; es gibt nichts zu buchen.',
+    'Software development is shifting fast. I use this site to try things in the open: specs agents can read, architecture you can traverse, demos you can click.',
+    'The pieces here — E2, AGM, and more as I add them — stand on their own. You can use one without the others. If you want to see how they might work together, that’s under Compose.',
+    'Nothing here is for sale. If something resonates, disagree, or you want to build on it — email, GitHub, or LinkedIn. I’m happy to talk.',
   ],
 } as const;
 
 export const about = {
-  title: 'Über',
-  description: 'Wer hinter X-BE steht — ohne Angebotstext.',
+  title: 'About',
+  description: 'Who runs this site and why it exists.',
   paragraphs: [
-    'Andreas Bergmann, Großraum Hamburg. Enterprise Software Architect (iSAQB CPSA-A).',
-    'Diese Site ist eine öffentliche Arbeitsfläche: Konzepte erklären, Specs und Demos zeigen, Beobachtungen in Notes festhalten.',
-    'Es gibt keine buchbaren Gespräche und keinen Verkauf über diese Seite. Wer etwas klären oder beitragen will, kann sich per E-Mail, GitHub oder LinkedIn melden.',
+    'Andreas Bergmann — enterprise software architect (iSAQB CPSA-A), based near Hamburg.',
+    'I’ve spent decades on legacy systems and architecture. Lately I’m focused on what actually works when agents write code alongside humans: structured context, reviewable artifacts, and workflows that don’t pretend the model is always right.',
+    'This site is my lab notebook in public. No sales pitch, no booking link — just concepts, demos, and notes. Reach out if you want to compare notes or push back on an idea.',
   ],
 } as const;
 
 export const impressum = {
-  title: 'Impressum',
+  title: 'Legal notice',
   sections: [
     {
-      heading: 'Angaben gemäß § 5 TMG',
-      content: ['Andreas Bergmann', '[Straße und Hausnummer]', '[PLZ Ort]'],
+      heading: 'Information pursuant to § 5 TMG (Germany)',
+      content: ['Andreas Bergmann', '[Street and number]', '[Postal code City]'],
     },
     {
-      heading: 'Kontakt',
+      heading: 'Contact',
       content: ['__EMAIL__'],
     },
     {
-      heading: 'Umsatzsteuer-ID',
-      content: ['Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: [falls vorhanden]'],
+      heading: 'VAT ID',
+      content: ['VAT identification number pursuant to § 27a UStG: [if applicable]'],
     },
     {
-      heading: 'Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV',
-      content: ['Andreas Bergmann', '[Adresse]'],
+      heading: 'Responsible for content pursuant to § 55 Abs. 2 RStV',
+      content: ['Andreas Bergmann', '[Address]'],
     },
   ],
 } as const;
 
 export const datenschutz = {
-  title: 'Datenschutzerklärung',
+  title: 'Privacy policy',
   sections: [
     {
-      heading: '1. Verantwortlicher',
-      content: ['Andreas Bergmann', '[Adresse]', '__EMAIL__'],
+      heading: '1. Controller',
+      content: ['Andreas Bergmann', '[Address]', '__EMAIL__'],
     },
     {
       heading: '2. Hosting',
       content: [
-        'Diese Website wird bei Vercel Inc. gehostet. Beim Aufruf der Seite werden technisch notwendige Server-Logfiles (IP-Adresse, Zeitstempel, angeforderte URL) verarbeitet.',
-        'Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an stabilem Betrieb).',
+        'This website is hosted by Vercel Inc. When you visit the site, technically necessary server log files are processed (IP address, timestamp, requested URL).',
+        'Legal basis: Art. 6(1)(f) GDPR (legitimate interest in reliable operation).',
       ],
     },
     {
-      heading: '3. Kontaktaufnahme per E-Mail',
+      heading: '3. Contact by email',
       content: [
-        'Wenn Sie per E-Mail Kontakt aufnehmen, werden die Angaben zur Bearbeitung der Nachricht verarbeitet.',
-        'Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse) bzw. lit. b DSGVO, sofern eine Anbahnung vorliegt.',
-        'Die Daten werden gelöscht, sobald die Anfrage erledigt ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.',
+        'If you contact me by email, I process your details to handle your message.',
+        'Legal basis: Art. 6(1)(f) GDPR (legitimate interest) or Art. 6(1)(b) GDPR where relevant.',
+        'Data is deleted once the request is handled, unless statutory retention applies.',
       ],
     },
     {
-      heading: '4. Cookies und Tracking',
+      heading: '4. Cookies and tracking',
       content: [
-        'Diese Website setzt keine Tracking-Cookies und verwendet keine Analyse-Tools. Es ist kein Cookie-Banner erforderlich.',
+        'This site does not use tracking cookies or analytics tools. No cookie banner is required.',
       ],
     },
     {
-      heading: '5. Externe Links',
+      heading: '5. External links',
       content: [
-        'Links zu externen Websites (z. B. GitHub, LinkedIn, eingebettete Demos) unterliegen der Datenschutzerklärung des jeweiligen Anbieters.',
+        'Links to external sites (e.g. GitHub, LinkedIn, embedded demos) are subject to those providers’ privacy policies.',
       ],
     },
     {
-      heading: '6. Ihre Rechte',
+      heading: '6. Your rights',
       content: [
-        'Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch.',
-        'Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde.',
+        'You have the right to access, rectification, erasure, restriction of processing, data portability, and objection.',
+        'You may lodge a complaint with a data protection supervisory authority.',
       ],
     },
   ],
@@ -117,35 +117,35 @@ export const datenschutz = {
 
 export const pageMeta = {
   home: {
-    title: 'Konzepte · Specs · Demos',
+    title: 'Experiments in AI-assisted development',
     description: home.description,
   },
   concepts: {
-    title: 'Konzepte',
-    description: 'Unabhängige Konzepte mit Problem, Artefakt, Demo und Grenzen.',
+    title: 'Concepts',
+    description: 'Things I’m building and trying — each with a problem, an artifact, a demo, and clear limits.',
   },
   compose: {
-    title: 'Zusammenspiel',
-    description: 'Optionale Kombination unabhängiger Konzepte — kein Pflichtprodukt.',
+    title: 'Compose',
+    description: 'Optional ways to combine concepts — not a bundled product.',
   },
   examples: {
-    title: 'Beispiele',
-    description: 'Reproduzierbare Walkthroughs und Artefaktstände.',
+    title: 'Examples',
+    description: 'Walkthroughs and artifact snapshots — sketches marked as such.',
   },
   notes: {
     title: 'Notes',
-    description: 'Technische Notizen und offene Fragen — ohne Hype.',
+    description: 'Occasional write-ups — observations and open questions.',
   },
   about: {
-    title: 'Über',
+    title: 'About',
     description: about.description,
   },
   impressum: {
-    title: 'Impressum',
-    description: 'Impressum und Pflichtangaben.',
+    title: 'Legal notice',
+    description: 'Legal information and mandatory disclosures (Germany).',
   },
   datenschutz: {
-    title: 'Datenschutz',
-    description: 'Datenschutzerklärung gemäß DSGVO.',
+    title: 'Privacy',
+    description: 'Privacy policy (GDPR).',
   },
 } as const;

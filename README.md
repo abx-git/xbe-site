@@ -1,39 +1,40 @@
 # X-BE
 
-Öffentliche Arbeitsfläche für Konzepte, Specs und Demos rund um strukturierten Kontext in agentischer Softwarearbeit.
+Public lab for experiments in AI-assisted software development — concepts, specs, demos, and notes.
 
-**Stack:** Astro 7 · Tailwind CSS 4 · TypeScript · statischer Export
+**Stack:** Astro 7 · Tailwind CSS 4 · TypeScript · static export
 
 **Live:** https://www.x-be.de
 
-Kein Verkauf, keine buchbaren Angebote — Dokumentation und Demonstration.
+Nothing for sale here — just things I’m trying and documenting.
 
-## Entwicklung
+## Development
 
 ```bash
 npm install
 npm run dev        # http://localhost:4321
-npm run build      # Ausgabe: dist/
+npm run build      # output: dist/
 npm run preview
 ```
 
-## Struktur
+## Structure
 
 ```text
 src/
   content/     # site, concepts, compose, examples, notes
-  components/  # Layout-Chrome, Embeds, Legal
-  pages/       # Index, concepts, compose, examples, notes, about
+  components/  # layout chrome, embeds, legal
+  pages/       # routes
+public/        # favicon, robots.txt, CNAME
 ```
 
-## Inhalte pflegen
+## Content
 
-| Was | Wo |
+| What | Where |
 |---|---|
-| Site-Config, About, Legal | `src/content/site.ts` |
-| Konzepte (E2, AGM, …) | `src/content/concepts.ts` |
-| Optionales Zusammenspiel | `src/content/compose.ts` |
-| Beispiele | `src/content/examples.ts` |
+| Site config, about, legal | `src/content/site.ts` |
+| Concepts (E2, AGM, …) | `src/content/concepts.ts` |
+| Optional compose flow | `src/content/compose.ts` |
+| Examples | `src/content/examples.ts` |
 | Notes | `src/content/notes.ts` |
 
-Neues Konzept: Eintrag in `concepts.ts` — die Route `/concepts/[slug]` entsteht automatisch.
+New concept: add an entry to `concepts.ts` — `/concepts/[slug]` is generated automatically.

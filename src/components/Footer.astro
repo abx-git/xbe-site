@@ -10,13 +10,13 @@ import { navItems, siteConfig } from '../content/site';
         <p class="text-sm font-semibold text-text">{siteConfig.name}</p>
         <p class="mt-1 text-xs text-text-muted">{siteConfig.ownerName}</p>
         <p class="mt-4 max-w-sm text-sm leading-relaxed text-text-muted">
-          Öffentliche Arbeitsfläche für Konzepte, Specs und Demos. Kein Verkauf über diese Seite.
+          Experiments in AI-assisted development — concepts, specs, demos. Nothing for sale here.
         </p>
         <p class="mt-3 text-sm text-text-muted">
-          Kontakt: <EmailAddress class="font-mono text-text" />
+          <EmailAddress class="font-mono text-text" />
         </p>
       </div>
-      <nav class="flex flex-col gap-2 text-sm" aria-label="Footer Navigation">
+      <nav class="flex flex-col gap-2 text-sm" aria-label="Footer navigation">
         {
           navItems.map((item) => (
             <a href={item.href} class="text-text-muted transition-colors hover:text-accent-deep">
@@ -29,8 +29,8 @@ import { navItems, siteConfig } from '../content/site';
     <div class="mt-10 flex flex-col gap-3 border-t border-border pt-6 text-xs text-text-muted sm:flex-row sm:items-center sm:justify-between">
       <p>&copy; {new Date().getFullYear()} {siteConfig.ownerName}</p>
       <div class="flex flex-wrap gap-5">
-        <a href="/impressum" class="hover:text-accent-deep">Impressum</a>
-        <a href="/datenschutz" class="hover:text-accent-deep">Datenschutz</a>
+        <a href="/impressum" class="hover:text-accent-deep">Legal notice</a>
+        <a href="/datenschutz" class="hover:text-accent-deep">Privacy</a>
         <a href={siteConfig.linkedin} target="_blank" rel="noopener noreferrer" class="hover:text-accent-deep">
           LinkedIn
         </a>

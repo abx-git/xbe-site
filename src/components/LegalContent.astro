@@ -22,9 +22,9 @@ const { sections } = Astro.props;
           <div class="mt-3 space-y-1 text-sm leading-relaxed text-text-muted">
             {section.content.map((line) =>
               line === '__EMAIL__' ? (
-                <p>
-                  E-Mail: <EmailAddress />
-                </p>
+                  <p>
+                    Email: <EmailAddress />
+                  </p>
               ) : (
                 <p>{line}</p>
               ),

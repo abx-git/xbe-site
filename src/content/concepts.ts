@@ -1,4 +1,4 @@
-export type ConceptStatus = 'stabil' | 'experimentell' | 'entwurf';
+export type ConceptStatus = 'stable' | 'experimental' | 'draft';
 
 export interface ConceptLink {
   label: string;
@@ -25,9 +25,9 @@ export interface Concept {
 }
 
 export const conceptsIndex = {
-  title: 'Konzepte',
+  title: 'Concepts',
   description:
-    'Jeder Eintrag steht für sich: Problem, Ansatz, Artefaktvertrag, Demo, Grenzen. Zusammenspiel ist optional und separat beschrieben.',
+    'Each entry is something I’m actively trying. Problem, approach, artifact contract, demo, and what it is not. Combining them is optional — see Compose.',
 } as const;
 
 export const concepts: readonly Concept[] = [
@@ -35,64 +35,64 @@ export const concepts: readonly Concept[] = [
     slug: 'e2',
     title: 'E2 — Collaborative Domain Modeling',
     shortTitle: 'E2',
-    status: 'experimentell',
+    status: 'experimental',
     oneLiner:
-      'Grafische Domänen-Spezifikation (Event Storming, DDD, BDD, USM, Event Modeling) → schema-konformes JSON als Input für Agenten.',
+      'Model the domain on a board (Event Storming, DDD, BDD, USM, Event Modeling) and export schema-valid JSON for agents.',
     problem:
-      'Workshop-Ergebnisse landen oft als Whiteboard-Foto oder loses Markdown. Agenten bekommen daraus keinen verbindlichen Fachvertrag — nur Text.',
+      'Workshop output usually ends up as a whiteboard photo or loose markdown. Agents get prose, not a domain contract they can rely on.',
     approach:
-      'Ein Board für Domain Modeling. Ergebnis ist kein Screenshot, sondern eine schema-konforme `.storm.json` (board-snapshot-v1): Elemente, Relationen, Glossary, Hotspots, optionale Event-Schemas. Domänendaten bleiben lokal im Browser.',
+      'A browser board for domain modeling. The deliverable is not a screenshot but a schema-valid `.storm.json` (board-snapshot-v1): elements, relations, glossary, hotspots, optional event schemas. Data stays local in the browser.',
     artifact: {
       name: 'board-snapshot-v1 (.storm.json)',
       detail:
-        'JSON Schema: https://abx-git.github.io/E2/schemas/board-snapshot-v1.schema.json — Maschinenlesbare Fachwahrheit als zusätzlicher Agenten-Input.',
+        'JSON Schema: https://abx-git.github.io/E2/schemas/board-snapshot-v1.schema.json — machine-readable domain context as agent input.',
     },
     demo: [
-      { label: 'E2 Board (Live)', href: 'https://abx-git.github.io/E2/', external: true },
-      { label: 'Board eingebettet', href: '/concepts/e2/board' },
+      { label: 'E2 Board (live)', href: 'https://abx-git.github.io/E2/', external: true },
+      { label: 'Embedded board', href: '/concepts/e2/board' },
       { label: 'Repository', href: 'https://github.com/abx-git/E2', external: true },
       { label: 'JSON Schema', href: 'https://abx-git.github.io/E2/schemas/board-snapshot-v1.schema.json', external: true },
     ],
     not: [
-      'Kein Ersatz für Facilitation oder Domänenarbeit im Team',
-      'Keine vollständige Softwarearchitektur-Dokumentation (das ist AGM)',
-      'Kein Server für Board-Inhalt — Daten lokal',
+      'Not a replacement for facilitation or real domain work with the team',
+      'Not full architecture documentation (that’s AGM)',
+      'Not a server for board content — data stays local',
     ],
     related: ['agm'],
     paragraphs: [
-      'Methoden-Mix nach Bedarf: Event Storming, DDD, BDD/Example Mapping, User Story Mapping, Event Modeling — einzeln oder kombiniert auf einem Board.',
-      'Praktischer Pfad: Workshop → modellieren → `.storm.json` exportieren → in der IDE als Agenten-Kontext referenzieren (z. B. „Implementiere Aggregate X gemäß Board“).',
+      'Mix methods as needed: Event Storming, DDD, BDD/Example Mapping, User Story Mapping, Event Modeling — on one board.',
+      'Typical path: workshop → model → export `.storm.json` → attach in the IDE as agent context (“implement aggregate X per the board”).',
     ],
   },
   {
     slug: 'agm',
     title: 'AGM — Architecture Graph Method',
     shortTitle: 'AGM',
-    status: 'experimentell',
+    status: 'experimental',
     oneLiner:
-      'Repo-lokaler Markdown-Linkgraph unter docs/architecture/ — traversierbar für Agenten, gepflegt mit menschlicher Prüfung.',
+      'A repo-local Markdown link graph under docs/architecture/ — traversable for agents, maintained with human review.',
     problem:
-      'Architekturwissen steckt in Code, Wikis und Chat-Verläufen. RAG über Chunks ist für reproduzierbare Architekturaussagen schwach: probabilistisch, schwer an Artefakte gebunden.',
+      'Architecture knowledge lives in code, wikis, and chat logs. RAG over chunks is weak for reproducible architecture answers: probabilistic, hard to tie back to artifacts.',
     approach:
-      'Dokumentation als Graph im Repository: Markdown mit expliziten Links, orchestriert über `blueprint.md`, Navigation ab `entry-point.md`. Agenten traversieren Kanten statt Similarity-Search. Menschen prüfen Ergebnisse (Verify in frischem Chat).',
+      'Documentation as a graph in the repo: Markdown with explicit links, orchestrated via `blueprint.md`, navigation from `entry-point.md`. Agents follow edges instead of similarity search. Humans review outputs (Verify in a fresh chat).',
     artifact: {
-      name: 'docs/architecture/ (Markdown-Linkgraph)',
+      name: 'docs/architecture/ (Markdown link graph)',
       detail:
-        'OKF-nahe Struktur (Frontmatter, index.md, log.md). Tracks: Build, Evolve, Architect, Domain, Verify. Optional MCP/CLI.',
+        'OKF-like structure (frontmatter, index.md, log.md). Tracks: Build, Evolve, Architect, Domain, Verify. Optional MCP/CLI.',
     },
     demo: [
-      { label: 'AGM Assistant (Live)', href: 'https://abx-git.github.io/agm.github.io/', external: true },
-      { label: 'Assistant eingebettet', href: '/concepts/agm/assistant' },
+      { label: 'AGM Assistant (live)', href: 'https://abx-git.github.io/agm.github.io/', external: true },
+      { label: 'Embedded assistant', href: '/concepts/agm/assistant' },
     ],
     not: [
-      'Kein Ersatz für Architektururteil',
-      'Kein Domänen-Workshop-Board (das ist E2)',
-      'Kein RAG-Produkt — Graph-Traversierung ist der Punkt',
+      'Not a substitute for architectural judgment',
+      'Not a domain workshop board (that’s E2)',
+      'Not a RAG product — graph traversal is the point',
     ],
     related: ['e2'],
     paragraphs: [
-      'These: Architekturdokumentation ist die API der KI-Konversation — wenn sie versioniert, verlinkt und prüfbar vorliegt.',
-      'Golden Path grob: Install → Adopt → Continue → Maintain → Verify. Details im Assistant und in den Workflow-Prompts.',
+      'Working thesis: architecture documentation is the API of the AI conversation — when it’s versioned, linked, and reviewable.',
+      'Golden path in short: Install → Adopt → Continue → Maintain → Verify. Details in the Assistant and workflow prompts.',
     ],
   },
 ];

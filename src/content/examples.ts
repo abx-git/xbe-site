@@ -1,35 +1,35 @@
 export interface Example {
   slug: string;
   title: string;
-  status: 'skizze' | 'reproduzierbar';
+  status: 'sketch' | 'reproducible';
   summary: string;
   paragraphs: readonly string[];
   links: readonly { label: string; href: string; external?: boolean }[];
 }
 
 export const examplesIndex = {
-  title: 'Beispiele',
+  title: 'Examples',
   description:
-    'Walkthroughs und Artefaktstände. Skizzen sind als solche markiert — noch kein vollständiger reproduzierbarer Case.',
+    'Walkthroughs and artifact snapshots. Sketches are labeled — I’m still working toward fully reproducible cases.',
 } as const;
 
 export const examples: readonly Example[] = [
   {
-    slug: 'roundtrip-skizze',
-    title: 'Roundtrip E2 → Agent → AGM (Skizze)',
-    status: 'skizze',
+    slug: 'roundtrip-sketch',
+    title: 'Roundtrip E2 → agent → AGM (sketch)',
+    status: 'sketch',
     summary:
-      'Nummerierter Pfad mit Artefakten. Noch kein öffentliches Sample-Repo mit Code- und Doc-Stand — die Sequenz soll nachbaubar werden.',
+      'A numbered path with concrete artifacts. No public sample repo with code and docs yet — the goal is to make this rebuildable.',
     paragraphs: [
-      'Ziel: zeigen, welche Dateien und Schritte gemeint sind, wenn von „Zusammenspiel“ die Rede ist — ohne Marketing-Claim.',
-      'Schritt A — Domäne: Im E2 Board ein kleines Bounded Context modellieren (z. B. Order/Payment). Export als `.storm.json` gegen board-snapshot-v1 validieren.',
-      'Schritt B — Implementierung: In einer IDE den JSON-Snapshot als Kontext anhängen. Agent implementiert ein Aggregate/API gemäß Board. Mensch reviewed Diff und Tests.',
-      'Schritt C — Architektur: AGM im Repo installieren/adoptieren. Context/Container (C4) und eine kurze arc42-Sektion aus Code + Board ableiten. Verify in frischem Chat (report-only).',
-      'Schritt D — Feedback: Abweichungen (Hotspots, fehlende Events) zurück ins Board oder als WRK-Item im Graph. Pro Projekt festlegen, welches Artefakt bei Konflikt führt.',
-      'Fehlt noch: öffentliches Minimal-Repo mit Board-Snapshot, App-Stub und `docs/architecture/` als Referenzstand. Bis dahin bleibt dieser Eintrag eine Skizze.',
+      'This is me spelling out what I mean when I talk about “compose” — which files, which steps — without claiming it’s done.',
+      'Step A — Domain: model a small bounded context on the E2 board (e.g. order/payment). Export `.storm.json` and validate against board-snapshot-v1.',
+      'Step B — Implementation: attach the JSON snapshot in the IDE. Agent implements an aggregate/API per the board. I review the diff and tests.',
+      'Step C — Architecture: install/adopt AGM in the repo. Derive context/container (C4) and a short arc42 section from code + board. Verify in a fresh chat (report-only).',
+      'Step D — Feedback: drift (hotspots, missing events) back into the board or as a WRK item in the graph. Decide per project which artifact wins on conflict.',
+      'Still missing: a public minimal repo with board snapshot, app stub, and `docs/architecture/` as reference. Until then, this stays a sketch.',
     ],
     links: [
-      { label: 'Zusammenspiel', href: '/compose' },
+      { label: 'Compose', href: '/compose' },
       { label: 'E2 Board', href: 'https://abx-git.github.io/E2/', external: true },
       { label: 'AGM Assistant', href: 'https://abx-git.github.io/agm.github.io/', external: true },
       { label: 'E2 Schema', href: 'https://abx-git.github.io/E2/schemas/board-snapshot-v1.schema.json', external: true },

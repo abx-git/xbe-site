@@ -1,45 +1,43 @@
 export const compose = {
-  title: 'Zusammenspiel',
+  title: 'Compose',
   description:
-    'E2 und AGM sind unabhängig. Hier steht nur die optionale Bridge — kein Bundle-Verkauf, keine Pflicht.',
+    'E2 and AGM work independently. This page is only about how you might combine them — no bundle, no requirement.',
   intro: [
-    'Wer nur Domänenkontext braucht, nutzt E2. Wer nur Architekturkontext im Repo braucht, nutzt AGM. Beides zusammen ist möglich, aber nicht vorausgesetzt.',
-    'Die folgende Sequenz beschreibt einen möglichen Roundtrip. Sie ist eine Spezifikation-Skizze, kein fertiges Produktversprechen.',
+    'Need domain context only? Use E2. Need architecture context in the repo only? Use AGM. Using both is possible — I’m exploring that — but nothing here assumes you will.',
+    'The sequence below is a roundtrip I’m trying to make reproducible. It’s a sketch of the flow, not a finished product promise.',
   ],
   steps: [
     {
       n: '1',
-      title: 'Spezifizieren (E2)',
-      detail:
-        'Workshop / Board: Domäne modellieren. Export: schema-konformes `.storm.json`.',
+      title: 'Specify (E2)',
+      detail: 'Workshop / board: model the domain. Export schema-valid `.storm.json`.',
     },
     {
       n: '2',
-      title: 'Bauen (Agenten + Mensch)',
-      detail:
-        'JSON als zusätzlichen Kontext in die IDE. Implementierung, Tests, Review. Mensch bleibt Gate.',
+      title: 'Build (agents + human)',
+      detail: 'Attach JSON as extra context in the IDE. Implement, test, review. Human stays the gate.',
     },
     {
       n: '3',
-      title: 'Architekturspur (AGM)',
+      title: 'Architecture trail (AGM)',
       detail:
-        'Ist/Soll, Schnittstellen, Entscheidungen im Markdown-Graph unter docs/architecture/. Verify getrennt vom Schreib-Chat.',
+        'As-is / to-be, interfaces, decisions in the Markdown graph under docs/architecture/. Verify in a separate chat from the write session.',
     },
     {
       n: '4',
-      title: 'Zurück in die Spec (optional)',
+      title: 'Back into the spec (optional)',
       detail:
-        'Bounded Contexts / Events aus dem Graph oder aus Code zurück ins Board — oder Board anpassen und erneut exportieren. Source of Truth muss pro Projekt festgelegt werden.',
+        'Bounded contexts / events from the graph or code back into the board — or update the board and re-export. Pick a source of truth per project.',
     },
   ],
   open: [
-    'Wer gewinnt bei Konflikt: Board, Code oder AGM-Docs?',
-    'Welche Felder der `.storm.json` dürfen Agenten schreiben — und unter welchem Review?',
-    'Wie versioniert man Bridge-Regeln, ohne bestehende Examples zu brechen?',
+    'On conflict, what wins: board, code, or AGM docs?',
+    'Which `.storm.json` fields may agents write — and under what review?',
+    'How do we version bridge rules without breaking existing examples?',
   ],
   related: [
-    { label: 'Konzept E2', href: '/concepts/e2' },
-    { label: 'Konzept AGM', href: '/concepts/agm' },
-    { label: 'Beispiel Roundtrip-Skizze', href: '/examples/roundtrip-skizze' },
+    { label: 'Concept: E2', href: '/concepts/e2' },
+    { label: 'Concept: AGM', href: '/concepts/agm' },
+    { label: 'Example: roundtrip sketch', href: '/examples/roundtrip-sketch' },
   ],
 } as const;

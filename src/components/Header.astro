@@ -28,7 +28,7 @@ function isActive(href: string): boolean {
       </span>
     </a>
 
-    <nav class="hidden items-center gap-0.5 md:flex" aria-label="Hauptnavigation">
+    <nav class="hidden items-center gap-0.5 md:flex" aria-label="Main navigation">
       {
         navItems.map((item) => (
           <a
@@ -50,7 +50,7 @@ function isActive(href: string): boolean {
     <button
       id="menu-toggle"
       class="flex h-11 w-11 items-center justify-center rounded-lg border border-border-strong text-text md:hidden"
-      aria-label="Menü öffnen"
+      aria-label="Open menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
     >
@@ -64,7 +64,7 @@ function isActive(href: string): boolean {
   <nav
     id="mobile-menu"
     class="hidden border-t border-border bg-bg-elevated md:hidden"
-    aria-label="Mobile Navigation"
+    aria-label="Mobile navigation"
   >
     <div class="mx-auto flex max-w-3xl flex-col px-4 py-2 sm:px-6">
       {
@@ -97,7 +97,7 @@ function isActive(href: string): boolean {
     iconOpen?.classList.toggle('hidden', !isOpen);
     iconClose?.classList.toggle('hidden', isOpen);
     toggle.setAttribute('aria-expanded', String(!isOpen));
-    toggle.setAttribute('aria-label', isOpen ? 'Menü öffnen' : 'Menü schließen');
+    toggle.setAttribute('aria-label', isOpen ? 'Open menu' : 'Close menu');
   });
 
   menu?.querySelectorAll('a').forEach((link) => {
@@ -106,7 +106,7 @@ function isActive(href: string): boolean {
       iconOpen?.classList.remove('hidden');
       iconClose?.classList.add('hidden');
       toggle?.setAttribute('aria-expanded', 'false');
-      toggle?.setAttribute('aria-label', 'Menü öffnen');
+      toggle?.setAttribute('aria-label', 'Open menu');
     });
   });
 </script>
