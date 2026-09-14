@@ -18,6 +18,13 @@ npm run dev        # http://localhost:5173/vault/
 npm run build      # → ../public/vault/
 ```
 
+## Funktionen
+
+- **Viewer:** Bilder, Text, PDF, Video, Markdown – rein im RAM entschlüsselt
+- **Textbearbeitung:** `.txt`, `.json`, `.csv`, `.yaml`, Code-Dateien etc. direkt im Viewer editierbar
+- **Markdown-Editor:** Formatierte Ansicht mit Toolbar (Überschriften, Fett, Listen, Zitate, Links) plus Quelltext-Modus
+- **Verschlüsseltes Speichern:** Änderungen werden im RAM verschlüsselt und direkt in die bestehende Datei geschrieben – kein Klartext auf der Festplatte
+
 ## Architektur
 
 | Modul | Datei | Aufgabe |
