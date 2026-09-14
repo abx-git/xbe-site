@@ -413,6 +413,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
@@ -424,6 +425,33 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.dirty-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--warning);
+  background: rgba(251, 191, 36, 0.12);
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.preview-modal--editing {
+  max-width: 95vw;
+  max-height: 95vh;
+  width: 900px;
 }
 
 .preview-body {
@@ -449,7 +477,14 @@ body {
   background: #fff;
 }
 
+.preview-body--editing {
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+}
+
 .preview-body pre,
+.preview-body .preview-readonly,
 .preview-body .markdown-body {
   width: 100%;
   max-height: 70vh;
@@ -463,6 +498,134 @@ body {
   border-radius: var(--radius);
   align-self: flex-start;
 }
+
+/* ── Text / Markdown Editor ── */
+
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 70vh;
+  min-height: 320px;
+}
+
+.editor-mode-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+
+.editor-mode-tab {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.editor-mode-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.editor-mode-tab:hover {
+  color: var(--text);
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.editor-btn {
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.editor-btn:hover {
+  background: var(--border);
+  border-color: var(--accent);
+}
+
+.editor-btn:active {
+  background: var(--accent);
+  color: #0f1419;
+}
+
+.editor-textarea {
+  flex: 1;
+  width: 100%;
+  padding: 1rem;
+  background: var(--bg);
+  border: none;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+}
+
+.editor-rich {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  background: var(--bg);
+  overflow-y: auto;
+  outline: none;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.editor-rich:focus {
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.editor-rich h1 { font-size: 1.75rem; margin: 0.75rem 0 0.5rem; }
+.editor-rich h2 { font-size: 1.375rem; margin: 0.75rem 0 0.5rem; }
+.editor-rich h3 { font-size: 1.125rem; margin: 0.5rem 0 0.375rem; }
+.editor-rich p { margin-bottom: 0.75rem; }
+.editor-rich ul, .editor-rich ol { margin: 0.5rem 0 0.75rem 1.5rem; }
+.editor-rich blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+  color: var(--text-muted);
+  margin: 0.75rem 0;
+}
+.editor-rich code {
+  background: var(--bg-hover);
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-size: 0.875em;
+}
+.editor-rich pre {
+  background: var(--bg-hover);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+.editor-rich a { color: var(--accent); }
+
+.hidden { display: none !important; }
 
 .preview-body .markdown-body h1,
 .preview-body .markdown-body h2,

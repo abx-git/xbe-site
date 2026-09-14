@@ -1,6 +1,16 @@
 import './styles.css';
 import { deriveKeyFromPassword, importRawKey } from './crypto.js';
 import {
+  applyRichAction,
+  applySourceAction,
+  htmlToMarkdown,
+  isEditableFile,
+  isMarkdownFile,
+  markdownToHtml,
+  MARKDOWN_TOOLBAR,
+  renderMarkdown,
+} from './editor.js';
+import {
   buildTree,
   importFromDataTransfer,
   isFileSystemAccessSupported,
@@ -8,8 +18,9 @@ import {
   loadChildren,
   pickDirectory,
   readDecryptedFile,
+  updateEncryptedFileContent,
 } from './fs-adapter.js';
-import type { AppPhase, PreviewState, VaultEntry, VaultNode } from './types';
+import type { AppPhase, MarkdownEditMode, PreviewState, VaultEntry, VaultNode } from './types';
 
 // ── Application State (flüchtiger RAM, kein Persist) ──
 
@@ -60,26 +71,6 @@ function fileIcon(name: string, kind: string): string {
     zip: '📦', gz: '📦',
   };
   return icons[ext] ?? '📄';
-}
-
-function renderMarkdown(text: string): string {
-  return text
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    .replace(/```[\s\S]*?```/g, (block) => {
-      const code = block.replace(/```\w*\n?/, '').replace(/```$/, '');
-      return `<pre><code>${escapeHtml(code)}</code></pre>`;
-    })
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/^(.+)$/gm, (line) => {
-      if (line.startsWith('<')) return line;
-      return `<p>${line}</p>`;
-    });
 }
 
 function render(): void {
@@ -334,11 +325,33 @@ function renderPreview(): void {
 
   const overlay = document.createElement('div');
   overlay.className = 'preview-overlay';
+  const isMd = isMarkdownFile(preview.mimeType, preview.name);
+  const editing = preview.editMode && preview.editable;
 
   let bodyContent = '';
   const mime = preview.mimeType;
 
-  if (mime.startsWith('image/')) {
+  if (editing && isMd) {
+    const mode = preview.markdownMode ?? 'rich';
+    const toolbar = MARKDOWN_TOOLBAR.map(
+      (btn) => `<button type="button" class="editor-btn" data-action="${btn.action}" title="${btn.title}">${btn.label}</button>`,
+    ).join('');
+    bodyContent = `
+      <div class="editor-panel markdown-editor">
+        <div class="editor-mode-tabs">
+          <button type="button" class="editor-mode-tab ${mode === 'rich' ? 'active' : ''}" data-mode="rich">Formatiert</button>
+          <button type="button" class="editor-mode-tab ${mode === 'source' ? 'active' : ''}" data-mode="source">Quelltext</button>
+        </div>
+        <div class="editor-toolbar" id="md-toolbar">${toolbar}</div>
+        <div class="editor-rich ${mode === 'rich' ? '' : 'hidden'}" id="rich-editor" contenteditable="true">${markdownToHtml(preview.textContent ?? '')}</div>
+        <textarea class="editor-textarea ${mode === 'source' ? '' : 'hidden'}" id="source-editor" spellcheck="false">${escapeHtml(preview.textContent ?? '')}</textarea>
+      </div>`;
+  } else if (editing) {
+    bodyContent = `
+      <div class="editor-panel">
+        <textarea class="editor-textarea" id="text-editor" spellcheck="false">${escapeHtml(preview.textContent ?? '')}</textarea>
+      </div>`;
+  } else if (mime.startsWith('image/')) {
     bodyContent = `<img src="${preview.objectUrl}" alt="${escapeHtml(preview.name)}" />`;
   } else if (mime.startsWith('video/')) {
     bodyContent = `<video src="${preview.objectUrl}" controls></video>`;
@@ -346,30 +359,165 @@ function renderPreview(): void {
     bodyContent = `<audio src="${preview.objectUrl}" controls></audio>`;
   } else if (mime === 'application/pdf') {
     bodyContent = `<iframe src="${preview.objectUrl}"></iframe>`;
-  } else if (mime === 'text/markdown' && preview.textContent) {
+  } else if (isMd && preview.textContent) {
     bodyContent = `<div class="markdown-body">${renderMarkdown(preview.textContent)}</div>`;
   } else if (mime.startsWith('text/') || mime === 'application/json') {
-    bodyContent = `<pre>${escapeHtml(preview.textContent ?? '')}</pre>`;
+    bodyContent = `<pre class="preview-readonly">${escapeHtml(preview.textContent ?? '')}</pre>`;
   } else {
     bodyContent = `<div class="empty-state"><span>Dateityp kann nicht angezeigt werden</span><span>${escapeHtml(preview.name)}</span></div>`;
   }
 
+  const dirtyBadge = preview.dirty ? '<span class="dirty-badge">Ungespeichert</span>' : '';
+  const editBtn = preview.editable
+    ? `<button class="btn btn-secondary" id="toggle-edit">${editing ? 'Vorschau' : 'Bearbeiten'}</button>`
+    : '';
+  const saveBtn = preview.editable && editing
+    ? `<button class="btn btn-primary" id="save-preview" ${preview.dirty ? '' : 'disabled'}>Speichern</button>`
+    : '';
+
   overlay.innerHTML = `
-    <div class="preview-modal">
+    <div class="preview-modal ${editing ? 'preview-modal--editing' : ''}">
       <div class="preview-header">
-        <h2>${escapeHtml(preview.name)}</h2>
-        <button class="btn btn-secondary" id="close-preview">Schließen</button>
+        <h2>${escapeHtml(preview.name)}${dirtyBadge}</h2>
+        <div class="preview-actions">
+          ${saveBtn}
+          ${editBtn}
+          <button class="btn btn-secondary" id="close-preview">Schließen</button>
+        </div>
       </div>
-      <div class="preview-body">${bodyContent}</div>
+      <div class="preview-body ${editing ? 'preview-body--editing' : ''}">${bodyContent}</div>
     </div>
   `;
 
   document.body.appendChild(overlay);
 
-  overlay.querySelector('#close-preview')?.addEventListener('click', closePreview);
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) closePreview();
+  setupPreviewEvents(overlay, isMd);
+}
+
+function setupPreviewEvents(overlay: HTMLElement, isMd: boolean): void {
+  overlay.querySelector('#close-preview')?.addEventListener('click', () => {
+    if (preview?.dirty) {
+      if (!window.confirm('Ungespeicherte Änderungen verwerfen?')) return;
+    }
+    closePreview();
   });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      if (preview?.dirty && !window.confirm('Ungespeicherte Änderungen verwerfen?')) return;
+      closePreview();
+    }
+  });
+
+  overlay.querySelector('#toggle-edit')?.addEventListener('click', toggleEditMode);
+  overlay.querySelector('#save-preview')?.addEventListener('click', savePreview);
+
+  if (!preview?.editMode) return;
+
+  const markDirty = () => {
+    if (!preview) return;
+    preview.dirty = true;
+    const saveBtn = overlay.querySelector('#save-preview') as HTMLButtonElement | null;
+    if (saveBtn) saveBtn.disabled = false;
+    const badge = overlay.querySelector('.dirty-badge');
+    if (!badge) {
+      overlay.querySelector('.preview-header h2')?.insertAdjacentHTML('beforeend', '<span class="dirty-badge">Ungespeichert</span>');
+    }
+  };
+
+  if (isMd) {
+    const richEditor = overlay.querySelector('#rich-editor') as HTMLElement | null;
+    const sourceEditor = overlay.querySelector('#source-editor') as HTMLTextAreaElement | null;
+
+    overlay.querySelectorAll('.editor-mode-tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        if (!preview || !richEditor || !sourceEditor) return;
+        const newMode = (tab as HTMLElement).dataset.mode as MarkdownEditMode;
+        const oldMode = preview.markdownMode ?? 'rich';
+        if (newMode === 'source' && oldMode === 'rich') {
+          sourceEditor.value = htmlToMarkdown(richEditor);
+        } else if (newMode === 'rich' && oldMode === 'source') {
+          richEditor.innerHTML = markdownToHtml(sourceEditor.value);
+        }
+        preview.markdownMode = newMode;
+        richEditor.classList.toggle('hidden', newMode !== 'rich');
+        sourceEditor.classList.toggle('hidden', newMode !== 'source');
+        overlay.querySelectorAll('.editor-mode-tab').forEach((t) => {
+          t.classList.toggle('active', (t as HTMLElement).dataset.mode === newMode);
+        });
+      });
+    });
+
+    overlay.querySelectorAll('.editor-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const action = (btn as HTMLElement).dataset.action!;
+        const mode = preview?.markdownMode ?? 'rich';
+        if (mode === 'rich' && richEditor) {
+          applyRichAction(action as Parameters<typeof applyRichAction>[0], richEditor);
+        } else if (sourceEditor) {
+          applySourceAction(action as Parameters<typeof applySourceAction>[0], sourceEditor);
+        }
+        markDirty();
+      });
+    });
+
+    richEditor?.addEventListener('input', markDirty);
+    sourceEditor?.addEventListener('input', markDirty);
+  } else {
+    overlay.querySelector('#text-editor')?.addEventListener('input', markDirty);
+  }
+}
+
+function toggleEditMode(): void {
+  if (!preview?.editable) return;
+  if (preview.editMode && preview.dirty) {
+    if (!window.confirm('Ungespeicherte Änderungen verwerfen?')) return;
+    preview.dirty = false;
+  }
+  preview.editMode = !preview.editMode;
+  if (preview.editMode && isMarkdownFile(preview.mimeType, preview.name)) {
+    preview.markdownMode = preview.markdownMode ?? 'rich';
+  }
+  renderPreview();
+}
+
+async function savePreview(): Promise<void> {
+  if (!cryptoKey || !preview?.fileHandle || !preview.editable) return;
+
+  const overlay = document.querySelector('.preview-overlay');
+  let text = '';
+
+  if (isMarkdownFile(preview.mimeType, preview.name)) {
+    const mode = preview.markdownMode ?? 'rich';
+    if (mode === 'source') {
+      const source = overlay?.querySelector('#source-editor') as HTMLTextAreaElement | null;
+      text = source?.value ?? preview.textContent ?? '';
+    } else {
+      const rich = overlay?.querySelector('#rich-editor') as HTMLElement | null;
+      text = rich ? htmlToMarkdown(rich) : preview.textContent ?? '';
+    }
+  } else {
+    const textarea = overlay?.querySelector('#text-editor') as HTMLTextAreaElement | null;
+    text = textarea?.value ?? preview.textContent ?? '';
+  }
+
+  try {
+    setStatus('Speichere verschlüsselt…', true);
+    const encoded = new TextEncoder().encode(text);
+    const buffer = encoded.buffer.slice(encoded.byteOffset, encoded.byteOffset + encoded.byteLength) as ArrayBuffer;
+    await updateEncryptedFileContent(cryptoKey, preview.fileHandle, buffer, (msg) => setStatus(msg, true));
+
+    URL.revokeObjectURL(preview.objectUrl);
+    const blob = new Blob([buffer], { type: preview.mimeType });
+    preview.objectUrl = URL.createObjectURL(blob);
+    preview.textContent = text;
+    preview.dirty = false;
+    preview.editMode = false;
+    setStatus(`✓ ${preview.name} gespeichert (verschlüsselt)`);
+    renderPreview();
+  } catch (err) {
+    setStatus(err instanceof Error ? err.message : 'Speichern fehlgeschlagen');
+  }
 }
 
 // ── Event Handlers ──
@@ -541,7 +689,18 @@ async function openFilePreview(entry: VaultEntry): Promise<void> {
       textContent = new TextDecoder().decode(content);
     }
 
-    preview = { name, objectUrl, mimeType, textContent };
+    const editable = isEditableFile(mimeType, name);
+    preview = {
+      name,
+      objectUrl,
+      mimeType,
+      textContent,
+      fileHandle,
+      editable,
+      editMode: false,
+      markdownMode: isMarkdownFile(mimeType, name) ? 'rich' : undefined,
+      dirty: false,
+    };
     setStatus(`✓ ${name} geöffnet`);
     renderPreview();
   } catch (err) {

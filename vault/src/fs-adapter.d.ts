@@ -17,6 +17,12 @@ export function readDecryptedFile(
   key: CryptoKey,
   fileHandle: FileSystemFileHandle,
 ): Promise<{ name: string; content: Uint8Array; mimeType: string }>;
+export function updateEncryptedFileContent(
+  key: CryptoKey,
+  fileHandle: FileSystemFileHandle,
+  content: ArrayBuffer,
+  onProgress?: (msg: string) => void,
+): Promise<void>;
 export function writeEncryptedFile(
   key: CryptoKey,
   dirHandle: FileSystemDirectoryHandle,

@@ -126,6 +126,23 @@ export async function readDecryptedFile(key, fileHandle) {
   return { name, content, mimeType };
 }
 
+/**
+ * Bestehenden verschlüsselten Dateiinhalt im RAM verschlüsseln und direkt überschreiben.
+ * Es wird kein unverschlüsseltes Fragment auf die Festplatte geschrieben.
+ */
+export async function updateEncryptedFileContent(key, fileHandle, content, onProgress) {
+  onProgress?.('Verschlüssele Änderungen…');
+  const encryptedContent = await encryptContent(key, content);
+  const writable = await fileHandle.createWritable();
+  const buffer = encryptedContent.buffer.slice(
+    encryptedContent.byteOffset,
+    encryptedContent.byteOffset + encryptedContent.byteLength,
+  );
+  await writable.write(buffer);
+  await writable.close();
+  onProgress?.('Gespeichert (verschlüsselt)');
+}
+
 /** Verschlüsselte Datei ins Verzeichnis schreiben. */
 export async function writeEncryptedFile(key, dirHandle, plainName, content, onProgress) {
   onProgress?.(`Verschlüssele: ${plainName}`);

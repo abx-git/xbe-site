@@ -24,6 +24,7 @@ npm run build      # → ../public/vault/
 |-------|-------|---------|
 | Krypto | `src/crypto.js` | AES-GCM-256, PBKDF2, Base64URL |
 | Dateisystem | `src/fs-adapter.js` | File System Access API, verschlüsselte Namen |
+| Editor | `src/editor.ts` | Text/Markdown-Bearbeitung, Toolbar, HTML↔MD |
 | UI | `src/main.ts` | Explorer, Viewer, Dropzone |
 
 ## Kryptografie
