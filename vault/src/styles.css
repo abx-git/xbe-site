@@ -281,6 +281,47 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  position: relative;
+}
+
+.canvas {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.drop-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: rgba(15, 20, 25, 0.85);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  margin: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s, border-color 0.15s, color 0.15s;
+  z-index: 5;
+}
+
+.drop-overlay.visible {
+  opacity: 1;
+  border-color: var(--accent);
+  color: var(--accent);
+  pointer-events: none;
+}
+
+.drop-overlay-icon {
+  font-size: 2.5rem;
 }
 
 .breadcrumb {
@@ -325,6 +366,19 @@ body {
   background: var(--bg-hover);
 }
 
+.file-card.dragging {
+  opacity: 0.45;
+}
+
+.file-card.drop-target,
+.tree-item.drop-target,
+.breadcrumb span.drop-target {
+  background: rgba(56, 189, 248, 0.15);
+  outline: 2px dashed var(--accent);
+  outline-offset: -2px;
+  border-radius: var(--radius);
+}
+
 .file-card .file-icon {
   font-size: 2rem;
 }
@@ -335,22 +389,40 @@ body {
   max-width: 100%;
 }
 
-.dropzone {
-  margin: 1rem;
-  border: 2px dashed var(--border);
+.context-menu {
+  position: fixed;
+  z-index: 200;
+  min-width: 160px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 2rem;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 0.875rem;
-  transition: border-color 0.15s, background 0.15s;
-  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  padding: 0.25rem 0;
+  overflow: hidden;
 }
 
-.dropzone.drag-over {
-  border-color: var(--accent);
-  background: rgba(56, 189, 248, 0.05);
-  color: var(--accent);
+.context-menu button {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 0.8125rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.context-menu button:hover {
+  background: var(--bg-hover);
+}
+
+.context-menu button.danger {
+  color: var(--danger);
+}
+
+.context-menu button.danger:hover {
+  background: rgba(248, 113, 113, 0.1);
 }
 
 .status-bar {

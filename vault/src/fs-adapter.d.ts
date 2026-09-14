@@ -39,6 +39,21 @@ export function removeEntry(
   parentHandle: FileSystemDirectoryHandle,
   encryptedName: string,
 ): Promise<void>;
+export function validatePlainName(name: string): string;
+export function renameEntry(
+  key: CryptoKey,
+  parentHandle: FileSystemDirectoryHandle,
+  entry: VaultEntry,
+  newPlainName: string,
+  onProgress?: (msg: string) => void,
+): Promise<void>;
+export function moveEntry(
+  key: CryptoKey,
+  sourceParent: FileSystemDirectoryHandle,
+  targetDir: FileSystemDirectoryHandle,
+  entry: VaultEntry,
+  onProgress?: (msg: string) => void,
+): Promise<void>;
 export function importFromDataTransfer(
   key: CryptoKey,
   dirHandle: FileSystemDirectoryHandle,
