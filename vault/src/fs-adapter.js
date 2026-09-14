@@ -171,6 +171,107 @@ export async function removeEntry(parentHandle, encryptedName) {
   await parentHandle.removeEntry(encryptedName, { recursive: true });
 }
 
+/** Klartextnamen validieren. */
+export function validatePlainName(name) {
+  const trimmed = name?.trim() ?? '';
+  if (!trimmed) {
+    throw new Error('Name darf nicht leer sein.');
+  }
+  if (trimmed.includes('/') || trimmed.includes('\\')) {
+    throw new Error('Name darf keinen Schrägstrich enthalten.');
+  }
+  if (trimmed === '.' || trimmed === '..') {
+    throw new Error('Ungültiger Name.');
+  }
+  return trimmed;
+}
+
+async function hasEntryWithName(key, dirHandle, plainName) {
+  const entries = await listDirectory(key, dirHandle);
+  return entries.some((e) => e.decryptedName === plainName);
+}
+
+async function copyDirectoryContents(key, sourceDir, targetDir, onProgress) {
+  const entries = await listDirectory(key, sourceDir);
+  for (const child of entries) {
+    if (child.kind === 'file') {
+      const file = await child.handle.getFile();
+      const encrypted = await file.arrayBuffer();
+      const content = await decryptContent(key, encrypted);
+      const buffer = content.buffer.slice(
+        content.byteOffset,
+        content.byteOffset + content.byteLength,
+      );
+      await writeEncryptedFile(key, targetDir, child.decryptedName, buffer, onProgress);
+    } else {
+      const subDir = await createEncryptedDirectory(key, targetDir, child.decryptedName);
+      await copyDirectoryContents(key, child.handle, subDir, onProgress);
+    }
+  }
+}
+
+/** Datei oder Ordner umbenennen (neuer verschlüsselter Dateiname). */
+export async function renameEntry(key, parentHandle, entry, newPlainName, onProgress) {
+  const name = validatePlainName(newPlainName);
+  if (name === entry.decryptedName) return;
+
+  if (await hasEntryWithName(key, parentHandle, name)) {
+    throw new Error(`„${name}" existiert bereits.`);
+  }
+
+  if (entry.kind === 'file') {
+    onProgress?.(`Benenne um: ${entry.decryptedName} → ${name}`);
+    const file = await entry.handle.getFile();
+    const encrypted = await file.arrayBuffer();
+    const content = await decryptContent(key, encrypted);
+    const buffer = content.buffer.slice(
+      content.byteOffset,
+      content.byteOffset + content.byteLength,
+    );
+    await writeEncryptedFile(key, parentHandle, name, buffer, onProgress);
+    await removeEntry(parentHandle, entry.encryptedName);
+    return;
+  }
+
+  onProgress?.(`Benenne Ordner um: ${entry.decryptedName} → ${name}`);
+  const newDir = await createEncryptedDirectory(key, parentHandle, name);
+  await copyDirectoryContents(key, entry.handle, newDir, onProgress);
+  await removeEntry(parentHandle, entry.encryptedName);
+}
+
+/** Datei oder Ordner in einen anderen Ordner verschieben. */
+export async function moveEntry(key, sourceParent, targetDir, entry, onProgress) {
+  if (sourceParent === targetDir) return;
+
+  if (await hasEntryWithName(key, targetDir, entry.decryptedName)) {
+    throw new Error(`„${entry.decryptedName}" existiert im Zielordner bereits.`);
+  }
+
+  onProgress?.(`Verschiebe: ${entry.decryptedName}`);
+
+  if (typeof sourceParent.move === 'function') {
+    await sourceParent.move(entry.handle, targetDir);
+    return;
+  }
+
+  if (entry.kind === 'file') {
+    const file = await entry.handle.getFile();
+    const encrypted = await file.arrayBuffer();
+    const content = await decryptContent(key, encrypted);
+    const buffer = content.buffer.slice(
+      content.byteOffset,
+      content.byteOffset + content.byteLength,
+    );
+    await writeEncryptedFile(key, targetDir, entry.decryptedName, buffer, onProgress);
+    await removeEntry(sourceParent, entry.encryptedName);
+    return;
+  }
+
+  const newDir = await createEncryptedDirectory(key, targetDir, entry.decryptedName);
+  await copyDirectoryContents(key, entry.handle, newDir, onProgress);
+  await removeEntry(sourceParent, entry.encryptedName);
+}
+
 function guessMimeType(filename) {
   const ext = filename.split('.').pop()?.toLowerCase() ?? '';
   const map = {
