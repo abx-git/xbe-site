@@ -15,7 +15,7 @@ const CSP = [
   "media-src blob:",
   "font-src 'self'",
   "connect-src 'none'",
-  "object-src 'none'",
+  "object-src blob:",
   "base-uri 'none'",
   "form-action 'none'",
   "frame-src blob:",

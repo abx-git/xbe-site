@@ -17,10 +17,10 @@ In Produktions-Builds wird eine restriktive CSP per Meta-Tag gesetzt:
 | `media-src` | `blob:` | Audio/Video nur aus Blob-URLs |
 | `font-src` | `'self'` | Systemfonts |
 | `connect-src` | `'none'` | **Keine** Netzwerkverbindungen |
-| `object-src` | `'none'` | Keine Plugins/Embeds |
+| `object-src` | `blob:` | PDF-Vorschau per `<embed>` (nur lokale Blobs) |
 | `base-uri` | `'none'` | Keine Base-Tag-Injection |
 | `form-action` | `'none'` | Keine Formular-Exfiltration |
-| `frame-src` | `blob:` | Sandboxed Vorschau-Frames |
+| `frame-src` | `blob:` | Sandboxed Vorschau-Frames (Markdown/HTML) |
 | `manifest-src` | `'self'` | PWA-Manifest |
 | `require-sri-for` | `script style` | SRI für alle Bundles erzwingen |
 
@@ -58,7 +58,9 @@ Per Meta-Tag und Service Worker deaktiviert:
 
 - **DOMPurify** bereinigt gerendertes Markdown/HTML vor der Anzeige
 - Markdown-Links nur mit `http:`, `https:` und `mailto:` erlaubt
-- Markdown-, HTML-, PDF- und SVG-Vorschau in **sandboxed iframes** ohne `allow-scripts` / `allow-same-origin`
+- Markdown- und HTML-Vorschau in **sandboxed iframes** ohne `allow-scripts` / `allow-same-origin`
+- PDF per `<embed type="application/pdf">` (Chrome blockiert PDFs in sandboxed iframes)
+- SVG/Bilder per `<img src="blob:…">` (keine Skriptausführung im img-Kontext)
 
 ### Laufzeit-Absicherung (`hardening.js`)
 

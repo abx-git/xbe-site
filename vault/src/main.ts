@@ -16,7 +16,7 @@ import {
   armSessionSecurity,
   disarmSessionSecurity,
   registerServiceWorker,
-  sandboxBlobIframe,
+  blobPdfEmbed,
   sandboxPreviewIframe,
 } from './security.js';
 import {
@@ -426,8 +426,6 @@ function renderPreview(): void {
       <div class="editor-panel">
         <textarea class="editor-textarea" id="text-editor" spellcheck="false">${escapeHtml(preview.textContent ?? '')}</textarea>
       </div>`;
-  } else if (mime === 'image/svg+xml') {
-    bodyContent = sandboxBlobIframe(preview.objectUrl, preview.name);
   } else if (mime.startsWith('image/')) {
     bodyContent = `<img src="${preview.objectUrl}" alt="${escapeHtml(preview.name)}" />`;
   } else if (mime.startsWith('video/')) {
@@ -435,7 +433,7 @@ function renderPreview(): void {
   } else if (mime.startsWith('audio/')) {
     bodyContent = `<audio src="${preview.objectUrl}" controls></audio>`;
   } else if (mime === 'application/pdf') {
-    bodyContent = sandboxBlobIframe(preview.objectUrl, preview.name);
+    bodyContent = blobPdfEmbed(preview.objectUrl, preview.name);
   } else if (isMd && preview.textContent) {
     bodyContent = sandboxPreviewIframe(renderMarkdown(preview.textContent), 'markdown-body');
   } else if (mime === 'text/html' && preview.textContent) {
