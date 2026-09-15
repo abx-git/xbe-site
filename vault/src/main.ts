@@ -9,10 +9,19 @@ import {
   markdownToHtml,
   MARKDOWN_TOOLBAR,
   renderMarkdown,
+  sanitizeHtml,
 } from './editor.js';
 import {
+  armSessionSecurity,
+  disarmSessionSecurity,
+  registerServiceWorker,
+  sandboxBlobIframe,
+  sandboxPreviewIframe,
+} from './security.js';
+import {
   buildTree,
-  importFromDataTransfer,
+  importFromDrop,
+  isImportableDrag,
   isFileSystemAccessSupported,
   listDirectory,
   loadChildren,
@@ -109,12 +118,13 @@ function renderUnlock(): void {
         ${unlockTab === 'password' ? `
           <div class="form-group">
             <label for="password">Passwort</label>
-            <input type="password" id="password" placeholder="Passwort eingeben…" autocomplete="off" />
+            <input type="password" id="password" placeholder="Passwort eingeben…"
+              autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text" />
           </div>
         ` : `
           <div class="form-group">
             <label for="keyfile">Schlüsseldatei (.key / .bin, 32 Bytes)</label>
-            <input type="file" id="keyfile" accept=".key,.bin" />
+            <input type="file" id="keyfile" accept=".key,.bin" autocomplete="off" />
           </div>
         `}
         <button class="btn btn-primary" id="unlock-btn" ${!fsSupported ? 'disabled' : ''}>
@@ -415,6 +425,8 @@ function renderPreview(): void {
       <div class="editor-panel">
         <textarea class="editor-textarea" id="text-editor" spellcheck="false">${escapeHtml(preview.textContent ?? '')}</textarea>
       </div>`;
+  } else if (mime === 'image/svg+xml') {
+    bodyContent = sandboxBlobIframe(preview.objectUrl, preview.name);
   } else if (mime.startsWith('image/')) {
     bodyContent = `<img src="${preview.objectUrl}" alt="${escapeHtml(preview.name)}" />`;
   } else if (mime.startsWith('video/')) {
@@ -422,9 +434,11 @@ function renderPreview(): void {
   } else if (mime.startsWith('audio/')) {
     bodyContent = `<audio src="${preview.objectUrl}" controls></audio>`;
   } else if (mime === 'application/pdf') {
-    bodyContent = `<iframe src="${preview.objectUrl}"></iframe>`;
+    bodyContent = sandboxBlobIframe(preview.objectUrl, preview.name);
   } else if (isMd && preview.textContent) {
-    bodyContent = `<div class="markdown-body">${renderMarkdown(preview.textContent)}</div>`;
+    bodyContent = sandboxPreviewIframe(renderMarkdown(preview.textContent), 'markdown-body');
+  } else if (mime === 'text/html' && preview.textContent) {
+    bodyContent = sandboxPreviewIframe(sanitizeHtml(preview.textContent), 'html-preview');
   } else if (mime.startsWith('text/') || mime === 'application/json') {
     bodyContent = `<pre class="preview-readonly">${escapeHtml(preview.textContent ?? '')}</pre>`;
   } else {
@@ -601,6 +615,7 @@ async function handleUnlock(): Promise<void> {
         return;
       }
       cryptoKey = await deriveKeyFromPassword(password);
+      input.value = '';
     } else {
       const input = document.getElementById('keyfile') as HTMLInputElement;
       const file = input?.files?.[0];
@@ -637,6 +652,7 @@ async function handlePickDirectory(): Promise<void> {
     currentEntries = await listDirectory(cryptoKey, rootHandle, (msg) => setStatus(msg, true));
 
     phase = 'explorer';
+    armSessionSecurity(handleLock);
     setStatus(`✓ ${currentEntries.length} Einträge geladen`);
     render();
   } catch (err) {
@@ -665,6 +681,7 @@ async function handleRefresh(): Promise<void> {
 }
 
 function handleLock(): void {
+  disarmSessionSecurity();
   closePreview();
   cryptoKey = null;
   rootHandle = null;
@@ -788,14 +805,13 @@ function setupCanvasDrop(): void {
   let dragDepth = 0;
 
   canvas.addEventListener('dragenter', (e) => {
-    if (!isExternalFileDrag(e)) return;
+    if (!isImportableDrag(e.dataTransfer)) return;
     e.preventDefault();
     dragDepth++;
     overlay.classList.add('visible');
   });
 
-  canvas.addEventListener('dragleave', (e) => {
-    if (!isExternalFileDrag(e)) return;
+  canvas.addEventListener('dragleave', () => {
     dragDepth--;
     if (dragDepth <= 0) {
       dragDepth = 0;
@@ -804,7 +820,7 @@ function setupCanvasDrop(): void {
   });
 
   canvas.addEventListener('dragover', (e) => {
-    if (isExternalFileDrag(e)) {
+    if (isImportableDrag(e.dataTransfer)) {
       e.preventDefault();
       e.dataTransfer!.dropEffect = 'copy';
       overlay.classList.add('visible');
@@ -833,16 +849,20 @@ function setupCanvasDrop(): void {
       return;
     }
 
-    if (!isExternalFileDrag(e)) return;
+    if (!isImportableDrag(e.dataTransfer)) return;
 
     try {
-      setStatus('Importiere Dateien…', true);
-      const count = await importFromDataTransfer(
+      setStatus('Importiere…', true);
+      const count = await importFromDrop(
         cryptoKey,
         currentDirHandle,
-        e.dataTransfer.items,
+        e.dataTransfer,
         (msg) => setStatus(msg, true),
       );
+      if (count === 0) {
+        setStatus('Keine importierbaren Bilder oder Dateien gefunden');
+        return;
+      }
       setStatus(`✓ ${count} Datei(en) importiert`);
       await handleRefresh();
     } catch (err) {
@@ -890,16 +910,20 @@ function setupDropTarget(el: HTMLElement, targetPath: string): void {
       return;
     }
 
-    if (!isExternalFileDrag(e)) return;
+    if (!isImportableDrag(e.dataTransfer)) return;
 
     try {
-      setStatus('Importiere Dateien…', true);
-      const count = await importFromDataTransfer(
+      setStatus('Importiere…', true);
+      const count = await importFromDrop(
         cryptoKey,
         targetHandle,
-        e.dataTransfer.items,
+        e.dataTransfer,
         (msg) => setStatus(msg, true),
       );
+      if (count === 0) {
+        setStatus('Keine importierbaren Bilder oder Dateien gefunden');
+        return;
+      }
       setStatus(`✓ ${count} Datei(en) importiert`);
       await handleRefresh();
     } catch (err) {
@@ -913,10 +937,6 @@ function setupGlobalDismiss(): void {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeContextMenu();
   });
-}
-
-function isExternalFileDrag(e: DragEvent): boolean {
-  return e.dataTransfer?.types.includes('Files') ?? false;
 }
 
 function canDropOnPath(e: DragEvent, targetPath: string): boolean {
@@ -933,7 +953,7 @@ function canDropOnPath(e: DragEvent, targetPath: string): boolean {
     return true;
   }
 
-  return isExternalFileDrag(e);
+  return isImportableDrag(e.dataTransfer);
 }
 
 function clearDropHighlights(): void {
@@ -1120,4 +1140,5 @@ function attachNode(tree: VaultNode, parentPath: string, newNode: VaultNode): vo
 
 // ── Init ──
 
+registerServiceWorker();
 render();

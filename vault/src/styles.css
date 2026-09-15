@@ -542,11 +542,17 @@ body {
   object-fit: contain;
 }
 
-.preview-body iframe {
+.preview-body iframe,
+.preview-body .sandbox-preview {
   width: 100%;
   height: 70vh;
   border: none;
-  background: #fff;
+  background: var(--bg);
+  border-radius: var(--radius);
+}
+
+.preview-body .sandbox-preview {
+  display: block;
 }
 
 .preview-body--editing {

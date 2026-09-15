@@ -306,8 +306,26 @@ function guessMimeType(filename) {
   return map[ext] ?? 'application/octet-stream';
 }
 
-/** Drag-and-Drop: Datei(en) und Ordner rekursiv importieren. */
-export async function importFromDataTransfer(key, dirHandle, items, onProgress) {
+async function resolveUniqueFilename(key, dirHandle, desiredName) {
+  if (!(await hasEntryWithName(key, dirHandle, desiredName))) {
+    return desiredName;
+  }
+
+  const dot = desiredName.lastIndexOf('.');
+  const base = dot > 0 ? desiredName.slice(0, dot) : desiredName;
+  const ext = dot > 0 ? desiredName.slice(dot) : '';
+
+  for (let n = 1; n < 1000; n++) {
+    const candidate = `${base} (${n})${ext}`;
+    if (!(await hasEntryWithName(key, dirHandle, candidate))) {
+      return candidate;
+    }
+  }
+
+  return `${base}-${Date.now()}${ext}`;
+}
+
+async function importFilesFromItems(key, dirHandle, items, onProgress) {
   let count = 0;
 
   const processEntry = async (entry, targetDir) => {
@@ -315,7 +333,8 @@ export async function importFromDataTransfer(key, dirHandle, items, onProgress) 
       const file = await new Promise((resolve, reject) => {
         entry.file(resolve, reject);
       });
-      await writeEncryptedFile(key, targetDir, file.name, await file.arrayBuffer(), onProgress);
+      const filename = await resolveUniqueFilename(key, targetDir, file.name);
+      await writeEncryptedFile(key, targetDir, filename, await file.arrayBuffer(), onProgress);
       count++;
     } else if (entry.isDirectory) {
       const subDir = await createEncryptedDirectory(key, targetDir, entry.name);
@@ -342,11 +361,28 @@ export async function importFromDataTransfer(key, dirHandle, items, onProgress) 
     } else if (item.kind === 'file') {
       const file = item.getAsFile();
       if (file) {
-        await writeEncryptedFile(key, dirHandle, file.name, await file.arrayBuffer(), onProgress);
+        const filename = await resolveUniqueFilename(key, dirHandle, file.name);
+        await writeEncryptedFile(key, dirHandle, filename, await file.arrayBuffer(), onProgress);
         count++;
       }
     }
   }
 
   return count;
+}
+
+/** Prüft, ob ein Drag-Vorgang lokale Dateien enthält (kein Netzwerk nötig). */
+export function isImportableDrag(dataTransfer) {
+  return dataTransfer?.types.includes('Files') ?? false;
+}
+
+/** Drag-and-Drop: lokale Dateien und Ordner importieren. */
+export async function importFromDrop(key, dirHandle, dataTransfer, onProgress) {
+  return importFilesFromItems(key, dirHandle, dataTransfer.items, onProgress);
+}
+
+/** @deprecated Verwende importFromDrop – behält Abwärtskompatibilität. */
+export async function importFromDataTransfer(key, dirHandle, items, onProgress) {
+  const proxy = { items, getData: () => '' };
+  return importFromDrop(key, dirHandle, proxy, onProgress);
 }
