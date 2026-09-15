@@ -3,6 +3,8 @@
  * Schlüssel verbleiben ausschließlich im flüchtigen RAM.
  */
 
+import { secureGetRandomValues, secureSubtle } from './hardening.js';
+
 const IV_LENGTH = 12;
 const KEY_LENGTH = 32;
 const PBKDF2_ITERATIONS = 250_000;
@@ -32,7 +34,7 @@ export function fromBase64Url(str) {
 
 /** Zufälligen 12-Byte-IV erzeugen. */
 export function generateIv() {
-  return crypto.getRandomValues(new Uint8Array(IV_LENGTH));
+  return secureGetRandomValues(new Uint8Array(IV_LENGTH));
 }
 
 /** Rohbytes (32 Byte) als AES-GCM-Schlüssel importieren. */
@@ -40,7 +42,7 @@ export async function importRawKey(rawBytes) {
   if (rawBytes.byteLength !== KEY_LENGTH) {
     throw new Error(`Schlüsseldatei muss exakt ${KEY_LENGTH} Bytes lang sein (erhalten: ${rawBytes.byteLength}).`);
   }
-  return crypto.subtle.importKey('raw', rawBytes, { name: 'AES-GCM', length: 256 }, false, [
+  return secureSubtle.importKey('raw', rawBytes, { name: 'AES-GCM', length: 256 }, false, [
     'encrypt',
     'decrypt',
   ]);
@@ -48,7 +50,7 @@ export async function importRawKey(rawBytes) {
 
 /** Passwort via PBKDF2 in AES-GCM-256-Schlüssel ableiten. */
 export async function deriveKeyFromPassword(password) {
-  const keyMaterial = await crypto.subtle.importKey(
+  const keyMaterial = await secureSubtle.importKey(
     'raw',
     new TextEncoder().encode(password),
     'PBKDF2',
@@ -56,7 +58,7 @@ export async function deriveKeyFromPassword(password) {
     ['deriveBits'],
   );
 
-  const derivedBits = await crypto.subtle.deriveBits(
+  const derivedBits = await secureSubtle.deriveBits(
     {
       name: 'PBKDF2',
       salt: PBKDF2_SALT,
@@ -67,7 +69,7 @@ export async function deriveKeyFromPassword(password) {
     KEY_LENGTH * 8,
   );
 
-  return crypto.subtle.importKey('raw', derivedBits, { name: 'AES-GCM', length: 256 }, false, [
+  return secureSubtle.importKey('raw', derivedBits, { name: 'AES-GCM', length: 256 }, false, [
     'encrypt',
     'decrypt',
   ]);
@@ -79,7 +81,7 @@ export async function deriveKeyFromPassword(password) {
  */
 export async function encrypt(key, plaintext) {
   const iv = generateIv();
-  const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, plaintext);
+  const ciphertext = await secureSubtle.encrypt({ name: 'AES-GCM', iv }, key, plaintext);
   const result = new Uint8Array(IV_LENGTH + ciphertext.byteLength);
   result.set(iv, 0);
   result.set(new Uint8Array(ciphertext), IV_LENGTH);
@@ -96,7 +98,7 @@ export async function decrypt(key, data) {
   }
   const iv = data.slice(0, IV_LENGTH);
   const ciphertext = data.slice(IV_LENGTH);
-  const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+  const plaintext = await secureSubtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
   return new Uint8Array(plaintext);
 }
 

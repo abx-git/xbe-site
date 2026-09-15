@@ -543,16 +543,18 @@ body {
 }
 
 .preview-body iframe,
-.preview-body .sandbox-preview {
+.preview-body .sandbox-preview,
+.preview-body embed.blob-preview {
   width: 100%;
   height: 70vh;
   border: none;
   background: var(--bg);
   border-radius: var(--radius);
+  display: block;
 }
 
-.preview-body .sandbox-preview {
-  display: block;
+.preview-body embed.pdf-preview {
+  background: #fff;
 }
 
 .preview-body--editing {

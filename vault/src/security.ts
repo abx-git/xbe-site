@@ -32,9 +32,12 @@ export function sandboxPreviewIframe(contentHtml: string, extraClass = ''): stri
   return `<iframe class="sandbox-preview" sandbox="" referrerpolicy="no-referrer" title="Vorschau" srcdoc="${escapeAttr(doc)}"></iframe>`;
 }
 
-/** Blob-URL (PDF, SVG) in sandboxed iframe. */
-export function sandboxBlobIframe(blobUrl: string, title: string): string {
-  return `<iframe class="sandbox-preview" sandbox="" referrerpolicy="no-referrer" title="${escapeAttr(title)}" src="${escapeAttr(blobUrl)}"></iframe>`;
+/**
+ * PDF über <embed> – Chrome blockiert PDFs in sandboxed iframes.
+ * Skripte im PDF-Kontext werden vom Browser-Viewer isoliert; object-src blob: in CSP nötig.
+ */
+export function blobPdfEmbed(blobUrl: string, title: string): string {
+  return `<embed class="blob-preview pdf-preview" type="application/pdf" src="${escapeAttr(blobUrl)}" title="${escapeAttr(title)}" />`;
 }
 
 function clearIdleTimer(): void {

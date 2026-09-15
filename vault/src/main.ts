@@ -1,3 +1,4 @@
+import './hardening.js';
 import './styles.css';
 import { deriveKeyFromPassword, importRawKey } from './crypto.js';
 import {
@@ -15,7 +16,7 @@ import {
   armSessionSecurity,
   disarmSessionSecurity,
   registerServiceWorker,
-  sandboxBlobIframe,
+  blobPdfEmbed,
   sandboxPreviewIframe,
 } from './security.js';
 import {
@@ -425,8 +426,6 @@ function renderPreview(): void {
       <div class="editor-panel">
         <textarea class="editor-textarea" id="text-editor" spellcheck="false">${escapeHtml(preview.textContent ?? '')}</textarea>
       </div>`;
-  } else if (mime === 'image/svg+xml') {
-    bodyContent = sandboxBlobIframe(preview.objectUrl, preview.name);
   } else if (mime.startsWith('image/')) {
     bodyContent = `<img src="${preview.objectUrl}" alt="${escapeHtml(preview.name)}" />`;
   } else if (mime.startsWith('video/')) {
@@ -434,7 +433,7 @@ function renderPreview(): void {
   } else if (mime.startsWith('audio/')) {
     bodyContent = `<audio src="${preview.objectUrl}" controls></audio>`;
   } else if (mime === 'application/pdf') {
-    bodyContent = sandboxBlobIframe(preview.objectUrl, preview.name);
+    bodyContent = blobPdfEmbed(preview.objectUrl, preview.name);
   } else if (isMd && preview.textContent) {
     bodyContent = sandboxPreviewIframe(renderMarkdown(preview.textContent), 'markdown-body');
   } else if (mime === 'text/html' && preview.textContent) {
@@ -680,15 +679,28 @@ async function handleRefresh(): Promise<void> {
   }
 }
 
-function handleLock(): void {
-  disarmSessionSecurity();
-  closePreview();
-  cryptoKey = null;
+function purgeDirectoryHandles(node: VaultNode | null): void {
+  if (!node) return;
+  node.handle = undefined;
+  node.children?.forEach(purgeDirectoryHandles);
+}
+
+function purgeVaultSessionState(): void {
+  purgeDirectoryHandles(rootTree);
   rootHandle = null;
   rootTree = null;
   currentDirHandle = null;
   currentPath = '/';
   currentEntries = [];
+  dragEntry = null;
+  contextMenu = null;
+}
+
+function handleLock(): void {
+  disarmSessionSecurity();
+  closePreview();
+  cryptoKey = null;
+  purgeVaultSessionState();
   phase = 'unlock';
   unlockError = '';
   statusMessage = '';
@@ -792,6 +804,8 @@ async function openFilePreview(entry: VaultEntry): Promise<void> {
 function closePreview(): void {
   if (preview) {
     URL.revokeObjectURL(preview.objectUrl);
+    preview.fileHandle = undefined;
+    preview.textContent = undefined;
     preview = null;
   }
   document.querySelector('.preview-overlay')?.remove();
