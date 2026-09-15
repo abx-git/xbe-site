@@ -9,7 +9,15 @@ import {
   markdownToHtml,
   MARKDOWN_TOOLBAR,
   renderMarkdown,
+  sanitizeHtml,
 } from './editor.js';
+import {
+  armSessionSecurity,
+  disarmSessionSecurity,
+  registerServiceWorker,
+  sandboxBlobIframe,
+  sandboxPreviewIframe,
+} from './security.js';
 import {
   buildTree,
   importFromDrop,
@@ -110,12 +118,13 @@ function renderUnlock(): void {
         ${unlockTab === 'password' ? `
           <div class="form-group">
             <label for="password">Passwort</label>
-            <input type="password" id="password" placeholder="Passwort eingeben…" autocomplete="off" />
+            <input type="password" id="password" placeholder="Passwort eingeben…"
+              autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="text" />
           </div>
         ` : `
           <div class="form-group">
             <label for="keyfile">Schlüsseldatei (.key / .bin, 32 Bytes)</label>
-            <input type="file" id="keyfile" accept=".key,.bin" />
+            <input type="file" id="keyfile" accept=".key,.bin" autocomplete="off" />
           </div>
         `}
         <button class="btn btn-primary" id="unlock-btn" ${!fsSupported ? 'disabled' : ''}>
@@ -170,7 +179,7 @@ function renderExplorer(): void {
             <div class="file-grid" id="file-grid"></div>
             <div class="drop-overlay" id="drop-overlay">
               <span class="drop-overlay-icon">📥</span>
-              <span>Dateien, Ordner oder Bilder von Webseiten hierher ziehen</span>
+              <span>Dateien oder Ordner hierher ziehen zum Importieren</span>
             </div>
           </div>
         </div>
@@ -312,7 +321,7 @@ function renderFileGrid(): void {
   if (!grid) return;
 
   if (currentEntries.length === 0) {
-    grid.innerHTML = `<div class="empty-state"><span>📭</span><span>Dieser Ordner ist leer – Dateien oder Web-Bilder hierher ziehen</span></div>`;
+    grid.innerHTML = `<div class="empty-state"><span>📭</span><span>Dieser Ordner ist leer – Dateien hierher ziehen</span></div>`;
     return;
   }
 
@@ -416,6 +425,8 @@ function renderPreview(): void {
       <div class="editor-panel">
         <textarea class="editor-textarea" id="text-editor" spellcheck="false">${escapeHtml(preview.textContent ?? '')}</textarea>
       </div>`;
+  } else if (mime === 'image/svg+xml') {
+    bodyContent = sandboxBlobIframe(preview.objectUrl, preview.name);
   } else if (mime.startsWith('image/')) {
     bodyContent = `<img src="${preview.objectUrl}" alt="${escapeHtml(preview.name)}" />`;
   } else if (mime.startsWith('video/')) {
@@ -423,9 +434,11 @@ function renderPreview(): void {
   } else if (mime.startsWith('audio/')) {
     bodyContent = `<audio src="${preview.objectUrl}" controls></audio>`;
   } else if (mime === 'application/pdf') {
-    bodyContent = `<iframe src="${preview.objectUrl}"></iframe>`;
+    bodyContent = sandboxBlobIframe(preview.objectUrl, preview.name);
   } else if (isMd && preview.textContent) {
-    bodyContent = `<div class="markdown-body">${renderMarkdown(preview.textContent)}</div>`;
+    bodyContent = sandboxPreviewIframe(renderMarkdown(preview.textContent), 'markdown-body');
+  } else if (mime === 'text/html' && preview.textContent) {
+    bodyContent = sandboxPreviewIframe(sanitizeHtml(preview.textContent), 'html-preview');
   } else if (mime.startsWith('text/') || mime === 'application/json') {
     bodyContent = `<pre class="preview-readonly">${escapeHtml(preview.textContent ?? '')}</pre>`;
   } else {
@@ -602,6 +615,7 @@ async function handleUnlock(): Promise<void> {
         return;
       }
       cryptoKey = await deriveKeyFromPassword(password);
+      input.value = '';
     } else {
       const input = document.getElementById('keyfile') as HTMLInputElement;
       const file = input?.files?.[0];
@@ -638,6 +652,7 @@ async function handlePickDirectory(): Promise<void> {
     currentEntries = await listDirectory(cryptoKey, rootHandle, (msg) => setStatus(msg, true));
 
     phase = 'explorer';
+    armSessionSecurity(handleLock);
     setStatus(`✓ ${currentEntries.length} Einträge geladen`);
     render();
   } catch (err) {
@@ -666,6 +681,7 @@ async function handleRefresh(): Promise<void> {
 }
 
 function handleLock(): void {
+  disarmSessionSecurity();
   closePreview();
   cryptoKey = null;
   rootHandle = null;
@@ -1124,4 +1140,5 @@ function attachNode(tree: VaultNode, parentPath: string, newNode: VaultNode): vo
 
 // ── Init ──
 
+registerServiceWorker();
 render();

@@ -54,7 +54,6 @@ export function moveEntry(
   entry: VaultEntry,
   onProgress?: (msg: string) => void,
 ): Promise<void>;
-export function extractImageUrlsFromDataTransfer(dataTransfer: DataTransfer): string[];
 export function isImportableDrag(dataTransfer: DataTransfer | null): boolean;
 export function importFromDrop(
   key: CryptoKey,

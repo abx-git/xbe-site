@@ -1,5 +1,7 @@
 /** Hilfsfunktionen für Text- und Markdown-Bearbeitung im Viewer. */
 
+import DOMPurify from 'dompurify';
+
 const EDITABLE_EXTENSIONS = new Set([
   'txt', 'md', 'markdown', 'json', 'csv', 'yaml', 'yml', 'xml',
   'html', 'htm', 'css', 'js', 'ts', 'jsx', 'tsx', 'svg',
@@ -21,9 +23,26 @@ export function isMarkdownFile(mimeType: string, filename: string): boolean {
   return mimeType === 'text/markdown' || ext === 'md' || ext === 'markdown';
 }
 
+/** HTML für sichere Anzeige bereinigen. */
+export function sanitizeHtml(html: string): string {
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ['p', 'h1', 'h2', 'h3', 'strong', 'em', 's', 'code', 'pre', 'ul', 'ol', 'li', 'blockquote', 'a', 'br'],
+    ALLOWED_ATTR: ['href'],
+    ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+  });
+}
+
+function sanitizeHref(url: string): string {
+  const trimmed = url.trim();
+  if (/^https?:\/\//i.test(trimmed) || /^mailto:/i.test(trimmed)) {
+    return escapeHtml(trimmed);
+  }
+  return '#';
+}
+
 /** Markdown → HTML (Vorschau und Rich-Editor). */
 export function renderMarkdown(md: string): string {
-  return markdownToHtml(md);
+  return sanitizeHtml(markdownToHtml(md));
 }
 
 /** Markdown → HTML für den Rich-Text-Editor. */
@@ -47,7 +66,7 @@ export function markdownToHtml(md: string): string {
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/~~(.+?)~~/g, '<s>$1</s>')
       .replace(/`([^`]+)`/g, '<code>$1</code>')
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label, href) => `<a href="${sanitizeHref(href)}">${label}</a>`);
 
   for (const line of lines) {
     if (line.startsWith('```')) {
@@ -107,7 +126,7 @@ export function markdownToHtml(md: string): string {
   if (inCode && codeBuf.length) {
     html.push(`<pre><code>${escapeHtml(codeBuf.join('\n'))}</code></pre>`);
   }
-  return html.join('\n');
+  return sanitizeHtml(html.join('\n'));
 }
 
 /** HTML aus contenteditable → Markdown (für verschlüsseltes Speichern). */

@@ -34,6 +34,10 @@ npm run build      # → ../public/vault/
 | Editor | `src/editor.ts` | Text/Markdown-Bearbeitung, Toolbar, HTML↔MD |
 | UI | `src/main.ts` | Explorer, Viewer, Dropzone |
 
+## Sicherheit
+
+Siehe [SECURITY.md](./SECURITY.md) für Details zu CSP, PWA/Service Worker, DOM-XSS-Schutz, Sitzungssperre und bewusst nicht umgesetzten Maßnahmen.
+
 ## Kryptografie
 
 - **Algorithmus:** AES-GCM (256 Bit)

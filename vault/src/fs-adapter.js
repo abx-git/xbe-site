@@ -306,94 +306,6 @@ function guessMimeType(filename) {
   return map[ext] ?? 'application/octet-stream';
 }
 
-const IMAGE_EXT_RE = /\.(png|jpe?g|gif|webp|svg|avif|bmp|ico)(\?.*)?$/i;
-
-function mimeToExtension(mimeType) {
-  const map = {
-    'image/png': 'png',
-    'image/jpeg': 'jpg',
-    'image/gif': 'gif',
-    'image/webp': 'webp',
-    'image/svg+xml': 'svg',
-    'image/avif': 'avif',
-    'image/bmp': 'bmp',
-    'image/x-icon': 'ico',
-  };
-  return map[mimeType] ?? 'png';
-}
-
-function isLikelyImageUrl(url) {
-  if (url.startsWith('data:image/')) return true;
-  try {
-    const parsed = new URL(url, window.location.href);
-    if (!['http:', 'https:'].includes(parsed.protocol)) return false;
-    return IMAGE_EXT_RE.test(parsed.pathname);
-  } catch {
-    return false;
-  }
-}
-
-function filenameFromUrl(url, mimeType) {
-  try {
-    const pathname = new URL(url, window.location.href).pathname;
-    const base = pathname.split('/').pop() ?? '';
-    if (base && /\.[a-z0-9]+$/i.test(base)) {
-      return decodeURIComponent(base);
-    }
-  } catch {
-    // Fallback unten
-  }
-  return `bild-${Date.now()}.${mimeToExtension(mimeType)}`;
-}
-
-function parseDataImageUrl(url) {
-  const match = url.match(/^data:(image\/[^;]+);base64,(.+)$/);
-  if (!match) return null;
-  const mimeType = match[1];
-  const binary = atob(match[2]);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i++) {
-    bytes[i] = binary.charCodeAt(i);
-  }
-  const buffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
-  return {
-    buffer,
-    mimeType,
-    filename: `bild-${Date.now()}.${mimeToExtension(mimeType)}`,
-  };
-}
-
-/** Bild-URLs aus Browser-Drag-Daten extrahieren (img-Tags, URI-Listen). */
-export function extractImageUrlsFromDataTransfer(dataTransfer) {
-  const urls = new Set();
-
-  const html = dataTransfer.getData('text/html');
-  if (html) {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    doc.querySelectorAll('img[src]').forEach((img) => {
-      const src = img.getAttribute('src');
-      if (src) urls.add(src);
-    });
-  }
-
-  const uriList = dataTransfer.getData('text/uri-list');
-  if (uriList) {
-    for (const line of uriList.split('\n')) {
-      const trimmed = line.trim();
-      if (trimmed && !trimmed.startsWith('#') && isLikelyImageUrl(trimmed)) {
-        urls.add(trimmed);
-      }
-    }
-  }
-
-  const plain = dataTransfer.getData('text/plain')?.trim();
-  if (plain && isLikelyImageUrl(plain)) {
-    urls.add(plain);
-  }
-
-  return [...urls];
-}
-
 async function resolveUniqueFilename(key, dirHandle, desiredName) {
   if (!(await hasEntryWithName(key, dirHandle, desiredName))) {
     return desiredName;
@@ -411,29 +323,6 @@ async function resolveUniqueFilename(key, dirHandle, desiredName) {
   }
 
   return `${base}-${Date.now()}${ext}`;
-}
-
-async function fetchImageFromUrl(url, onProgress) {
-  const dataUrl = parseDataImageUrl(url);
-  if (dataUrl) return dataUrl;
-
-  onProgress?.(`Lade Bild von Webseite…`);
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Bild konnte nicht geladen werden (${response.status}).`);
-  }
-
-  const blob = await response.blob();
-  if (!blob.type.startsWith('image/')) {
-    throw new Error('Die URL enthält kein Bild.');
-  }
-
-  const buffer = await blob.arrayBuffer();
-  return {
-    buffer,
-    mimeType: blob.type,
-    filename: filenameFromUrl(url, blob.type),
-  };
 }
 
 async function importFilesFromItems(key, dirHandle, items, onProgress) {
@@ -482,42 +371,14 @@ async function importFilesFromItems(key, dirHandle, items, onProgress) {
   return count;
 }
 
-async function importWebImagesFromDataTransfer(key, dirHandle, dataTransfer, onProgress) {
-  const urls = extractImageUrlsFromDataTransfer(dataTransfer);
-  let count = 0;
-
-  for (const url of urls) {
-    try {
-      const { buffer, filename } = await fetchImageFromUrl(url, onProgress);
-      const uniqueName = await resolveUniqueFilename(key, dirHandle, filename);
-      await writeEncryptedFile(key, dirHandle, uniqueName, buffer, onProgress);
-      count++;
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Web-Bild konnte nicht importiert werden.';
-      throw new Error(message);
-    }
-  }
-
-  return count;
-}
-
-/** Prüft, ob ein Drag-Vorgang importierbare Daten enthält (Dateien oder Web-Bilder). */
+/** Prüft, ob ein Drag-Vorgang lokale Dateien enthält (kein Netzwerk nötig). */
 export function isImportableDrag(dataTransfer) {
-  if (!dataTransfer) return false;
-  const types = [...dataTransfer.types];
-  if (types.includes('Files')) return true;
-  if (types.includes('text/html')) return true;
-  if (types.includes('text/uri-list')) return true;
-  return false;
+  return dataTransfer?.types.includes('Files') ?? false;
 }
 
-/** Drag-and-Drop: lokale Dateien, Ordner und Web-Bilder importieren. */
+/** Drag-and-Drop: lokale Dateien und Ordner importieren. */
 export async function importFromDrop(key, dirHandle, dataTransfer, onProgress) {
-  let count = await importFilesFromItems(key, dirHandle, dataTransfer.items, onProgress);
-  if (count === 0) {
-    count = await importWebImagesFromDataTransfer(key, dirHandle, dataTransfer, onProgress);
-  }
-  return count;
+  return importFilesFromItems(key, dirHandle, dataTransfer.items, onProgress);
 }
 
 /** @deprecated Verwende importFromDrop – behält Abwärtskompatibilität. */
