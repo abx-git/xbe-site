@@ -1,3 +1,4 @@
+import './hardening.js';
 import './styles.css';
 import { deriveKeyFromPassword, importRawKey } from './crypto.js';
 import {
@@ -680,15 +681,28 @@ async function handleRefresh(): Promise<void> {
   }
 }
 
-function handleLock(): void {
-  disarmSessionSecurity();
-  closePreview();
-  cryptoKey = null;
+function purgeDirectoryHandles(node: VaultNode | null): void {
+  if (!node) return;
+  node.handle = undefined;
+  node.children?.forEach(purgeDirectoryHandles);
+}
+
+function purgeVaultSessionState(): void {
+  purgeDirectoryHandles(rootTree);
   rootHandle = null;
   rootTree = null;
   currentDirHandle = null;
   currentPath = '/';
   currentEntries = [];
+  dragEntry = null;
+  contextMenu = null;
+}
+
+function handleLock(): void {
+  disarmSessionSecurity();
+  closePreview();
+  cryptoKey = null;
+  purgeVaultSessionState();
   phase = 'unlock';
   unlockError = '';
   statusMessage = '';
@@ -792,6 +806,8 @@ async function openFilePreview(entry: VaultEntry): Promise<void> {
 function closePreview(): void {
   if (preview) {
     URL.revokeObjectURL(preview.objectUrl);
+    preview.fileHandle = undefined;
+    preview.textContent = undefined;
     preview = null;
   }
   document.querySelector('.preview-overlay')?.remove();
