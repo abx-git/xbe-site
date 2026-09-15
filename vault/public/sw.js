@@ -21,7 +21,8 @@ function withSecurityHeaders(response, isHtml) {
   headers.set('Cross-Origin-Resource-Policy', 'same-origin');
   if (isHtml) {
     headers.set('Cross-Origin-Opener-Policy', 'same-origin');
-    headers.set('Cross-Origin-Embedder-Policy', 'require-corp');
+    // credentialless: Isolation ohne require-corp, das PDF-/Blob-Embeds in Chrome blockiert
+    headers.set('Cross-Origin-Embedder-Policy', 'credentialless');
     headers.set('Permissions-Policy', PERMISSIONS_POLICY);
   }
   return new Response(response.body, {
