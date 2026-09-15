@@ -12,7 +12,8 @@ import {
 } from './editor.js';
 import {
   buildTree,
-  importFromDataTransfer,
+  importFromDrop,
+  isImportableDrag,
   isFileSystemAccessSupported,
   listDirectory,
   loadChildren,
@@ -169,7 +170,7 @@ function renderExplorer(): void {
             <div class="file-grid" id="file-grid"></div>
             <div class="drop-overlay" id="drop-overlay">
               <span class="drop-overlay-icon">📥</span>
-              <span>Dateien oder Ordner hierher ziehen zum Importieren</span>
+              <span>Dateien, Ordner oder Bilder von Webseiten hierher ziehen</span>
             </div>
           </div>
         </div>
@@ -311,7 +312,7 @@ function renderFileGrid(): void {
   if (!grid) return;
 
   if (currentEntries.length === 0) {
-    grid.innerHTML = `<div class="empty-state"><span>📭</span><span>Dieser Ordner ist leer – Dateien hierher ziehen</span></div>`;
+    grid.innerHTML = `<div class="empty-state"><span>📭</span><span>Dieser Ordner ist leer – Dateien oder Web-Bilder hierher ziehen</span></div>`;
     return;
   }
 
@@ -788,14 +789,13 @@ function setupCanvasDrop(): void {
   let dragDepth = 0;
 
   canvas.addEventListener('dragenter', (e) => {
-    if (!isExternalFileDrag(e)) return;
+    if (!isImportableDrag(e.dataTransfer)) return;
     e.preventDefault();
     dragDepth++;
     overlay.classList.add('visible');
   });
 
-  canvas.addEventListener('dragleave', (e) => {
-    if (!isExternalFileDrag(e)) return;
+  canvas.addEventListener('dragleave', () => {
     dragDepth--;
     if (dragDepth <= 0) {
       dragDepth = 0;
@@ -804,7 +804,7 @@ function setupCanvasDrop(): void {
   });
 
   canvas.addEventListener('dragover', (e) => {
-    if (isExternalFileDrag(e)) {
+    if (isImportableDrag(e.dataTransfer)) {
       e.preventDefault();
       e.dataTransfer!.dropEffect = 'copy';
       overlay.classList.add('visible');
@@ -833,16 +833,20 @@ function setupCanvasDrop(): void {
       return;
     }
 
-    if (!isExternalFileDrag(e)) return;
+    if (!isImportableDrag(e.dataTransfer)) return;
 
     try {
-      setStatus('Importiere Dateien…', true);
-      const count = await importFromDataTransfer(
+      setStatus('Importiere…', true);
+      const count = await importFromDrop(
         cryptoKey,
         currentDirHandle,
-        e.dataTransfer.items,
+        e.dataTransfer,
         (msg) => setStatus(msg, true),
       );
+      if (count === 0) {
+        setStatus('Keine importierbaren Bilder oder Dateien gefunden');
+        return;
+      }
       setStatus(`✓ ${count} Datei(en) importiert`);
       await handleRefresh();
     } catch (err) {
@@ -890,16 +894,20 @@ function setupDropTarget(el: HTMLElement, targetPath: string): void {
       return;
     }
 
-    if (!isExternalFileDrag(e)) return;
+    if (!isImportableDrag(e.dataTransfer)) return;
 
     try {
-      setStatus('Importiere Dateien…', true);
-      const count = await importFromDataTransfer(
+      setStatus('Importiere…', true);
+      const count = await importFromDrop(
         cryptoKey,
         targetHandle,
-        e.dataTransfer.items,
+        e.dataTransfer,
         (msg) => setStatus(msg, true),
       );
+      if (count === 0) {
+        setStatus('Keine importierbaren Bilder oder Dateien gefunden');
+        return;
+      }
       setStatus(`✓ ${count} Datei(en) importiert`);
       await handleRefresh();
     } catch (err) {
@@ -913,10 +921,6 @@ function setupGlobalDismiss(): void {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeContextMenu();
   });
-}
-
-function isExternalFileDrag(e: DragEvent): boolean {
-  return e.dataTransfer?.types.includes('Files') ?? false;
 }
 
 function canDropOnPath(e: DragEvent, targetPath: string): boolean {
@@ -933,7 +937,7 @@ function canDropOnPath(e: DragEvent, targetPath: string): boolean {
     return true;
   }
 
-  return isExternalFileDrag(e);
+  return isImportableDrag(e.dataTransfer);
 }
 
 function clearDropHighlights(): void {
