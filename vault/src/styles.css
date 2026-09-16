@@ -171,6 +171,13 @@ body {
   background: rgba(248, 113, 113, 0.1);
 }
 
+.btn-icon {
+  min-width: 2rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
 .error-msg {
   color: var(--danger);
   font-size: 0.8125rem;
@@ -511,6 +518,26 @@ body {
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.preview-zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.preview-zoom-controls .zoom-level {
+  min-width: 3rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  user-select: none;
 }
 
 .dirty-badge {
@@ -529,6 +556,15 @@ body {
   max-width: 95vw;
   max-height: 95vh;
   width: 900px;
+}
+
+.preview-modal--zoomable {
+  max-width: 95vw;
+  max-height: 95vh;
+}
+
+.preview-modal:focus {
+  outline: none;
 }
 
 .preview-body {
@@ -560,6 +596,41 @@ body {
 
 .preview-body embed.pdf-preview {
   background: #fff;
+}
+
+.preview-body--zoomable {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+}
+
+.preview-zoom-viewport {
+  width: 100%;
+  height: 70vh;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.preview-zoom-content {
+  transform-origin: center center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-zoom-content img {
+  max-width: min(100%, 1200px);
+  max-height: 68vh;
+  object-fit: contain;
+  display: block;
+}
+
+.preview-zoom-content embed.pdf-preview {
+  width: min(100%, 900px);
+  height: 68vh;
 }
 
 .preview-body--editing {

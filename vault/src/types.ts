@@ -29,4 +29,5 @@ export interface PreviewState {
   editMode?: boolean;
   markdownMode?: MarkdownEditMode;
   dirty?: boolean;
+  zoom?: number;
 }
