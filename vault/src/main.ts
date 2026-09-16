@@ -21,7 +21,9 @@ import {
 } from './security.js';
 import {
   buildTree,
+  importFromClipboard,
   importFromDrop,
+  importFromNavigatorClipboard,
   isImportableDrag,
   isFileSystemAccessSupported,
   listDirectory,
@@ -50,6 +52,7 @@ let statusBusy = false;
 let unlockTab: 'password' | 'file' = 'password';
 let unlockError = '';
 let contextMenu: { x: number; y: number; entry: VaultEntry; parentPath: string } | null = null;
+let canvasContextMenu: { x: number; y: number } | null = null;
 let dragEntry: { entry: VaultEntry; sourcePath: string } | null = null;
 
 const VAULT_DRAG_TYPE = 'application/x-vault-entry';
@@ -176,11 +179,11 @@ function renderExplorer(): void {
         <div class="sidebar" id="sidebar"></div>
         <div class="main-panel" id="main-panel">
           <div class="breadcrumb" id="breadcrumb"></div>
-          <div class="canvas" id="canvas">
+          <div class="canvas" id="canvas" tabindex="0" role="region" aria-label="Datei-Bereich">
             <div class="file-grid" id="file-grid"></div>
             <div class="drop-overlay" id="drop-overlay">
               <span class="drop-overlay-icon">📥</span>
-              <span>Dateien oder Ordner hierher ziehen zum Importieren</span>
+              <span>Dateien oder Ordner hierher ziehen oder einfügen (Strg+V)</span>
             </div>
           </div>
         </div>
@@ -197,6 +200,7 @@ function renderExplorer(): void {
   renderBreadcrumb();
   renderFileGrid();
   setupCanvasDrop();
+  setupCanvasPaste();
   setupGlobalDismiss();
 
   app.querySelector('#refresh-btn')?.addEventListener('click', handleRefresh);
@@ -322,7 +326,7 @@ function renderFileGrid(): void {
   if (!grid) return;
 
   if (currentEntries.length === 0) {
-    grid.innerHTML = `<div class="empty-state"><span>📭</span><span>Dieser Ordner ist leer – Dateien hierher ziehen</span></div>`;
+    grid.innerHTML = `<div class="empty-state"><span>📭</span><span>Dieser Ordner ist leer – Dateien hierher ziehen oder einfügen (Strg+V)</span></div>`;
     return;
   }
 
@@ -946,6 +950,70 @@ function setupDropTarget(el: HTMLElement, targetPath: string): void {
   });
 }
 
+function isCanvasPasteAllowed(): boolean {
+  if (phase !== 'explorer' || !cryptoKey || !currentDirHandle) return false;
+  if (preview?.editMode) return false;
+
+  const active = document.activeElement;
+  if (
+    active &&
+    (active.closest('.preview-overlay') ||
+      (active !== document.getElementById('canvas') &&
+        active.closest('input, textarea, select, [contenteditable="true"]')))
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+async function handleClipboardImport(clipboardData?: DataTransfer | null): Promise<void> {
+  if (!isCanvasPasteAllowed() || !cryptoKey || !currentDirHandle) return;
+
+  try {
+    setStatus('Füge aus Zwischenablage ein…', true);
+    const count = clipboardData
+      ? await importFromClipboard(cryptoKey, currentDirHandle, clipboardData, (msg) => setStatus(msg, true))
+      : await importFromNavigatorClipboard(cryptoKey, currentDirHandle, (msg) => setStatus(msg, true));
+
+    if (count === 0) {
+      setStatus('Keine einfügbaren Daten in der Zwischenablage gefunden');
+      return;
+    }
+
+    setStatus(`✓ ${count} Datei(en) eingefügt`);
+    await handleRefresh();
+  } catch (err) {
+    setStatus(err instanceof Error ? err.message : 'Einfügen fehlgeschlagen');
+  }
+}
+
+function setupCanvasPaste(): void {
+  const canvas = document.getElementById('canvas');
+  if (!canvas) return;
+
+  canvas.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('.file-card')) return;
+    canvas.focus();
+  });
+
+  canvas.addEventListener('paste', (e) => {
+    if (!isCanvasPasteAllowed()) return;
+    e.preventDefault();
+    closeContextMenu();
+    void handleClipboardImport(e.clipboardData);
+  });
+
+  canvas.addEventListener('contextmenu', (e) => {
+    if ((e.target as HTMLElement).closest('.file-card')) return;
+    if (!isCanvasPasteAllowed()) return;
+
+    e.preventDefault();
+    canvas.focus();
+    showCanvasContextMenu(e.clientX, e.clientY);
+  });
+}
+
 function setupGlobalDismiss(): void {
   document.addEventListener('click', () => closeContextMenu());
   document.addEventListener('keydown', (e) => {
@@ -1012,13 +1080,48 @@ function getParentPath(path: string): string {
 }
 
 function showContextMenu(x: number, y: number, entry: VaultEntry, parentPath: string): void {
+  canvasContextMenu = null;
   contextMenu = { x, y, entry, parentPath };
   renderContextMenu();
 }
 
 function closeContextMenu(): void {
   contextMenu = null;
+  canvasContextMenu = null;
   document.querySelector('.context-menu')?.remove();
+}
+
+function showCanvasContextMenu(x: number, y: number): void {
+  contextMenu = null;
+  canvasContextMenu = { x, y };
+  renderCanvasContextMenu();
+}
+
+function renderCanvasContextMenu(): void {
+  document.querySelector('.context-menu')?.remove();
+  if (!canvasContextMenu) return;
+
+  const menu = document.createElement('div');
+  menu.className = 'context-menu';
+  menu.style.left = `${canvasContextMenu.x}px`;
+  menu.style.top = `${canvasContextMenu.y}px`;
+  menu.innerHTML = `<button type="button" data-action="paste">Einfügen</button>`;
+
+  menu.querySelector('[data-action="paste"]')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeContextMenu();
+    void handleClipboardImport();
+  });
+
+  document.body.appendChild(menu);
+
+  const rect = menu.getBoundingClientRect();
+  if (rect.right > window.innerWidth) {
+    menu.style.left = `${Math.max(0, window.innerWidth - rect.width - 8)}px`;
+  }
+  if (rect.bottom > window.innerHeight) {
+    menu.style.top = `${Math.max(0, window.innerHeight - rect.height - 8)}px`;
+  }
 }
 
 function renderContextMenu(): void {

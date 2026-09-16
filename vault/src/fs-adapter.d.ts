@@ -61,6 +61,17 @@ export function importFromDrop(
   dataTransfer: DataTransfer,
   onProgress?: (msg: string) => void,
 ): Promise<number>;
+export function importFromClipboard(
+  key: CryptoKey,
+  dirHandle: FileSystemDirectoryHandle,
+  clipboardData: DataTransfer,
+  onProgress?: (msg: string) => void,
+): Promise<number>;
+export function importFromNavigatorClipboard(
+  key: CryptoKey,
+  dirHandle: FileSystemDirectoryHandle,
+  onProgress?: (msg: string) => void,
+): Promise<number>;
 export function importFromDataTransfer(
   key: CryptoKey,
   dirHandle: FileSystemDirectoryHandle,
