@@ -381,6 +381,143 @@ export async function importFromDrop(key, dirHandle, dataTransfer, onProgress) {
   return importFilesFromItems(key, dirHandle, dataTransfer.items, onProgress);
 }
 
+function extensionFromMime(mime) {
+  const map = {
+    'image/png': 'png',
+    'image/jpeg': 'jpg',
+    'image/gif': 'gif',
+    'image/webp': 'webp',
+    'image/bmp': 'bmp',
+    'image/svg+xml': 'svg',
+    'text/plain': 'txt',
+    'text/html': 'html',
+    'text/markdown': 'md',
+    'text/csv': 'csv',
+    'application/json': 'json',
+    'application/pdf': 'pdf',
+  };
+  return map[mime] ?? null;
+}
+
+function defaultFilenameFromFile(file) {
+  if (file.name) return file.name;
+  const ext = extensionFromMime(file.type) ?? 'bin';
+  return `paste.${ext}`;
+}
+
+function inferTextFilename(text, mimeType) {
+  if (mimeType === 'text/html') return 'paste.html';
+  if (mimeType === 'text/markdown') return 'paste.md';
+  if (mimeType === 'text/csv') return 'paste.csv';
+  if (mimeType === 'application/json') return 'paste.json';
+
+  const trimmed = text.trim();
+  if (
+    (trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+    (trimmed.startsWith('[') && trimmed.endsWith(']'))
+  ) {
+    try {
+      JSON.parse(trimmed);
+      return 'paste.json';
+    } catch {
+      // kein gültiges JSON
+    }
+  }
+
+  return 'paste.txt';
+}
+
+async function importClipboardFileItems(key, dirHandle, fileItems, onProgress) {
+  let count = 0;
+
+  for (const item of fileItems) {
+    const file = item.getAsFile?.() ?? (item instanceof File ? item : null);
+    if (!file) continue;
+
+    const filename = await resolveUniqueFilename(key, dirHandle, defaultFilenameFromFile(file));
+    await writeEncryptedFile(key, dirHandle, filename, await file.arrayBuffer(), onProgress);
+    count++;
+  }
+
+  return count;
+}
+
+async function importClipboardText(key, dirHandle, text, mimeType, onProgress) {
+  if (!text) return 0;
+
+  const filename = await resolveUniqueFilename(key, dirHandle, inferTextFilename(text, mimeType));
+  const encoded = new TextEncoder().encode(text);
+  const buffer = encoded.buffer.slice(encoded.byteOffset, encoded.byteOffset + encoded.byteLength);
+  await writeEncryptedFile(key, dirHandle, filename, buffer, onProgress);
+  return 1;
+}
+
+/** Zwischenablage-Inhalt importieren (Paste-Event oder Clipboard API). */
+export async function importFromClipboard(key, dirHandle, clipboardData, onProgress) {
+  const fileItems = [...clipboardData.items].filter((item) => item.kind === 'file');
+  const fileCount = await importClipboardFileItems(key, dirHandle, fileItems, onProgress);
+  if (fileCount > 0) return fileCount;
+
+  const types = clipboardData.types ?? [];
+  if (types.includes('text/plain')) {
+    const text = clipboardData.getData('text/plain');
+    const count = await importClipboardText(key, dirHandle, text, 'text/plain', onProgress);
+    if (count > 0) return count;
+  }
+
+  if (types.includes('text/html')) {
+    const html = clipboardData.getData('text/html');
+    const count = await importClipboardText(key, dirHandle, html, 'text/html', onProgress);
+    if (count > 0) return count;
+  }
+
+  return 0;
+}
+
+/** Zwischenablage über die Clipboard API lesen (z. B. Kontextmenü „Einfügen“). */
+export async function importFromNavigatorClipboard(key, dirHandle, onProgress) {
+  if (!navigator.clipboard?.read) {
+    throw new Error('Zwischenablage-Zugriff wird von diesem Browser nicht unterstützt.');
+  }
+
+  const clipboardItems = await navigator.clipboard.read();
+  const fileItems = [];
+
+  for (const clipItem of clipboardItems) {
+    for (const type of clipItem.types) {
+      if (type === 'text/plain' || type === 'text/html') continue;
+
+      const blob = await clipItem.getType(type);
+      const ext = extensionFromMime(type) ?? 'bin';
+      const file = new File([blob], `paste.${ext}`, { type });
+      fileItems.push(file);
+    }
+  }
+
+  const fileCount = await importClipboardFileItems(key, dirHandle, fileItems, onProgress);
+  if (fileCount > 0) return fileCount;
+
+  for (const clipItem of clipboardItems) {
+    if (clipItem.types.includes('text/plain')) {
+      const blob = await clipItem.getType('text/plain');
+      const text = await blob.text();
+      const count = await importClipboardText(key, dirHandle, text, 'text/plain', onProgress);
+      if (count > 0) return count;
+    }
+  }
+
+  for (const clipItem of clipboardItems) {
+    if (clipItem.types.includes('text/html')) {
+      const blob = await clipItem.getType('text/html');
+      const html = await blob.text();
+      const count = await importClipboardText(key, dirHandle, html, 'text/html', onProgress);
+      if (count > 0) return count;
+    }
+  }
+
+  return 0;
+}
+
 /** @deprecated Verwende importFromDrop – behält Abwärtskompatibilität. */
 export async function importFromDataTransfer(key, dirHandle, items, onProgress) {
   const proxy = { items, getData: () => '' };
