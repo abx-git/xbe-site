@@ -56,6 +56,9 @@ let canvasContextMenu: { x: number; y: number } | null = null;
 let dragEntry: { entry: VaultEntry; sourcePath: string } | null = null;
 
 const VAULT_DRAG_TYPE = 'application/x-vault-entry';
+const ZOOM_MIN = 0.25;
+const ZOOM_MAX = 4;
+const ZOOM_STEP = 0.25;
 const app = document.getElementById('app')!;
 
 // ── Rendering ──
@@ -396,6 +399,29 @@ function renderFileGrid(): void {
   });
 }
 
+function clampZoom(zoom: number): number {
+  return Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(zoom / ZOOM_STEP) * ZOOM_STEP));
+}
+
+function isZoomablePreview(mimeType: string, editing: boolean): boolean {
+  if (editing) return false;
+  return mimeType.startsWith('image/') || mimeType === 'application/pdf';
+}
+
+function triggerDownload(url: string, filename: string): void {
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.rel = 'noopener';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+function wrapZoomableContent(content: string, zoom: number): string {
+  return `<div class="preview-zoom-viewport" id="zoom-viewport"><div class="preview-zoom-content" id="zoom-content" style="transform:scale(${zoom})">${content}</div></div>`;
+}
+
 function renderPreview(): void {
   const existing = document.querySelector('.preview-overlay');
   existing?.remove();
@@ -405,10 +431,12 @@ function renderPreview(): void {
   const overlay = document.createElement('div');
   overlay.className = 'preview-overlay';
   const isMd = isMarkdownFile(preview.mimeType, preview.name);
-  const editing = preview.editMode && preview.editable;
+  const editing = !!(preview.editMode && preview.editable);
+  const zoom = preview.zoom ?? 1;
+  const mime = preview.mimeType;
+  const zoomable = isZoomablePreview(mime, editing);
 
   let bodyContent = '';
-  const mime = preview.mimeType;
 
   if (editing && isMd) {
     const mode = preview.markdownMode ?? 'rich';
@@ -431,7 +459,7 @@ function renderPreview(): void {
         <textarea class="editor-textarea" id="text-editor" spellcheck="false">${escapeHtml(preview.textContent ?? '')}</textarea>
       </div>`;
   } else if (mime.startsWith('image/')) {
-    bodyContent = `<img src="${preview.objectUrl}" alt="${escapeHtml(preview.name)}" />`;
+    bodyContent = `<img src="${preview.objectUrl}" alt="${escapeHtml(preview.name)}" draggable="false" />`;
   } else if (mime.startsWith('video/')) {
     bodyContent = `<video src="${preview.objectUrl}" controls></video>`;
   } else if (mime.startsWith('audio/')) {
@@ -448,7 +476,22 @@ function renderPreview(): void {
     bodyContent = `<div class="empty-state"><span>Dateityp kann nicht angezeigt werden</span><span>${escapeHtml(preview.name)}</span></div>`;
   }
 
+  if (zoomable) {
+    bodyContent = wrapZoomableContent(bodyContent, zoom);
+  }
+
   const dirtyBadge = preview.dirty ? '<span class="dirty-badge">Ungespeichert</span>' : '';
+  const zoomControls = zoomable
+    ? `<div class="preview-zoom-controls">
+        <button type="button" class="btn btn-icon" id="zoom-out" title="Verkleinern (Strg+−)">−</button>
+        <span class="zoom-level" id="zoom-level">${Math.round(zoom * 100)}%</span>
+        <button type="button" class="btn btn-icon" id="zoom-in" title="Vergrößern (Strg++)">+</button>
+        <button type="button" class="btn btn-icon" id="zoom-reset" title="Zoom zurücksetzen">⟲</button>
+      </div>`
+    : '';
+  const downloadBtn = !editing
+    ? `<button class="btn btn-secondary" id="download-preview" title="Entschlüsselt herunterladen">Herunterladen</button>`
+    : '';
   const editBtn = preview.editable
     ? `<button class="btn btn-secondary" id="toggle-edit">${editing ? 'Vorschau' : 'Bearbeiten'}</button>`
     : '';
@@ -457,25 +500,78 @@ function renderPreview(): void {
     : '';
 
   overlay.innerHTML = `
-    <div class="preview-modal ${editing ? 'preview-modal--editing' : ''}">
+    <div class="preview-modal ${editing ? 'preview-modal--editing' : ''} ${zoomable ? 'preview-modal--zoomable' : ''}" tabindex="-1">
       <div class="preview-header">
         <h2>${escapeHtml(preview.name)}${dirtyBadge}</h2>
         <div class="preview-actions">
+          ${zoomControls}
+          ${downloadBtn}
           ${saveBtn}
           ${editBtn}
           <button class="btn btn-secondary" id="close-preview">Schließen</button>
         </div>
       </div>
-      <div class="preview-body ${editing ? 'preview-body--editing' : ''}">${bodyContent}</div>
+      <div class="preview-body ${editing ? 'preview-body--editing' : ''} ${zoomable ? 'preview-body--zoomable' : ''}">${bodyContent}</div>
     </div>
   `;
 
   document.body.appendChild(overlay);
 
-  setupPreviewEvents(overlay, isMd);
+  setupPreviewEvents(overlay, isMd, zoomable);
 }
 
-function setupPreviewEvents(overlay: HTMLElement, isMd: boolean): void {
+function applyPreviewZoom(overlay: HTMLElement, zoom: number): void {
+  const content = overlay.querySelector('#zoom-content') as HTMLElement | null;
+  const label = overlay.querySelector('#zoom-level');
+  if (content) content.style.transform = `scale(${zoom})`;
+  if (label) label.textContent = `${Math.round(zoom * 100)}%`;
+}
+
+function setupPreviewZoom(overlay: HTMLElement): void {
+  const viewport = overlay.querySelector('#zoom-viewport');
+  if (!viewport || !preview) return;
+
+  const setZoom = (next: number) => {
+    if (!preview) return;
+    preview.zoom = clampZoom(next);
+    applyPreviewZoom(overlay, preview.zoom);
+  };
+
+  overlay.querySelector('#zoom-in')?.addEventListener('click', () => setZoom((preview?.zoom ?? 1) + ZOOM_STEP));
+  overlay.querySelector('#zoom-out')?.addEventListener('click', () => setZoom((preview?.zoom ?? 1) - ZOOM_STEP));
+  overlay.querySelector('#zoom-reset')?.addEventListener('click', () => setZoom(1));
+
+  viewport.addEventListener(
+    'wheel',
+    (e) => {
+      const wheel = e as WheelEvent;
+      if (!wheel.ctrlKey && !wheel.metaKey) return;
+      wheel.preventDefault();
+      const delta = wheel.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
+      setZoom((preview?.zoom ?? 1) + delta);
+    },
+    { passive: false },
+  );
+
+  overlay.addEventListener('keydown', (e) => {
+    const key = e as KeyboardEvent;
+    if (!key.ctrlKey && !key.metaKey) return;
+    if (key.key === '+' || key.key === '=') {
+      key.preventDefault();
+      setZoom((preview?.zoom ?? 1) + ZOOM_STEP);
+    } else if (key.key === '-') {
+      key.preventDefault();
+      setZoom((preview?.zoom ?? 1) - ZOOM_STEP);
+    } else if (key.key === '0') {
+      key.preventDefault();
+      setZoom(1);
+    }
+  });
+
+  (overlay.querySelector('.preview-modal') as HTMLElement | null)?.focus();
+}
+
+function setupPreviewEvents(overlay: HTMLElement, isMd: boolean, zoomable = false): void {
   overlay.querySelector('#close-preview')?.addEventListener('click', () => {
     if (preview?.dirty) {
       if (!window.confirm('Ungespeicherte Änderungen verwerfen?')) return;
@@ -492,6 +588,13 @@ function setupPreviewEvents(overlay: HTMLElement, isMd: boolean): void {
 
   overlay.querySelector('#toggle-edit')?.addEventListener('click', toggleEditMode);
   overlay.querySelector('#save-preview')?.addEventListener('click', savePreview);
+  overlay.querySelector('#download-preview')?.addEventListener('click', () => {
+    if (!preview) return;
+    triggerDownload(preview.objectUrl, preview.name);
+    setStatus(`✓ ${preview.name} heruntergeladen`);
+  });
+
+  if (zoomable) setupPreviewZoom(overlay);
 
   if (!preview?.editMode) return;
 
@@ -797,6 +900,7 @@ async function openFilePreview(entry: VaultEntry): Promise<void> {
       editMode: false,
       markdownMode: isMarkdownFile(mimeType, name) ? 'rich' : undefined,
       dirty: false,
+      zoom: 1,
     };
     setStatus(`✓ ${name} geöffnet`);
     renderPreview();
@@ -1132,7 +1236,12 @@ function renderContextMenu(): void {
   menu.className = 'context-menu';
   menu.style.left = `${contextMenu.x}px`;
   menu.style.top = `${contextMenu.y}px`;
+  const downloadBtn =
+    contextMenu.entry.kind === 'file'
+      ? `<button type="button" data-action="download">Herunterladen</button>`
+      : '';
   menu.innerHTML = `
+    ${downloadBtn}
     <button type="button" data-action="rename">Umbenennen</button>
     <button type="button" data-action="delete" class="danger">Löschen</button>
   `;
@@ -1143,7 +1252,8 @@ function renderContextMenu(): void {
       const action = (btn as HTMLElement).dataset.action;
       const { entry, parentPath } = contextMenu!;
       closeContextMenu();
-      if (action === 'rename') handleRenameEntry(entry, parentPath);
+      if (action === 'download') handleDownloadEntry(entry);
+      else if (action === 'rename') handleRenameEntry(entry, parentPath);
       else if (action === 'delete') handleDeleteEntry(entry, parentPath);
     });
   });
@@ -1156,6 +1266,23 @@ function renderContextMenu(): void {
   }
   if (rect.bottom > window.innerHeight) {
     menu.style.top = `${Math.max(0, window.innerHeight - rect.height - 8)}px`;
+  }
+}
+
+async function handleDownloadEntry(entry: VaultEntry): Promise<void> {
+  if (!cryptoKey || entry.kind !== 'file') return;
+
+  try {
+    setStatus(`Entschlüssele: ${entry.decryptedName}…`, true);
+    const { name, content, mimeType } = await readDecryptedFile(cryptoKey, entry.handle as FileSystemFileHandle);
+    const buffer = content.buffer.slice(content.byteOffset, content.byteOffset + content.byteLength) as ArrayBuffer;
+    const blob = new Blob([buffer], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    triggerDownload(url, name);
+    URL.revokeObjectURL(url);
+    setStatus(`✓ ${name} heruntergeladen`);
+  } catch (err) {
+    setStatus(err instanceof Error ? err.message : 'Download fehlgeschlagen');
   }
 }
 
