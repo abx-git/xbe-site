@@ -32,7 +32,7 @@ Ergebnis: https://abx-git.github.io/kiva/
 
 Workflow **Sync Kiva to abx-git/kiva** in **xbe-site** — nur wenn ein **persönlicher** PAT (nicht Organisations-Token) mit **Contents: Write** auf `abx-git/kiva` existiert und die Organisation PAT-Zugriff erlaubt. Bei `Permission denied to abx-git` diese Alternative meist unbrauchbar; dann den Import in `kiva` oben nutzen.
 
-Secret in **xbe-site**: `KIVA_REPO_PUSH_TOKEN`
+Secret in **xbe-site**: `KIVA_REPO_PUSH_TOKEN` — muss ein **persönlicher** PAT sein (GitHub-User z. B. dein Account), **nicht** ein Organisations-Token (`Token owner: abx-git` im Workflow-Log). Die Cursor-App-Freigabe für alle Repos gilt für Cloud Agents, nicht für dieses Actions-Secret.
 
 ### Optional mit Git lokal
 
