@@ -1,3 +1,6 @@
+# ONE-TIME ONLY — run once in abx-git/kiva, then delete this workflow from kiva.
+# Ongoing development happens only in abx-git/kiva (not xbe-site).
+
 name: Import from xbe-site (kiva-export)
 
 on:

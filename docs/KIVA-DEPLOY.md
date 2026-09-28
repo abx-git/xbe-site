@@ -25,7 +25,7 @@ Then re-run **Deploy Kiva (GitHub Pages)**.
 
 ## Checklist when the app “does nothing”
 
-1. **Import workflow** must run again after fixes on `kiva-export` (otherwise `abx-git/kiva` still has old login code with `disabled` fields).
+1. **One-time import** from xbe-site only if `abx-git/kiva` never got the current code; afterwards edit **only** in `kiva`. Do not re-run import routinely — it force-pushes `main`.
 2. Secret names must be exactly `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (repository secrets, not only environment secrets).
 3. Add a verify step before `npm run build` in `deploy.yml`:
 

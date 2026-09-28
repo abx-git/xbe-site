@@ -1,3 +1,0 @@
-# Bump this file (commit to main) to run "Sync Kiva to abx-git/kiva" via Actions.
-# Requires secret KIVA_REPO_PUSH_TOKEN (personal PAT, Contents write on abx-git/kiva).
-2026-09-28T15:52:00Z-retry-personal-pat

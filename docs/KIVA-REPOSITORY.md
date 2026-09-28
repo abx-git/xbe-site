@@ -1,36 +1,27 @@
-# Kiva — separates Projekt (`abx-git/kiva`)
+# Kiva — eigenes Projekt
 
-**Kiva** ist die PWA für Arbeitsanweisungen (Supabase, IndexedDB) — **nicht** [Vault](../vault/README.md) auf www.x-be.de.
+**Kiva** lebt nur in **`abx-git/kiva`**. Dieses Repo (**xbe-site**) enthält **Vault** (`vault/`), nicht Kiva.
 
-Quell-Export auf xbe-site: Branch **`kiva-export`** (aus `cursor/kiva-project-f468`).
+## Normaler Workflow (ab jetzt)
 
-## Repo `abx-git/kiva` füllen (Browser)
+Alles in **`https://github.com/abx-git/kiva`**:
 
-1. In **kiva**: `.github/workflows/import-from-xbe-site.yml`  
-   Inhalt: [Raw-Vorlage](https://github.com/abx-git/xbe-site/raw/main/docs/kiva-import-from-xbe-site.workflow.yml)  
-   (Importiert Branch **`kiva-export`**, keine Workflow-Dateien im Export → Push funktioniert mit `GITHUB_TOKEN`.)
+1. Code ändern → Commit auf `main` in **kiva**
+2. **Deploy Kiva (GitHub Pages)** läuft bei Push auf `main` (wenn `deploy.yml` existiert)
+3. Lokal: `git clone` → `.env` → `npm run dev`
 
-2. **Actions** → **Import from xbe-site (kiva-export)** → **Run workflow**  
-   https://github.com/abx-git/kiva/actions/workflows/import-from-xbe-site.yml
+Kein Import aus xbe-site, kein `kiva-export`-Branch für die tägliche Arbeit.
 
-3. Nach grünem Lauf: **Add file** → `.github/workflows/deploy.yml`  
-   [Deploy-Vorlage](https://github.com/abx-git/xbe-site/raw/main/docs/kiva-deploy.workflow.yml) (einmal per GitHub-UI, nicht per Import).
+## Einmalige Migration (nur falls `kiva` noch leer oder veraltet ist)
 
-4. **Settings → Secrets → Actions:** `VITE_SUPABASE_URL` und `VITE_SUPABASE_ANON_KEY` (Details: [KIVA-DEPLOY.md](./KIVA-DEPLOY.md)).
+Wenn das Kiva-Repo noch nie den aktuellen Stand hatte, **einmal** den Import-Workflow in `kiva` nutzen, danach **Import-Workflow in `kiva` löschen** — er überschreibt bei jedem Lauf `main` und gehört nicht in ein eigenständiges Projekt.
 
-5. **Settings → Pages → GitHub Actions**, dann **Deploy Kiva (GitHub Pages)** erneut starten.
+Vorlage (nur für diesen einen Schritt): [kiva-import-from-xbe-site.workflow.yml](./kiva-import-from-xbe-site.workflow.yml)  
+Quelle: Branch `kiva-export` auf xbe-site (historisch, wird hier nicht weiter gepflegt).
 
-**Login-Felder „tot“?** Build ohne Supabase-Keys → Felder waren deaktiviert. Fix: Secrets setzen, Deploy neu bauen; ggf. Import-Workflow erneut laufen lassen (aktueller `kiva-export`).
+## Deploy & Supabase
+
+- [deploy.yml-Vorlage](./kiva-deploy.workflow.yml) (in **kiva** unter `.github/workflows/`)
+- [KIVA-DEPLOY.md](./KIVA-DEPLOY.md) (Secrets, Troubleshooting)
 
 Live: https://abx-git.github.io/kiva/
-
-## Entwicklung
-
-```bash
-git clone https://github.com/abx-git/kiva.git
-cd kiva
-cp .env.example .env
-npm install && npm run dev
-```
-
-Supabase-Schema: `supabase/kiva/schema.sql` im Kiva-Repo.
