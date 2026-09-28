@@ -1,5 +1,8 @@
 # Kiva
 
-**Kiva** is a separate project: **https://github.com/abx-git/kiva**
+**Repository:** https://github.com/abx-git/kiva  
+**Live:** https://abx-git.github.io/kiva/
 
-All development, CI, and deployment happen in that repository only. This site repo contains **Vault** (`vault/`), not Kiva.
+Development and deployment happen **only** in `abx-git/kiva`. This repo (`xbe-site`) does not contain Kiva source code.
+
+The Cloud Agent can update `kiva` after GitHub grants write access to that repository (see Cursor Cloud Environment or `KIVA_REPO_PUSH_TOKEN` on xbe-site for one-time publish workflow).
