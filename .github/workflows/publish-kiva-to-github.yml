@@ -5,6 +5,10 @@ name: Publish kiva-export to abx-git/kiva
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-kiva-to-github.yml
 
 permissions:
   contents: read
