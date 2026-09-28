@@ -1,6 +1,3 @@
 {
-  "install": "npm ci",
-  "repositoryDependencies": [
-    "github.com/abx-git/kiva"
-  ]
+  "install": "npm ci"
 }
