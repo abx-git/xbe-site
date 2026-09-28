@@ -1,13 +1,32 @@
-# Kiva (separates Projekt)
+# Kiva — separates Projekt (`abx-git/kiva`)
 
-**Kiva** (`abx-git/kiva`) ist **nicht** dasselbe wie **Vault** auf www.x-be.de.
+**Kiva** ist die PWA für Arbeitsanweisungen (Supabase, IndexedDB) — **nicht** [Vault](../vault/README.md) auf www.x-be.de.
 
-- **Vault** — verschlüsselter Dateimanager unter `vault/` in **xbe-site**, live unter `/vault/` (GitHub Pages der Site).
-- **Kiva** — eigenes Repository und eigenes Produkt; Migration/Import nur in `abx-git/kiva`, ohne Änderungen an Vault in xbe-site.
+Quell-Export auf xbe-site: Branch **`kiva-export`** (aus `cursor/kiva-project-f468`).
 
-Vorlagen für einen einmaligen Kiva-Import (falls noch nötig):
+## Repo `abx-git/kiva` füllen (Browser)
 
-- [kiva-import-from-xbe-site.workflow.yml](./kiva-import-from-xbe-site.workflow.yml) (in Repo `kiva` anlegen)
-- [kiva-deploy.workflow.yml](./kiva-deploy.workflow.yml) (Deploy in `kiva` per GitHub-UI)
+1. In **kiva**: `.github/workflows/import-from-xbe-site.yml`  
+   Inhalt: [Raw-Vorlage](https://github.com/abx-git/xbe-site/raw/main/docs/kiva-import-from-xbe-site.workflow.yml)  
+   (Importiert Branch **`kiva-export`**, keine Workflow-Dateien im Export → Push funktioniert mit `GITHUB_TOKEN`.)
 
-Branch `kiva-standalone` in xbe-site war ein fehlerhafter Export-Klon des Vault-Codes und ist **nicht** die Quelle für Vault auf der Site.
+2. **Actions** → **Import from xbe-site (kiva-export)** → **Run workflow**  
+   https://github.com/abx-git/kiva/actions/workflows/import-from-xbe-site.yml
+
+3. Nach grünem Lauf: **Add file** → `.github/workflows/deploy.yml`  
+   [Deploy-Vorlage](https://github.com/abx-git/xbe-site/raw/main/docs/kiva-deploy.workflow.yml) (einmal per GitHub-UI, nicht per Import).
+
+4. **Settings → Pages → GitHub Actions**, dann **Deploy Kiva (GitHub Pages)**.
+
+Live: https://abx-git.github.io/kiva/
+
+## Entwicklung
+
+```bash
+git clone https://github.com/abx-git/kiva.git
+cd kiva
+cp .env.example .env
+npm install && npm run dev
+```
+
+Supabase-Schema: `supabase/kiva/schema.sql` im Kiva-Repo.

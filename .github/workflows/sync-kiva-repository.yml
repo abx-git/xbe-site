@@ -1,6 +1,6 @@
 name: Sync Kiva to abx-git/kiva
 
-# Pushes branch kiva-standalone (standalone Kiva app) to abx-git/kiva main.
+# Pushes branch kiva-export (Kiva PWA) to abx-git/kiva main.
 # Prefer import workflow in abx-git/kiva (see docs/KIVA-REPOSITORY.md) — no PAT.
 # This job needs a personal PAT in KIVA_REPO_PUSH_TOKEN with Contents: Write on kiva (org tokens often get 403).
 
@@ -19,10 +19,10 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout kiva-standalone
+      - name: Checkout kiva-export
         uses: actions/checkout@v4
         with:
-          ref: kiva-standalone
+          ref: kiva-export
           fetch-depth: 1
           # Do not persist GITHUB_TOKEN — it only has access to xbe-site and would override the PAT on push.
           persist-credentials: false

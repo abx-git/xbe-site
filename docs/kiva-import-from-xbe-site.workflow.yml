@@ -1,4 +1,4 @@
-name: Import from xbe-site (kiva-standalone)
+name: Import from xbe-site (kiva-export)
 
 on:
   workflow_dispatch:
@@ -10,11 +10,11 @@ jobs:
   import:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout kiva-standalone (app only, no workflows in branch)
+      - name: Checkout kiva-export (real Kiva PWA, not Vault)
         uses: actions/checkout@v4
         with:
           repository: abx-git/xbe-site
-          ref: kiva-standalone
+          ref: kiva-export
           persist-credentials: false
 
       - name: Push to abx-git/kiva main
