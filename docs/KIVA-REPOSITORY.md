@@ -1,52 +1,29 @@
 # Kiva – eigenes Repository
 
-Der verschlüsselte Dateimanager **Kiva** (früher Unterordner `vault/` in diesem Repo) lebt in einem separaten Repository.
+Kiva (ehemals `vault/` in xbe-site) lebt in **abx-git/kiva**.
 
-## Quellcode exportieren
+**Einmaliger Import:** Branch `kiva-standalone` in xbe-site ist nur ein **Export-Staging** — kein dauerhaftes „Zweit-Home“ für die App. Nach erfolgreichem Import arbeitest du nur noch in `kiva`.
 
-Auf Branch `kiva-standalone` liegt der vollständige Kiva-Projektbaum (Vite-SPA, CI, Dokumentation) als Repository-Root – ohne Astro-Site.
+## Import in `abx-git/kiva` (Browser)
 
-```bash
-git fetch origin kiva-standalone
-```
+1. Workflow-Datei in **kiva** (nicht xbe-site):  
+   `.github/workflows/import-from-xbe-site.yml`  
+   Inhalt: [Raw-Vorlage auf main](https://github.com/abx-git/xbe-site/raw/main/docs/kiva-import-from-xbe-site.workflow.yml)  
+   Wichtig: `permissions` muss **`contents: write`** und **`workflows: write`** enthalten (sonst Fehler beim Pushen von `deploy.yml`).
+2. **Settings → Actions → General:** Actions erlauben, Workflow-Berechtigung **Read and write**.
+3. Workflow starten:  
+   https://github.com/abx-git/kiva/actions/workflows/import-from-xbe-site.yml → **Run workflow**  
+   (oder Datei erneut committen — `push`-Trigger auf `main`).
+4. **Settings → Pages:** Source **GitHub Actions**, dann **Deploy Kiva (GitHub Pages)** ausführen.
 
-## Neues Repository `abx-git/kiva` anlegen
+Live: https://abx-git.github.io/kiva/
 
-1. Auf GitHub: **New repository** → `abx-git/kiva` (öffentlich), ohne README/Lizenz (Inhalt kommt per Push).
+### Typischer Fehler
 
-### Nur Browser (empfohlen, kein PAT)
-
-Der Import läuft **in `abx-git/kiva`** und nutzt nur den eingebauten `GITHUB_TOKEN` (Schreibrechte auf `kiva`). `xbe-site` ist öffentlich lesbar.
-
-1. **abx-git/kiva** → **Add file** → **Create new file**
-2. Dateipfad: `.github/workflows/import-from-xbe-site.yml`
-3. Inhalt aus [`docs/kiva-import-from-xbe-site.workflow.yml`](./kiva-import-from-xbe-site.workflow.yml) in diesem Repo kopieren (Raw-Ansicht auf GitHub: `abx-git/xbe-site` → gleicher Pfad).
-4. **Commit changes** (erstellt `main` mit nur dieser Workflow-Datei).
-5. **Actions** → links in der Seitenleiste **Import from xbe-site (kiva-standalone)** wählen (direkt: `https://github.com/abx-git/kiva/actions/workflows/import-from-xbe-site.yml`) → **Run workflow**  
-   Wenn die Liste leer wirkt: **Settings** → **Actions** → **General** → „Allow all actions“ und Workflow-Berechtigung **Read and write**.
-6. Alternativ: Workflow-Datei erneut speichern (Commit auf `main`) — startet den Import automatisch per `push`-Trigger.
-6. **Settings** → **Pages** → Source: **GitHub Actions**
-7. **Actions** → **Deploy Kiva (GitHub Pages)** → **Run workflow**
-
-Ergebnis: https://abx-git.github.io/kiva/
-
-### Alternative: Sync aus xbe-site (benötigt PAT)
-
-Workflow **Sync Kiva to abx-git/kiva** in **xbe-site** — nur wenn ein **persönlicher** PAT (nicht Organisations-Token) mit **Contents: Write** auf `abx-git/kiva` existiert und die Organisation PAT-Zugriff erlaubt. Bei `Permission denied to abx-git` diese Alternative meist unbrauchbar; dann den Import in `kiva` oben nutzen.
-
-Secret in **xbe-site**: `KIVA_REPO_PUSH_TOKEN` — muss ein **persönlicher** PAT sein (GitHub-User z. B. dein Account), **nicht** ein Organisations-Token (`Token owner: abx-git` im Workflow-Log). Die Cursor-App-Freigabe für alle Repos gilt für Cloud Agents, nicht für dieses Actions-Secret.
-
-### Optional mit Git lokal
-
-```bash
-git clone https://github.com/abx-git/kiva.git
-cd kiva
-git fetch https://github.com/abx-git/xbe-site.git kiva-standalone
-git checkout -b main FETCH_HEAD
-git push -u origin main
-```
+`refusing to allow a GitHub App to create or update workflow ... without workflows permission`  
+→ In der Import-Workflow-Datei `workflows: write` unter `permissions` ergänzen (siehe Vorlage oben), committen, erneut ausführen.
 
 ## xbe-site
 
-- Der Ordner `vault/` wurde entfernt.
-- `/vault/` auf www.x-be.de leitet per statischer Seite auf die Kiva-GitHub-Pages-URL um (anpassbar in `src/pages/vault/index.astro`).
+- `vault/` ist von `main` entfernt.
+- `/vault/` leitet auf Kiva GitHub Pages um (`src/pages/vault/index.astro`).

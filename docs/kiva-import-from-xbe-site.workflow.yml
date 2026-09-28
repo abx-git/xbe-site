@@ -7,8 +7,10 @@ on:
     paths:
       - .github/workflows/import-from-xbe-site.yml
 
+# workflows: write is required because kiva-standalone includes .github/workflows/deploy.yml
 permissions:
   contents: write
+  workflows: write
 
 jobs:
   import:
