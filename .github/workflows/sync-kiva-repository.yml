@@ -6,6 +6,11 @@ name: Sync Kiva to abx-git/kiva
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/sync-kiva-repository.yml
+      - .github/kiva-sync-trigger
 
 permissions:
   contents: read
@@ -30,6 +35,10 @@ jobs:
             echo "::error::Missing secret KIVA_REPO_PUSH_TOKEN. See docs/KIVA-REPOSITORY.md"
             exit 1
           fi
+          echo "Token owner:"
+          curl -fsS -H "Authorization: Bearer ${KIVA_REPO_PUSH_TOKEN}" https://api.github.com/user | jq -r '.login // .message'
+          echo "Push permission on abx-git/kiva:"
+          curl -fsS -H "Authorization: Bearer ${KIVA_REPO_PUSH_TOKEN}" https://api.github.com/repos/abx-git/kiva | jq -r '.permissions.push // .message'
           git config --local credential.helper ""
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
