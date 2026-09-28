@@ -1,0 +1,38 @@
+name: Publish kiva-export to abx-git/kiva
+
+# One-shot / manual: push branch kiva-export to kiva main (app fix, deploy.yml).
+# Requires personal PAT in xbe-site secret KIVA_REPO_PUSH_TOKEN (Contents write on abx-git/kiva).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kiva-export
+        uses: actions/checkout@v4
+        with:
+          ref: kiva-export
+          persist-credentials: false
+
+      - name: Push to abx-git/kiva main
+        env:
+          KIVA_REPO_PUSH_TOKEN: ${{ secrets.KIVA_REPO_PUSH_TOKEN }}
+        run: |
+          if [ -z "$KIVA_REPO_PUSH_TOKEN" ]; then
+            echo "::error::Missing KIVA_REPO_PUSH_TOKEN on abx-git/xbe-site (personal PAT, Contents write on kiva)"
+            exit 1
+          fi
+          OWNER=$(curl -fsS -H "Authorization: Bearer ${KIVA_REPO_PUSH_TOKEN}" https://api.github.com/user | jq -r '.login // empty')
+          echo "Token owner: ${OWNER}"
+          if [ "$OWNER" = "abx-git" ]; then
+            echo "::error::Use a personal GitHub PAT, not the org account abx-git"
+            exit 1
+          fi
+          git config --local credential.helper ""
+          git remote add kiva "https://x-access-token:${KIVA_REPO_PUSH_TOKEN}@github.com/abx-git/kiva.git"
+          git push kiva HEAD:main --force
