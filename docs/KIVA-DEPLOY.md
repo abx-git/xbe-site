@@ -2,12 +2,16 @@
 
 The PWA needs Supabase at **build time** (Vite embeds `VITE_*` variables).
 
-## Repository secrets (`abx-git/kiva`)
+## Secrets (`abx-git/kiva`)
 
 | Secret | Value |
 |--------|--------|
 | `VITE_SUPABASE_URL` | `https://YOUR_PROJECT.supabase.co` |
 | `VITE_SUPABASE_ANON_KEY` | anon key from Supabase dashboard |
+
+**Wichtig:** Der **Build**-Job braucht die Secrets. Wenn du sie nur unter **Environments → github-pages** angelegt hast, muss der **build**-Job ebenfalls `environment: github-pages` haben (siehe Vorlage `kiva-deploy.workflow.yml`). Alternativ: Secrets unter **Settings → Secrets and variables → Actions** (Repository secrets) — dann reicht `${{ secrets.* }}` ohne Environment am Build-Job.
+
+Im Deploy-Log stehen die Variablen oft **leer** (`VITE_SUPABASE_URL:` ohne Wert) → App baut ohne Supabase, Login bleibt deaktiviert.
 
 ## Workflow
 
