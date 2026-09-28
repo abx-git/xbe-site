@@ -22,7 +22,10 @@ src/
   content/     # site, concepts, compose, examples, notes
   components/  # layout chrome, embeds, legal
   pages/       # routes
-public/        # favicon, robots.txt, CNAME
+kiva/          # Kiva PWA (Supabase login, E2-style local + remote)
+vault/         # Encrypted Vault SPA
+docs/kiva/     # Kiva concept & progress
+public/        # favicon, robots.txt, CNAME; build output vault/, kiva/
 ```
 
 ## Content

@@ -44,6 +44,14 @@ jobs:
         run: npm run build
         working-directory: vault
 
+      - name: Install Kiva dependencies
+        run: npm ci
+        working-directory: kiva
+
+      - name: Build Kiva PWA
+        run: npm run build
+        working-directory: kiva
+
       - name: Build site
         run: npm run build
 

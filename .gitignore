@@ -1,6 +1,7 @@
 # build output
 dist/
 public/vault/
+public/kiva/
 # generated types
 .astro/
 
