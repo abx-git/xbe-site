@@ -13,7 +13,19 @@ git fetch origin kiva-standalone
 ## Neues Repository `abx-git/kiva` anlegen
 
 1. Auf GitHub: **New repository** → `abx-git/kiva` (öffentlich), ohne README/Lizenz (Inhalt kommt per Push).
-2. Lokal:
+2. **Nur Browser (ohne PC):** Inhalt von `xbe-site` nach `kiva` über GitHub Actions:
+
+   1. [Fine-grained PAT](https://github.com/settings/personal-access-tokens/new) erstellen:
+      - Repository access: nur **abx-git/kiva**
+      - Permissions: **Contents** → Read and write
+   2. In **abx-git/xbe-site** → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
+      - Name: `KIVA_REPO_PUSH_TOKEN`
+      - Value: der PAT
+   3. **abx-git/xbe-site** → **Actions** → **Sync Kiva to abx-git/kiva** → **Run workflow**
+   4. In **abx-git/kiva** → **Settings** → **Pages** → Source: **GitHub Actions**
+   5. In **abx-git/kiva** → **Actions** → **Deploy Kiva (GitHub Pages)** → **Run workflow** (oder nach Push auf `main` automatisch)
+
+3. **Optional mit Git lokal:**
 
 ```bash
 git clone https://github.com/abx-git/kiva.git
@@ -22,9 +34,6 @@ git fetch https://github.com/abx-git/xbe-site.git kiva-standalone
 git checkout -b main FETCH_HEAD
 git push -u origin main
 ```
-
-3. **Settings → Pages → Build and deployment → Source:** GitHub Actions.
-4. Workflow **Deploy Kiva (GitHub Pages)** einmal ausführen oder auf `main` pushen.
 
 Ergebnis: https://abx-git.github.io/kiva/
 

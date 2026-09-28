@@ -1,0 +1,33 @@
+name: Sync Kiva to abx-git/kiva
+
+# Pushes branch kiva-standalone (standalone Kiva app) to abx-git/kiva main.
+# Browser setup: add repository secret KIVA_REPO_PUSH_TOKEN (PAT with Contents: Write on abx-git/kiva).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kiva-standalone
+        uses: actions/checkout@v4
+        with:
+          ref: kiva-standalone
+          fetch-depth: 1
+
+      - name: Push to abx-git/kiva
+        env:
+          KIVA_REPO_PUSH_TOKEN: ${{ secrets.KIVA_REPO_PUSH_TOKEN }}
+        run: |
+          if [ -z "$KIVA_REPO_PUSH_TOKEN" ]; then
+            echo "::error::Missing secret KIVA_REPO_PUSH_TOKEN. See docs/KIVA-REPOSITORY.md"
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add kiva "https://x-access-token:${KIVA_REPO_PUSH_TOKEN}@github.com/abx-git/kiva.git"
+          git push kiva HEAD:main --force
