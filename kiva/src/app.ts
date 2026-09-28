@@ -2,14 +2,20 @@ import type { Session } from '@supabase/supabase-js';
 import { signInWithPassword, signOut } from './auth/login';
 import type { KivaConfig } from './config';
 import { isSupabaseConfigured } from './config';
-import type { AppView } from './types';
-
-export interface AppState {
-  view: AppView;
-  session: Session | null;
-  error: string | null;
-  loading: boolean;
-}
+import {
+  refreshArtifactList,
+  registerArtifactFromFile,
+  uploadArtifact,
+} from './lib/artifacts-service';
+import type { LocalArtifactRecord } from './lib/artifacts-types';
+import {
+  cacheInstructionFile,
+  loadInstructionsView,
+  openCachedInstruction,
+  syncInstructionsFromRemote,
+} from './lib/instructions-service';
+import type { InstructionListItem } from './lib/instructions-types';
+import type { AppState } from './types';
 
 export function createInitialState(session: Session | null): AppState {
   return {
@@ -17,6 +23,11 @@ export function createInitialState(session: Session | null): AppState {
     session,
     error: null,
     loading: false,
+    instructions: [],
+    instructionsLoading: false,
+    downloadingId: null,
+    artifacts: [],
+    uploadingArtifactId: null,
   };
 }
 
@@ -33,7 +44,7 @@ export function renderApp(root: HTMLElement, config: KivaConfig, state: AppState
     </header>
     ${!configured ? `<div class="alert warn" role="status">Demo-Modus: Supabase-Keys fehlen (<code>kiva/.env</code>). Login ist deaktiviert.</div>` : ''}
     ${state.error ? `<div class="alert error" role="alert">${escapeHtml(state.error)}</div>` : ''}
-    ${state.view === 'login' ? renderLogin(configured, state.loading) : renderHome(state.session)}
+    ${state.view === 'login' ? renderLogin(configured, state.loading) : renderHome(state)}
   `;
 
   if (state.view === 'login' && configured) {
@@ -47,6 +58,57 @@ export function renderApp(root: HTMLElement, config: KivaConfig, state: AppState
     });
   }
 
+  if (state.view === 'home') {
+    const refreshBtn = root.querySelector<HTMLButtonElement>('#refresh-instructions');
+    refreshBtn?.addEventListener('click', () => void onRefreshInstructions(config));
+
+    root.querySelectorAll<HTMLButtonElement>('[data-download-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.downloadId;
+        const path = btn.dataset.storagePath;
+        if (id && path) void onDownloadInstruction(config, id, path);
+      });
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-open-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.openId;
+        if (id) void onOpenCached(id);
+      });
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-register-id]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const instructionId = btn.dataset.registerId;
+        if (!instructionId) return;
+        const input = root.querySelector<HTMLInputElement>(`#file-${instructionId}`);
+        input?.click();
+      });
+    });
+
+    root.querySelectorAll<HTMLInputElement>('[data-file-input]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const instructionId = input.dataset.fileInput;
+        const file = input.files?.[0];
+        if (instructionId && file) {
+          const visibility =
+            root.querySelector<HTMLInputElement>(`#vis-${instructionId}`)?.checked
+              ? 'community'
+              : 'private';
+          void onRegisterArtifact(instructionId, file, visibility);
+        }
+        input.value = '';
+      });
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-upload-artifact]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.uploadArtifact;
+        if (id) void onUploadArtifact(config, id);
+      });
+    });
+  }
+
   const logoutBtn = root.querySelector<HTMLButtonElement>('#logout');
   logoutBtn?.addEventListener('click', () => void onLogout(config));
 }
@@ -55,7 +117,7 @@ function renderLogin(configured: boolean, loading: boolean): string {
   return `
     <section class="card" aria-labelledby="login-title">
       <h2 id="login-title">Anmelden</h2>
-      <p>Zugang zur zentralen Kiva-Datenbank (Supabase). Nach dem Login folgen Instruktionen und Uploads.</p>
+      <p>Zugang zur zentralen Kiva-Datenbank (Supabase). Nach dem Login können Sie Instruktionen laden und offline speichern.</p>
       <form id="login-form">
         <label for="email">E-Mail</label>
         <input id="email" name="email" type="email" autocomplete="username" required ${configured ? '' : 'disabled'} />
@@ -65,9 +127,13 @@ function renderLogin(configured: boolean, loading: boolean): string {
       </form>
     </section>
     <div class="roadmap">
-      <strong>Geplant (E2/ET2-Architektur)</strong>
+      <strong>Bereits in Kiva</strong>
       <ul>
-        <li>Instruktionen herunterladen & offline lesen</li>
+        <li>Instruktionen vom Server listen & herunterladen</li>
+        <li>Offline-Kopie in IndexedDB</li>
+      </ul>
+      <strong>Geplant</strong>
+      <ul>
         <li>Artefakte lokal registrieren</li>
         <li>Ergebnisse hochladen & für andere Nutzer freigeben</li>
       </ul>
@@ -75,16 +141,144 @@ function renderLogin(configured: boolean, loading: boolean): string {
   `;
 }
 
-function renderHome(session: Session | null): string {
-  const email = session?.user.email ?? 'Unbekannt';
+function renderHome(state: AppState): string {
+  const email = state.session?.user.email ?? 'Unbekannt';
   return `
-    <section class="card" aria-labelledby="home-title">
-      <h2 id="home-title">Willkommen</h2>
-      <p>Sie sind angemeldet als <span class="session-email">${escapeHtml(email)}</span>.</p>
-      <p>Die nächsten Module (Instruktionen, Registrierung, Upload) werden an die lokale IndexedDB-Engine und Supabase Storage angebunden.</p>
-      <button type="button" class="secondary" id="logout">Abmelden</button>
+    <section class="card card-session" aria-labelledby="home-title">
+      <h2 id="home-title">Instruktionen</h2>
+      <p class="session-line">Angemeldet als <span class="session-email">${escapeHtml(email)}</span></p>
+      <div class="toolbar">
+        <button type="button" class="secondary compact" id="refresh-instructions" ${state.instructionsLoading ? 'disabled' : ''}>
+          ${state.instructionsLoading ? 'Aktualisiere…' : 'Katalog aktualisieren'}
+        </button>
+        <button type="button" class="secondary compact" id="logout">Abmelden</button>
+      </div>
+    </section>
+    <section class="card" aria-labelledby="list-title">
+      <h2 id="list-title" class="sr-only">Liste</h2>
+      ${renderInstructionList(state.instructions, state.instructionsLoading, state.downloadingId)}
+    </section>
+    <section class="card" aria-labelledby="artifacts-title">
+      <h2 id="artifacts-title">Meine Artefakte</h2>
+      ${renderArtifactList(state.artifacts, state.uploadingArtifactId, state.session?.user.id)}
     </section>
   `;
+}
+
+function renderInstructionList(
+  items: InstructionListItem[],
+  loading: boolean,
+  downloadingId: string | null,
+): string {
+  if (loading && items.length === 0) {
+    return `<p class="muted">Instruktionen werden geladen…</p>`;
+  }
+
+  if (items.length === 0) {
+    return `<p class="muted">Noch keine Instruktionen im Katalog. Veröffentlichen Sie Einträge in Supabase oder aktualisieren Sie die Liste.</p>`;
+  }
+
+  return `
+    <ul class="instruction-list">
+      ${items
+        .map((item) => {
+          const busy = downloadingId === item.id;
+          const size =
+            item.sizeBytes != null ? formatBytes(item.sizeBytes) : null;
+          return `
+        <li class="instruction-item">
+          <div class="instruction-head">
+            <h3>${escapeHtml(item.title)}</h3>
+            <span class="badge">${escapeHtml(item.version)}</span>
+            ${item.isCached ? '<span class="badge badge-ok">Offline</span>' : '<span class="badge badge-muted">Nur online</span>'}
+          </div>
+          ${item.description ? `<p class="instruction-desc">${escapeHtml(item.description)}</p>` : ''}
+          <p class="instruction-meta">
+            <span>${escapeHtml(item.fileName)}</span>
+            ${size ? `<span>${size}</span>` : ''}
+          </p>
+          <div class="instruction-actions">
+            <button
+              type="button"
+              class="secondary compact"
+              data-download-id="${escapeHtml(item.id)}"
+              data-storage-path="${escapeHtml(item.storagePath)}"
+              ${busy ? 'disabled' : ''}
+            >${busy ? 'Lädt…' : item.isCached ? 'Erneut laden' : 'Herunterladen'}</button>
+            <button
+              type="button"
+              class="secondary compact"
+              data-open-id="${escapeHtml(item.id)}"
+              ${item.isCached ? '' : 'disabled'}
+            >Lokal öffnen</button>
+          </div>
+          <div class="register-row">
+            <label class="checkbox">
+              <input type="checkbox" id="vis-${escapeHtml(item.id)}" />
+              Für Community freigeben
+            </label>
+            <input type="file" class="sr-only" id="file-${escapeHtml(item.id)}" data-file-input="${escapeHtml(item.id)}" />
+            <button type="button" class="secondary compact" data-register-id="${escapeHtml(item.id)}">Ergebnis registrieren</button>
+          </div>
+        </li>`;
+        })
+        .join('')}
+    </ul>
+  `;
+}
+
+function renderArtifactList(
+  artifacts: LocalArtifactRecord[],
+  uploadingId: string | null,
+  userId?: string,
+): string {
+  if (!userId) {
+    return `<p class="muted">Nicht angemeldet.</p>`;
+  }
+  if (artifacts.length === 0) {
+    return `<p class="muted">Noch keine registrierten Dateien. Wählen Sie bei einer Instruktion „Ergebnis registrieren“.</p>`;
+  }
+
+  return `
+    <ul class="instruction-list">
+      ${artifacts
+        .map((a) => {
+          const busy = uploadingId === a.id;
+          const statusLabel =
+            a.syncStatus === 'published'
+              ? 'Veröffentlicht'
+              : a.syncStatus === 'local'
+                ? 'Nur lokal'
+                : a.syncStatus === 'uploading'
+                  ? 'Upload…'
+                  : 'Fehler';
+          return `
+        <li class="instruction-item">
+          <div class="instruction-head">
+            <h3>${escapeHtml(a.fileName)}</h3>
+            <span class="badge">${escapeHtml(statusLabel)}</span>
+          </div>
+          <p class="instruction-meta">
+            <span>SHA-256: ${escapeHtml(a.sha256.slice(0, 12))}…</span>
+            <span>${formatBytes(a.sizeBytes)}</span>
+          </p>
+          ${a.errorMessage ? `<p class="instruction-desc">${escapeHtml(a.errorMessage)}</p>` : ''}
+          <div class="instruction-actions">
+            <button type="button" class="secondary compact" data-upload-artifact="${escapeHtml(a.id)}" ${a.syncStatus === 'published' || busy ? 'disabled' : ''}>
+              ${busy ? 'Lädt hoch…' : 'Hochladen'}
+            </button>
+          </div>
+        </li>`;
+        })
+        .join('')}
+    </ul>
+  `;
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
 function escapeHtml(text: string): string {
@@ -124,6 +318,107 @@ async function onLogout(config: KivaConfig): Promise<void> {
   await signOut(config);
 }
 
+export async function bootstrapHomeData(config: KivaConfig): Promise<void> {
+  if (!controller) return;
+  controller.setState({ instructionsLoading: true, error: null });
+  renderApp(controller.root, controller.config, controller.getState());
+
+  try {
+    const items = await loadInstructionsView(config);
+    const artifacts = await refreshArtifactList();
+    controller.setState({ instructions: items, artifacts, instructionsLoading: false });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Instruktionen konnten nicht geladen werden.';
+    controller.setState({ instructionsLoading: false, error: message });
+  }
+  renderApp(controller.root, controller.config, controller.getState());
+}
+
+async function onRefreshInstructions(config: KivaConfig): Promise<void> {
+  if (!controller) return;
+  controller.setState({ instructionsLoading: true, error: null });
+  renderApp(controller.root, controller.config, controller.getState());
+
+  const result = await syncInstructionsFromRemote(config);
+  const artifacts = await refreshArtifactList();
+  controller.setState({
+    instructions: result.items,
+    artifacts,
+    instructionsLoading: false,
+    error: result.ok ? null : result.message,
+  });
+  renderApp(controller.root, controller.config, controller.getState());
+}
+
+async function onDownloadInstruction(
+  config: KivaConfig,
+  instructionId: string,
+  storagePath: string,
+): Promise<void> {
+  if (!controller) return;
+  controller.setState({ downloadingId: instructionId, error: null });
+  renderApp(controller.root, controller.config, controller.getState());
+
+  const result = await cacheInstructionFile(config, instructionId, storagePath);
+  const items = await loadInstructionsView(config);
+  const artifacts = await refreshArtifactList();
+  controller.setState({
+    downloadingId: null,
+    instructions: items,
+    artifacts,
+    error: result.ok ? null : result.message,
+  });
+  renderApp(controller.root, controller.config, controller.getState());
+}
+
+async function onRegisterArtifact(
+  instructionId: string,
+  file: File,
+  visibility: 'private' | 'community',
+): Promise<void> {
+  if (!controller) return;
+  try {
+    await registerArtifactFromFile(instructionId, file, visibility);
+    const artifacts = await refreshArtifactList();
+    controller.setState({ artifacts, error: null });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Registrierung fehlgeschlagen.';
+    controller.setState({ error: message });
+  }
+  renderApp(controller.root, controller.config, controller.getState());
+}
+
+async function onUploadArtifact(config: KivaConfig, artifactId: string): Promise<void> {
+  if (!controller) return;
+  const userId = controller.getState().session?.user.id;
+  if (!userId) {
+    controller.setState({ error: 'Nicht angemeldet.' });
+    renderApp(controller.root, controller.config, controller.getState());
+    return;
+  }
+
+  controller.setState({ uploadingArtifactId: artifactId, error: null });
+  renderApp(controller.root, controller.config, controller.getState());
+
+  const result = await uploadArtifact(config, artifactId, userId);
+  const artifacts = await refreshArtifactList();
+  controller.setState({
+    uploadingArtifactId: null,
+    artifacts,
+    error: result.ok ? null : result.message,
+  });
+  renderApp(controller.root, controller.config, controller.getState());
+}
+
+async function onOpenCached(instructionId: string): Promise<void> {
+  if (!controller) return;
+  const result = await openCachedInstruction(instructionId);
+  if (!result.ok) {
+    controller.setState({ error: result.message });
+    renderApp(controller.root, controller.config, controller.getState());
+  }
+}
+
 export function applySession(session: Session | null): void {
   if (!controller) return;
   controller.setState({
@@ -131,6 +426,13 @@ export function applySession(session: Session | null): void {
     view: session ? 'home' : 'login',
     loading: false,
     error: null,
+    instructions: session ? controller.getState().instructions : [],
+    artifacts: session ? controller.getState().artifacts : [],
+    downloadingId: null,
+    uploadingArtifactId: null,
   });
   renderApp(controller.root, controller.config, controller.getState());
+  if (session) {
+    void bootstrapHomeData(controller.config);
+  }
 }

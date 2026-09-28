@@ -84,8 +84,8 @@ supabase/kiva/        # SQL-Schema (Referenz für Backend-Setup)
 |-------|--------|--------|
 | **0** | Konzept, Docs, Repo-Skelett, PWA-Shell | In Arbeit |
 | **1** | Login + Session + geschützte Startseite | MVP implementiert |
-| **2** | Instruktionen: Liste, Download, Offline-Cache | Geplant |
-| **3** | Artefakt registrieren (lokal) + Upload | Geplant |
+| **2** | Instruktionen: Liste, Download, Offline-Cache | Erledigt (MVP) |
+| **3** | Artefakt registrieren (lokal) + Upload | Erledigt (MVP) |
 | **4** | Freigabe, Suche, Organisationen | Geplant |
 
 ## Supabase-Einrichtung (Betreiber)

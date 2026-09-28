@@ -1,10 +1,11 @@
 const DB_NAME = 'kiva-local';
-const DB_VERSION = 1;
+const DB_VERSION = 3;
 
 export interface LocalDb {
   put<T>(store: string, value: T & { id: string }): Promise<void>;
   get<T>(store: string, id: string): Promise<T | undefined>;
   getAll<T>(store: string): Promise<T[]>;
+  delete(store: string, id: string): Promise<void>;
 }
 
 function openDb(): Promise<IDBDatabase> {
@@ -17,11 +18,21 @@ function openDb(): Promise<IDBDatabase> {
       if (!db.objectStoreNames.contains('instructions')) {
         db.createObjectStore('instructions', { keyPath: 'id' });
       }
+      if (!db.objectStoreNames.contains('instruction_blobs')) {
+        db.createObjectStore('instruction_blobs', { keyPath: 'id' });
+      }
       if (!db.objectStoreNames.contains('artifacts')) {
         db.createObjectStore('artifacts', { keyPath: 'id' });
       }
+      if (!db.objectStoreNames.contains('artifact_blobs')) {
+        db.createObjectStore('artifact_blobs', { keyPath: 'id' });
+      }
     };
   });
+}
+
+export function openKivaDb(): Promise<IDBDatabase> {
+  return openDb();
 }
 
 export function createLocalDb(): LocalDb {
@@ -62,6 +73,18 @@ export function createLocalDb(): LocalDb {
           resolve(req.result as []);
         };
         req.onerror = () => reject(req.error);
+      });
+    },
+    async delete(store, id) {
+      const db = await openDb();
+      await new Promise<void>((resolve, reject) => {
+        const tx = db.transaction(store, 'readwrite');
+        tx.oncomplete = () => {
+          db.close();
+          resolve();
+        };
+        tx.onerror = () => reject(tx.error);
+        tx.objectStore(store).delete(id);
       });
     },
   };

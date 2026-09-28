@@ -1,10 +1,11 @@
 import {
   applySession,
   bindAppController,
+  bootstrapHomeData,
   createInitialState,
   renderApp,
-  type AppState,
 } from './app';
+import type { AppState } from './types';
 import { loadConfig } from './config';
 import { getSession, onAuthStateChange } from './lib/supabase';
 import './styles.css';
@@ -31,6 +32,9 @@ async function bootstrap(): Promise<void> {
   const session = await getSession(config);
   state = createInitialState(session);
   renderApp(root, config, state);
+  if (session) {
+    void bootstrapHomeData(config);
+  }
 
   onAuthStateChange(config, (session) => {
     applySession(session);

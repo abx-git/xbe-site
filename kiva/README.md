@@ -24,4 +24,6 @@ SQL-Referenz: [supabase/kiva/schema.sql](../supabase/kiva/schema.sql)
 ## Architektur (kurz)
 
 - **E2/ET2:** Browser-App + lokale Engine + optionaler Remote-Adapter (kein eigenes Backend).
-- **Phase 1:** Login und Session; Instruktionen/Upload folgen in Phase 2–3.
+- **Phase 1:** Login und Session.
+- **Phase 2:** Instruktionskatalog, Download, Offline-Speicher (IndexedDB).
+- **Phase 3:** Artefakte registrieren und hochladen (geplant).
