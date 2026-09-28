@@ -1,0 +1,32 @@
+# Einmalig in abx-git/kiva anlegen (leeres Repo, nur Browser):
+#  → Add file → Pfad: .github/workflows/import-from-xbe-site.yml
+#  → Inhalt dieser Datei einfügen → Commit to main
+#  → Actions → "Import from xbe-site (kiva-standalone)" → Run workflow
+#
+# Kein PAT nötig: liest öffentliches xbe-site, schreibt mit GITHUB_TOKEN nach kiva.
+
+name: Import from xbe-site (kiva-standalone)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kiva-standalone from xbe-site
+        uses: actions/checkout@v4
+        with:
+          repository: abx-git/xbe-site
+          ref: kiva-standalone
+          persist-credentials: false
+
+      - name: Publish to abx-git/kiva main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push origin HEAD:main --force

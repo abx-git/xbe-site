@@ -13,21 +13,28 @@ git fetch origin kiva-standalone
 ## Neues Repository `abx-git/kiva` anlegen
 
 1. Auf GitHub: **New repository** → `abx-git/kiva` (öffentlich), ohne README/Lizenz (Inhalt kommt per Push).
-2. **Nur Browser (ohne PC):** Inhalt von `xbe-site` nach `kiva` über GitHub Actions:
 
-   1. [Fine-grained PAT](https://github.com/settings/personal-access-tokens/new) erstellen:
-      - Repository access: nur **abx-git/kiva**
-      - Permissions: **Contents** → Read and write
-   2. In **abx-git/xbe-site** → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
-      - Name: `KIVA_REPO_PUSH_TOKEN`
-      - Value: der PAT
-   3. **abx-git/xbe-site** → **Actions** → **Sync Kiva to abx-git/kiva** → **Run workflow**
+### Nur Browser (empfohlen, kein PAT)
 
-   Falls der Push mit `Permission denied to github-actions[bot]` fehlschlägt: Workflow auf dem neuesten `main` ausführen (Fix: Checkout ohne `GITHUB_TOKEN`-Credentials). Der PAT muss trotzdem **Contents: Write** auf `abx-git/kiva` haben.
-   4. In **abx-git/kiva** → **Settings** → **Pages** → Source: **GitHub Actions**
-   5. In **abx-git/kiva** → **Actions** → **Deploy Kiva (GitHub Pages)** → **Run workflow** (oder nach Push auf `main` automatisch)
+Der Import läuft **in `abx-git/kiva`** und nutzt nur den eingebauten `GITHUB_TOKEN` (Schreibrechte auf `kiva`). `xbe-site` ist öffentlich lesbar.
 
-3. **Optional mit Git lokal:**
+1. **abx-git/kiva** → **Add file** → **Create new file**
+2. Dateipfad: `.github/workflows/import-from-xbe-site.yml`
+3. Inhalt aus [`docs/kiva-import-from-xbe-site.workflow.yml`](./kiva-import-from-xbe-site.workflow.yml) in diesem Repo kopieren (Raw-Ansicht auf GitHub: `abx-git/xbe-site` → gleicher Pfad).
+4. **Commit changes** (erstellt `main` mit nur dieser Workflow-Datei).
+5. **Actions** → **Import from xbe-site (kiva-standalone)** → **Run workflow**
+6. **Settings** → **Pages** → Source: **GitHub Actions**
+7. **Actions** → **Deploy Kiva (GitHub Pages)** → **Run workflow**
+
+Ergebnis: https://abx-git.github.io/kiva/
+
+### Alternative: Sync aus xbe-site (benötigt PAT)
+
+Workflow **Sync Kiva to abx-git/kiva** in **xbe-site** — nur wenn ein **persönlicher** PAT (nicht Organisations-Token) mit **Contents: Write** auf `abx-git/kiva` existiert und die Organisation PAT-Zugriff erlaubt. Bei `Permission denied to abx-git` diese Alternative meist unbrauchbar; dann den Import in `kiva` oben nutzen.
+
+Secret in **xbe-site**: `KIVA_REPO_PUSH_TOKEN`
+
+### Optional mit Git lokal
 
 ```bash
 git clone https://github.com/abx-git/kiva.git
@@ -36,8 +43,6 @@ git fetch https://github.com/abx-git/xbe-site.git kiva-standalone
 git checkout -b main FETCH_HEAD
 git push -u origin main
 ```
-
-Ergebnis: https://abx-git.github.io/kiva/
 
 ## xbe-site
 

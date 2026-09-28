@@ -1,7 +1,8 @@
 name: Sync Kiva to abx-git/kiva
 
 # Pushes branch kiva-standalone (standalone Kiva app) to abx-git/kiva main.
-# Browser setup: add repository secret KIVA_REPO_PUSH_TOKEN (PAT with Contents: Write on abx-git/kiva).
+# Prefer import workflow in abx-git/kiva (see docs/KIVA-REPOSITORY.md) — no PAT.
+# This job needs a personal PAT in KIVA_REPO_PUSH_TOKEN with Contents: Write on kiva (org tokens often get 403).
 
 on:
   workflow_dispatch:
