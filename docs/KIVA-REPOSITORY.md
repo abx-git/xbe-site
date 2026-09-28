@@ -16,7 +16,11 @@ Quell-Export auf xbe-site: Branch **`kiva-export`** (aus `cursor/kiva-project-f4
 3. Nach grünem Lauf: **Add file** → `.github/workflows/deploy.yml`  
    [Deploy-Vorlage](https://github.com/abx-git/xbe-site/raw/main/docs/kiva-deploy.workflow.yml) (einmal per GitHub-UI, nicht per Import).
 
-4. **Settings → Pages → GitHub Actions**, dann **Deploy Kiva (GitHub Pages)**.
+4. **Settings → Secrets → Actions:** `VITE_SUPABASE_URL` und `VITE_SUPABASE_ANON_KEY` (Details: [KIVA-DEPLOY.md](./KIVA-DEPLOY.md)).
+
+5. **Settings → Pages → GitHub Actions**, dann **Deploy Kiva (GitHub Pages)** erneut starten.
+
+**Login-Felder „tot“?** Build ohne Supabase-Keys → Felder waren deaktiviert. Fix: Secrets setzen, Deploy neu bauen; ggf. Import-Workflow erneut laufen lassen (aktueller `kiva-export`).
 
 Live: https://abx-git.github.io/kiva/
 
