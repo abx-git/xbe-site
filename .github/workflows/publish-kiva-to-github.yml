@@ -1,0 +1,39 @@
+name: Publish Kiva snapshot to abx-git/kiva
+
+# Pushes fixed Kiva tree (commit 0807f8e on xbe-site history) to abx-git/kiva main.
+# Secret KIVA_REPO_PUSH_TOKEN = personal PAT with Contents: Write on abx-git/kiva (not org abx-git).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Kiva snapshot
+        uses: actions/checkout@v4
+        with:
+          ref: 0807f8e2311087841683e5fbffb5d8e17b2128f8
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Push to abx-git/kiva main
+        env:
+          KIVA_REPO_PUSH_TOKEN: ${{ secrets.KIVA_REPO_PUSH_TOKEN }}
+        run: |
+          if [ -z "$KIVA_REPO_PUSH_TOKEN" ]; then
+            echo "::error::Set personal PAT in xbe-site secret KIVA_REPO_PUSH_TOKEN (Contents write on abx-git/kiva)"
+            exit 1
+          fi
+          OWNER=$(curl -fsS -H "Authorization: Bearer ${KIVA_REPO_PUSH_TOKEN}" https://api.github.com/user | jq -r '.login // empty')
+          echo "Token owner: ${OWNER}"
+          if [ "$OWNER" = "abx-git" ]; then
+            echo "::error::Use your personal GitHub PAT, not the org account abx-git"
+            exit 1
+          fi
+          git config --local credential.helper ""
+          git remote add kiva "https://x-access-token:${KIVA_REPO_PUSH_TOKEN}@github.com/abx-git/kiva.git"
+          git push kiva HEAD:main --force
