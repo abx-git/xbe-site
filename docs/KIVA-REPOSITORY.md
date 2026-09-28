@@ -1,30 +1,13 @@
-# Kiva – eigenes Repository
+# Kiva (separates Projekt)
 
-Kiva lebt in **abx-git/kiva**. Branch `kiva-standalone` in xbe-site ist nur ein **einmaliger Export**.
+**Kiva** (`abx-git/kiva`) ist **nicht** dasselbe wie **Vault** auf www.x-be.de.
 
-## Schritt 1: App importieren (Workflow in `kiva`)
+- **Vault** — verschlüsselter Dateimanager unter `vault/` in **xbe-site**, live unter `/vault/` (GitHub Pages der Site).
+- **Kiva** — eigenes Repository und eigenes Produkt; Migration/Import nur in `abx-git/kiva`, ohne Änderungen an Vault in xbe-site.
 
-Datei **in `abx-git/kiva`** (nicht xbe-site):  
-`.github/workflows/import-from-xbe-site.yml`
+Vorlagen für einen einmaligen Kiva-Import (falls noch nötig):
 
-Inhalt: [Raw-Vorlage](https://github.com/abx-git/xbe-site/raw/main/docs/kiva-import-from-xbe-site.workflow.yml)
+- [kiva-import-from-xbe-site.workflow.yml](./kiva-import-from-xbe-site.workflow.yml) (in Repo `kiva` anlegen)
+- [kiva-deploy.workflow.yml](./kiva-deploy.workflow.yml) (Deploy in `kiva` per GitHub-UI)
 
-- **Kein** `workflows:` unter `permissions` — das ist in Workflow-YAML ungültig.
-- **Run workflow** auf: https://github.com/abx-git/kiva/actions/workflows/import-from-xbe-site.yml
-
-Branch `kiva-standalone` enthält **keine** `.github/workflows/` mehr (Deploy nur per Schritt 2). Import = einfacher Force-Push.
-
-## Schritt 2: Deploy-Workflow (einmal, GitHub-UI)
-
-Nach grünem Import: **Add file** in `kiva` →  
-`.github/workflows/deploy.yml`  
-Inhalt: [kiva-deploy.workflow.yml](https://github.com/abx-git/xbe-site/raw/main/docs/kiva-deploy.workflow.yml)
-
-Dann: **Settings → Pages → GitHub Actions**, Workflow **Deploy Kiva (GitHub Pages)** ausführen.
-
-Live: https://abx-git.github.io/kiva/
-
-## xbe-site
-
-- `vault/` ist von `main` entfernt.
-- `/vault/` leitet auf Kiva GitHub Pages um.
+Branch `kiva-standalone` in xbe-site war ein fehlerhafter Export-Klon des Vault-Codes und ist **nicht** die Quelle für Vault auf der Site.

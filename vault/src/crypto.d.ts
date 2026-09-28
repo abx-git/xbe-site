@@ -1,0 +1,11 @@
+export function toBase64Url(bytes: Uint8Array): string;
+export function fromBase64Url(str: string): Uint8Array;
+export function generateIv(): Uint8Array;
+export function importRawKey(rawBytes: ArrayBuffer): Promise<CryptoKey>;
+export function deriveKeyFromPassword(password: string): Promise<CryptoKey>;
+export function encrypt(key: CryptoKey, plaintext: Uint8Array): Promise<Uint8Array>;
+export function decrypt(key: CryptoKey, data: Uint8Array): Promise<Uint8Array>;
+export function encryptName(key: CryptoKey, name: string): Promise<string>;
+export function decryptName(key: CryptoKey, encryptedName: string): Promise<string>;
+export function encryptContent(key: CryptoKey, content: ArrayBuffer): Promise<Uint8Array>;
+export function decryptContent(key: CryptoKey, data: ArrayBuffer): Promise<Uint8Array>;
