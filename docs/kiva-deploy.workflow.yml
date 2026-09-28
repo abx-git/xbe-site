@@ -17,6 +17,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Required if VITE_* secrets live on the github-pages environment (not only repo secrets).
+    environment: github-pages
     steps:
       - uses: actions/checkout@v4
 
