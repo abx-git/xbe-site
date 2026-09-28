@@ -55,7 +55,7 @@ export async function saveInstructionBlob(
 ): Promise<void> {
   const meta = await db.get<CachedInstructionMeta>(META_STORE, instructionId);
   if (!meta) {
-    throw new Error('Instruktion nicht in lokalem Katalog.');
+    throw new Error('Instruction not in local catalog.');
   }
 
   const record: InstructionBlobRecord = {
@@ -81,9 +81,9 @@ export async function listLocalInstructions(): Promise<InstructionListItem[]> {
     .map((m) => ({
       ...m,
       isCached: m.cachedAt != null,
-      isStale: false, // reserviert für UI-Erweiterungen (z. B. partielle Syncs)
+      isStale: false,
     }))
-    .sort((a, b) => a.title.localeCompare(b.title, 'de'));
+    .sort((a, b) => a.title.localeCompare(b.title, 'en'));
 }
 
 export async function getInstructionBlob(

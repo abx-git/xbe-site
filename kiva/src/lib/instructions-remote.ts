@@ -9,7 +9,7 @@ export async function fetchPublishedInstructions(
 ): Promise<{ ok: true; rows: InstructionRow[] } | { ok: false; message: string }> {
   const supabase = getSupabase(config);
   if (!supabase) {
-    return { ok: false, message: 'Supabase ist nicht konfiguriert.' };
+    return { ok: false, message: 'Supabase is not configured.' };
   }
 
   const { data, error } = await supabase
@@ -31,12 +31,12 @@ export async function downloadInstructionBlob(
 ): Promise<{ ok: true; blob: Blob } | { ok: false; message: string }> {
   const supabase = getSupabase(config);
   if (!supabase) {
-    return { ok: false, message: 'Supabase ist nicht konfiguriert.' };
+    return { ok: false, message: 'Supabase is not configured.' };
   }
 
   const { data, error } = await supabase.storage.from(INSTRUCTIONS_BUCKET).download(storagePath);
   if (error || !data) {
-    return { ok: false, message: error?.message ?? 'Download fehlgeschlagen.' };
+    return { ok: false, message: error?.message ?? 'Download failed.' };
   }
 
   return { ok: true, blob: data };

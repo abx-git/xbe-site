@@ -1,17 +1,17 @@
 # Kiva
 
-PWA für geteilte Arbeitsanweisungen: **Login (Supabase)**, lokale Engine (IndexedDB), optional Remote (DB + Storage).
+PWA for shared work instructions: **sign-in (Supabase)**, local engine (IndexedDB), optional remote (DB + Storage).
 
-**Konzept:** [docs/kiva/KONZEPT.md](../docs/kiva/KONZEPT.md)  
-**Fortschritt:** [docs/kiva/FORTSCHRITT.md](../docs/kiva/FORTSCHRITT.md)
+**Concept:** [docs/kiva/CONCEPT.md](../docs/kiva/CONCEPT.md)  
+**Progress:** [docs/kiva/PROGRESS.md](../docs/kiva/PROGRESS.md)
 
-**Live (nach Deploy):** `https://www.x-be.de/kiva/`
+**Live (after deploy):** `https://www.x-be.de/kiva/`
 
-## Entwicklung
+## Development
 
 ```bash
 cd kiva
-cp .env.example .env   # Supabase-URL und Anon-Key eintragen
+cp .env.example .env   # set Supabase URL and anon key
 npm install
 npm run dev            # http://localhost:5173/kiva/
 npm run build          # → ../public/kiva/
@@ -19,11 +19,11 @@ npm run build          # → ../public/kiva/
 
 ## Supabase
 
-SQL-Referenz: [supabase/kiva/schema.sql](../supabase/kiva/schema.sql)
+SQL reference: [supabase/kiva/schema.sql](../supabase/kiva/schema.sql)
 
-## Architektur (kurz)
+## Architecture (short)
 
-- **E2/ET2:** Browser-App + lokale Engine + optionaler Remote-Adapter (kein eigenes Backend).
-- **Phase 1:** Login und Session.
-- **Phase 2:** Instruktionskatalog, Download, Offline-Speicher (IndexedDB).
-- **Phase 3:** Artefakte registrieren und hochladen (geplant).
+- **E2/ET2:** browser app + local engine + optional remote adapter (no custom backend).
+- **Phase 1:** sign-in and session.
+- **Phase 2:** instruction catalog, download, offline storage (IndexedDB).
+- **Phase 3:** register artifacts and upload (MVP).

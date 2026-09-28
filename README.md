@@ -24,7 +24,7 @@ src/
   pages/       # routes
 kiva/          # Kiva PWA (Supabase login, E2-style local + remote)
 vault/         # Encrypted Vault SPA
-docs/kiva/     # Kiva concept & progress
+docs/kiva/     # Kiva concept (CONCEPT.md) & progress (PROGRESS.md)
 public/        # favicon, robots.txt, CNAME; build output vault/, kiva/
 ```
 

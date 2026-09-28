@@ -12,7 +12,7 @@ export async function signInWithPassword(
 ): Promise<LoginResult> {
   const supabase = getSupabase(config);
   if (!supabase) {
-    return { ok: false, message: 'Supabase ist nicht konfiguriert. Siehe kiva/.env.example.' };
+    return { ok: false, message: 'Supabase is not configured. See kiva/.env.example.' };
   }
 
   const { error } = await supabase.auth.signInWithPassword({ email, password });

@@ -39,10 +39,10 @@ export function renderApp(root: HTMLElement, config: KivaConfig, state: AppState
       <img src="${import.meta.env.BASE_URL}icon.svg" width="40" height="40" alt="" />
       <div>
         <h1>Kiva</h1>
-        <p class="tagline">Lokal arbeiten · zentral teilen</p>
+        <p class="tagline">Work locally · share centrally</p>
       </div>
     </header>
-    ${!configured ? `<div class="alert warn" role="status">Demo-Modus: Supabase-Keys fehlen (<code>kiva/.env</code>). Login ist deaktiviert.</div>` : ''}
+    ${!configured ? `<div class="alert warn" role="status">Demo mode: Supabase keys missing (<code>kiva/.env</code>). Login is disabled.</div>` : ''}
     ${state.error ? `<div class="alert error" role="alert">${escapeHtml(state.error)}</div>` : ''}
     ${state.view === 'login' ? renderLogin(configured, state.loading) : renderHome(state)}
   `;
@@ -116,50 +116,50 @@ export function renderApp(root: HTMLElement, config: KivaConfig, state: AppState
 function renderLogin(configured: boolean, loading: boolean): string {
   return `
     <section class="card" aria-labelledby="login-title">
-      <h2 id="login-title">Anmelden</h2>
-      <p>Zugang zur zentralen Kiva-Datenbank (Supabase). Nach dem Login können Sie Instruktionen laden und offline speichern.</p>
+      <h2 id="login-title">Sign in</h2>
+      <p>Access the central Kiva database (Supabase). After sign-in you can load instructions and save them offline.</p>
       <form id="login-form">
-        <label for="email">E-Mail</label>
+        <label for="email">Email</label>
         <input id="email" name="email" type="email" autocomplete="username" required ${configured ? '' : 'disabled'} />
-        <label for="password">Passwort</label>
+        <label for="password">Password</label>
         <input id="password" name="password" type="password" autocomplete="current-password" required ${configured ? '' : 'disabled'} />
-        <button type="submit" ${configured && !loading ? '' : 'disabled'}>${loading ? 'Wird angemeldet…' : 'Anmelden'}</button>
+        <button type="submit" ${configured && !loading ? '' : 'disabled'}>${loading ? 'Signing in…' : 'Sign in'}</button>
       </form>
     </section>
     <div class="roadmap">
-      <strong>Bereits in Kiva</strong>
+      <strong>In Kiva today</strong>
       <ul>
-        <li>Instruktionen vom Server listen & herunterladen</li>
-        <li>Offline-Kopie in IndexedDB</li>
+        <li>List and download instructions from the server</li>
+        <li>Offline copy in IndexedDB</li>
+        <li>Register result files and upload to share</li>
       </ul>
-      <strong>Geplant</strong>
+      <strong>Planned</strong>
       <ul>
-        <li>Artefakte lokal registrieren</li>
-        <li>Ergebnisse hochladen & für andere Nutzer freigeben</li>
+        <li>Browse community artifacts from other users</li>
       </ul>
     </div>
   `;
 }
 
 function renderHome(state: AppState): string {
-  const email = state.session?.user.email ?? 'Unbekannt';
+  const email = state.session?.user.email ?? 'Unknown';
   return `
     <section class="card card-session" aria-labelledby="home-title">
-      <h2 id="home-title">Instruktionen</h2>
-      <p class="session-line">Angemeldet als <span class="session-email">${escapeHtml(email)}</span></p>
+      <h2 id="home-title">Instructions</h2>
+      <p class="session-line">Signed in as <span class="session-email">${escapeHtml(email)}</span></p>
       <div class="toolbar">
         <button type="button" class="secondary compact" id="refresh-instructions" ${state.instructionsLoading ? 'disabled' : ''}>
-          ${state.instructionsLoading ? 'Aktualisiere…' : 'Katalog aktualisieren'}
+          ${state.instructionsLoading ? 'Refreshing…' : 'Refresh catalog'}
         </button>
-        <button type="button" class="secondary compact" id="logout">Abmelden</button>
+        <button type="button" class="secondary compact" id="logout">Sign out</button>
       </div>
     </section>
     <section class="card" aria-labelledby="list-title">
-      <h2 id="list-title" class="sr-only">Liste</h2>
+      <h2 id="list-title" class="sr-only">List</h2>
       ${renderInstructionList(state.instructions, state.instructionsLoading, state.downloadingId)}
     </section>
     <section class="card" aria-labelledby="artifacts-title">
-      <h2 id="artifacts-title">Meine Artefakte</h2>
+      <h2 id="artifacts-title">My artifacts</h2>
       ${renderArtifactList(state.artifacts, state.uploadingArtifactId, state.session?.user.id)}
     </section>
   `;
@@ -171,11 +171,11 @@ function renderInstructionList(
   downloadingId: string | null,
 ): string {
   if (loading && items.length === 0) {
-    return `<p class="muted">Instruktionen werden geladen…</p>`;
+    return `<p class="muted">Loading instructions…</p>`;
   }
 
   if (items.length === 0) {
-    return `<p class="muted">Noch keine Instruktionen im Katalog. Veröffentlichen Sie Einträge in Supabase oder aktualisieren Sie die Liste.</p>`;
+    return `<p class="muted">No instructions in the catalog yet. Publish rows in Supabase or refresh the list.</p>`;
   }
 
   return `
@@ -190,7 +190,7 @@ function renderInstructionList(
           <div class="instruction-head">
             <h3>${escapeHtml(item.title)}</h3>
             <span class="badge">${escapeHtml(item.version)}</span>
-            ${item.isCached ? '<span class="badge badge-ok">Offline</span>' : '<span class="badge badge-muted">Nur online</span>'}
+            ${item.isCached ? '<span class="badge badge-ok">Offline</span>' : '<span class="badge badge-muted">Online only</span>'}
           </div>
           ${item.description ? `<p class="instruction-desc">${escapeHtml(item.description)}</p>` : ''}
           <p class="instruction-meta">
@@ -204,21 +204,21 @@ function renderInstructionList(
               data-download-id="${escapeHtml(item.id)}"
               data-storage-path="${escapeHtml(item.storagePath)}"
               ${busy ? 'disabled' : ''}
-            >${busy ? 'Lädt…' : item.isCached ? 'Erneut laden' : 'Herunterladen'}</button>
+            >${busy ? 'Loading…' : item.isCached ? 'Download again' : 'Download'}</button>
             <button
               type="button"
               class="secondary compact"
               data-open-id="${escapeHtml(item.id)}"
               ${item.isCached ? '' : 'disabled'}
-            >Lokal öffnen</button>
+            >Open locally</button>
           </div>
           <div class="register-row">
             <label class="checkbox">
               <input type="checkbox" id="vis-${escapeHtml(item.id)}" />
-              Für Community freigeben
+              Share with community
             </label>
             <input type="file" class="sr-only" id="file-${escapeHtml(item.id)}" data-file-input="${escapeHtml(item.id)}" />
-            <button type="button" class="secondary compact" data-register-id="${escapeHtml(item.id)}">Ergebnis registrieren</button>
+            <button type="button" class="secondary compact" data-register-id="${escapeHtml(item.id)}">Register result</button>
           </div>
         </li>`;
         })
@@ -233,10 +233,10 @@ function renderArtifactList(
   userId?: string,
 ): string {
   if (!userId) {
-    return `<p class="muted">Nicht angemeldet.</p>`;
+    return `<p class="muted">Not signed in.</p>`;
   }
   if (artifacts.length === 0) {
-    return `<p class="muted">Noch keine registrierten Dateien. Wählen Sie bei einer Instruktion „Ergebnis registrieren“.</p>`;
+    return `<p class="muted">No registered files yet. Use “Register result” on an instruction.</p>`;
   }
 
   return `
@@ -246,12 +246,12 @@ function renderArtifactList(
           const busy = uploadingId === a.id;
           const statusLabel =
             a.syncStatus === 'published'
-              ? 'Veröffentlicht'
+              ? 'Published'
               : a.syncStatus === 'local'
-                ? 'Nur lokal'
+                ? 'Local only'
                 : a.syncStatus === 'uploading'
-                  ? 'Upload…'
-                  : 'Fehler';
+                  ? 'Uploading…'
+                  : 'Error';
           return `
         <li class="instruction-item">
           <div class="instruction-head">
@@ -265,7 +265,7 @@ function renderArtifactList(
           ${a.errorMessage ? `<p class="instruction-desc">${escapeHtml(a.errorMessage)}</p>` : ''}
           <div class="instruction-actions">
             <button type="button" class="secondary compact" data-upload-artifact="${escapeHtml(a.id)}" ${a.syncStatus === 'published' || busy ? 'disabled' : ''}>
-              ${busy ? 'Lädt hoch…' : 'Hochladen'}
+              ${busy ? 'Uploading…' : 'Upload'}
             </button>
           </div>
         </li>`;
@@ -328,7 +328,7 @@ export async function bootstrapHomeData(config: KivaConfig): Promise<void> {
     const artifacts = await refreshArtifactList();
     controller.setState({ instructions: items, artifacts, instructionsLoading: false });
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Instruktionen konnten nicht geladen werden.';
+    const message = err instanceof Error ? err.message : 'Could not load instructions.';
     controller.setState({ instructionsLoading: false, error: message });
   }
   renderApp(controller.root, controller.config, controller.getState());
@@ -382,7 +382,7 @@ async function onRegisterArtifact(
     const artifacts = await refreshArtifactList();
     controller.setState({ artifacts, error: null });
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Registrierung fehlgeschlagen.';
+    const message = err instanceof Error ? err.message : 'Registration failed.';
     controller.setState({ error: message });
   }
   renderApp(controller.root, controller.config, controller.getState());
@@ -392,7 +392,7 @@ async function onUploadArtifact(config: KivaConfig, artifactId: string): Promise
   if (!controller) return;
   const userId = controller.getState().session?.user.id;
   if (!userId) {
-    controller.setState({ error: 'Nicht angemeldet.' });
+    controller.setState({ error: 'Not signed in.' });
     renderApp(controller.root, controller.config, controller.getState());
     return;
   }

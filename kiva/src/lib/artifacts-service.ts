@@ -38,17 +38,17 @@ export async function uploadArtifact(
 ): Promise<{ ok: true; record: LocalArtifactRecord } | { ok: false; message: string }> {
   const supabase = getSupabase(config);
   if (!supabase) {
-    return { ok: false, message: 'Supabase ist nicht konfiguriert.' };
+    return { ok: false, message: 'Supabase is not configured.' };
   }
 
   const meta = await getArtifact(artifactId);
   if (!meta) {
-    return { ok: false, message: 'Artefakt nicht gefunden.' };
+    return { ok: false, message: 'Artifact not found.' };
   }
 
   const blob = await getArtifactBlob(artifactId);
   if (!blob) {
-    return { ok: false, message: 'Lokale Datei fehlt.' };
+    return { ok: false, message: 'Local file is missing.' };
   }
 
   const uploading: LocalArtifactRecord = { ...meta, syncStatus: 'uploading', errorMessage: null };

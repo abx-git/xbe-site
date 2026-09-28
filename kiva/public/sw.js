@@ -1,5 +1,5 @@
 /**
- * Kiva — App-Shell offline (Instruktions-Blobs werden später network-first gecacht).
+ * Kiva — offline app shell (instruction blobs stay in IndexedDB, not the SW cache).
  */
 const CACHE_NAME = 'kiva-shell-v1';
 

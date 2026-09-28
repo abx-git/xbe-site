@@ -35,7 +35,7 @@ export async function syncInstructionsFromRemote(config: KivaConfig): Promise<Sy
   const local = await listLocalInstructions();
 
   if (!navigator.onLine) {
-    return { ok: false, message: 'Keine Netzwerkverbindung.', items: local };
+    return { ok: false, message: 'No network connection.', items: local };
   }
 
   const remote = await fetchPublishedInstructions(config);
@@ -62,7 +62,7 @@ export async function cacheInstructionFile(
   try {
     await saveInstructionBlob(instructionId, result.blob, fileName, contentType);
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Lokaler Cache fehlgeschlagen.';
+    const message = err instanceof Error ? err.message : 'Local cache failed.';
     return { ok: false, message };
   }
 
@@ -74,7 +74,7 @@ export async function openCachedInstruction(
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   const record = await getInstructionBlob(instructionId);
   if (!record) {
-    return { ok: false, message: 'Datei ist nicht offline verfügbar. Bitte zuerst herunterladen.' };
+    return { ok: false, message: 'File is not available offline. Download it first.' };
   }
 
   const url = URL.createObjectURL(record.blob);
