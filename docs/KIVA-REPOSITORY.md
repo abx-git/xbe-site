@@ -12,7 +12,7 @@ Inhalt: [Raw-Vorlage](https://github.com/abx-git/xbe-site/raw/main/docs/kiva-imp
 - **Kein** `workflows:` unter `permissions` — das ist in Workflow-YAML ungültig.
 - **Run workflow** auf: https://github.com/abx-git/kiva/actions/workflows/import-from-xbe-site.yml
 
-Der Import pusht nur App-Code (ohne `.github/workflows/`), weil der `GITHUB_TOKEN` keine Workflow-Dateien per Git anlegen darf.
+Branch `kiva-standalone` enthält **keine** `.github/workflows/` mehr (Deploy nur per Schritt 2). Import = einfacher Force-Push.
 
 ## Schritt 2: Deploy-Workflow (einmal, GitHub-UI)
 

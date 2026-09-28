@@ -10,22 +10,16 @@ jobs:
   import:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout kiva-standalone from xbe-site
+      - name: Checkout kiva-standalone (app only, no workflows in branch)
         uses: actions/checkout@v4
         with:
           repository: abx-git/xbe-site
           ref: kiva-standalone
           persist-credentials: false
 
-      - name: Publish app to main (no workflow files via token)
+      - name: Push to abx-git/kiva main
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # GITHUB_TOKEN cannot git-push workflow YAML (e.g. deploy.yml). Add deploy via GitHub UI after import.
-          rm -rf .github/workflows
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git diff --cached --quiet || git commit -m "chore: import Kiva from xbe-site kiva-standalone"
           git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git push origin HEAD:main --force
