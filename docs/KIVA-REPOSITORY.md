@@ -22,7 +22,9 @@ Der Import läuft **in `abx-git/kiva`** und nutzt nur den eingebauten `GITHUB_TO
 2. Dateipfad: `.github/workflows/import-from-xbe-site.yml`
 3. Inhalt aus [`docs/kiva-import-from-xbe-site.workflow.yml`](./kiva-import-from-xbe-site.workflow.yml) in diesem Repo kopieren (Raw-Ansicht auf GitHub: `abx-git/xbe-site` → gleicher Pfad).
 4. **Commit changes** (erstellt `main` mit nur dieser Workflow-Datei).
-5. **Actions** → **Import from xbe-site (kiva-standalone)** → **Run workflow**
+5. **Actions** → links in der Seitenleiste **Import from xbe-site (kiva-standalone)** wählen (direkt: `https://github.com/abx-git/kiva/actions/workflows/import-from-xbe-site.yml`) → **Run workflow**  
+   Wenn die Liste leer wirkt: **Settings** → **Actions** → **General** → „Allow all actions“ und Workflow-Berechtigung **Read and write**.
+6. Alternativ: Workflow-Datei erneut speichern (Commit auf `main`) — startet den Import automatisch per `push`-Trigger.
 6. **Settings** → **Pages** → Source: **GitHub Actions**
 7. **Actions** → **Deploy Kiva (GitHub Pages)** → **Run workflow**
 
