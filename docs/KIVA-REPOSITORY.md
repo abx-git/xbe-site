@@ -22,6 +22,8 @@ git fetch origin kiva-standalone
       - Name: `KIVA_REPO_PUSH_TOKEN`
       - Value: der PAT
    3. **abx-git/xbe-site** → **Actions** → **Sync Kiva to abx-git/kiva** → **Run workflow**
+
+   Falls der Push mit `Permission denied to github-actions[bot]` fehlschlägt: Workflow auf dem neuesten `main` ausführen (Fix: Checkout ohne `GITHUB_TOKEN`-Credentials). Der PAT muss trotzdem **Contents: Write** auf `abx-git/kiva` haben.
    4. In **abx-git/kiva** → **Settings** → **Pages** → Source: **GitHub Actions**
    5. In **abx-git/kiva** → **Actions** → **Deploy Kiva (GitHub Pages)** → **Run workflow** (oder nach Push auf `main` automatisch)
 

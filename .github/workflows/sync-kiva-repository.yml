@@ -18,6 +18,8 @@ jobs:
         with:
           ref: kiva-standalone
           fetch-depth: 1
+          # Do not persist GITHUB_TOKEN — it only has access to xbe-site and would override the PAT on push.
+          persist-credentials: false
 
       - name: Push to abx-git/kiva
         env:
@@ -27,6 +29,7 @@ jobs:
             echo "::error::Missing secret KIVA_REPO_PUSH_TOKEN. See docs/KIVA-REPOSITORY.md"
             exit 1
           fi
+          git config --local credential.helper ""
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote add kiva "https://x-access-token:${KIVA_REPO_PUSH_TOKEN}@github.com/abx-git/kiva.git"
