@@ -6,6 +6,8 @@ Public lab for experiments in AI-assisted software development — concepts, spe
 
 **Live:** https://www.x-be.de
 
+**Kiva** (separate PWA): [github.com/abx-git/kiva](https://github.com/abx-git/kiva) — not developed in this repository.
+
 ## Development
 
 ```bash
